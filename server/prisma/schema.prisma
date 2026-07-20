@@ -6,8 +6,114 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum ContactStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+enum ConversationType {
+  DIRECT
+  AI
+}
+
+enum SenderType {
+  USER
+  AI
+}
+
+enum AttachmentType {
+  IMAGE
+  VIDEO
+  AUDIO
+  FILE
+}
+
+model User {
+  id             String        @id @default(uuid())
+  email          String        @unique
+  passwordHash   String?       // null if the user registered with Google
+  firstName      String?
+  lastName       String?
+  nickname       String?
+  googleId       String?       @unique
+  avatarURL      String?
+  hasSeenWelcome Boolean       @default(false)
+  locale         String       @default("en")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  contactInitiated  Contact[]     @relation("UserContacts")
+  contactReceived   Contact[]     @relation("ContactOfUser")
+  participations    ConversationParticipant[]
+  messages          Message[]
+  resetTokens       PasswordResetToken[]
+}
+
+model Contact {
+  id          String     @id @default(uuid())
+  userId      String
+  contactId   String      
+  status      ContactStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  user        User       @relation("UserContacts", fields: [userId], references: [id])
+  contact     User       @relation("ContactOfUser", fields: [contactId], references: [id])
+
+  @@unique([userId, contactId])
+}
+
+model Conversation {
+  id              String              @id @default(uuid())
+  type            ConversationType
+  createdAt       DateTime            @default(now())  
+
+  participants    ConversationParticipant[]
+  messages        Message[]
+}
+
+model ConversationParticipant {
+  id              String          @id @default(uuid())
+  conversationId  String
+  userId          String
+  joinedAt        DateTime        @default(now())
+  hiddenAt        DateTime?       // "delete chat": null = visible, with a date = hidden only for this user
+
+  conversation    Conversation    @relation(fields: [conversationId], references: [id])
+  user            User            @relation(fields: [userId], references: [id])
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id              String          @id @default(uuid())
+  conversationId  String
+  senderId        String?
+  senderType      SenderType
+  content         String?         // required at the DTO level for MVP; nullable here for v2 (attachment-only messages)
+  attachmentURL   String?         // not used in MVP
+  attachmentType  AttachmentType? // not used in MVP
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  conversation    Conversation    @relation(fields: [conversationId], references: [id])
+  sender          User?           @relation(fields: [senderId], references: [id])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
 }
