@@ -101,6 +101,7 @@ model Message {
   content         String?         // required at the DTO level for MVP; nullable here for v2 (attachment-only messages)
   attachmentURL   String?         // not used in MVP
   attachmentType  AttachmentType? // not used in MVP
+  readAt          DateTime?       // null = unread, with a date = read
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 

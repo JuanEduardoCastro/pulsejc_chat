@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ContactsModule } from './contacts/contacts.module';
+import { ChatModule } from './chat/chat.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,6 +16,7 @@ import { ContactsModule } from './contacts/contacts.module';
     UsersModule,
     AuthModule,
     ContactsModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

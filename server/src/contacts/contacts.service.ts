@@ -8,12 +8,14 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
 import { sanitizeUser } from '@/users/users.util';
+import { ConversationsService } from '@/chat/conversations.service';
 
 @Injectable()
 export class ContactsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
+    private readonly conversationsService: ConversationsService,
   ) {}
 
   async createContact(currentUserId: string, contactEmail: string) {
@@ -127,10 +129,17 @@ export class ContactsService {
       throw new ConflictException('Contact is not pending');
     }
 
-    return this.prisma.contact.update({
+    const update = await this.prisma.contact.update({
       where: { id: contactId },
       data: { status: 'ACCEPTED' },
     });
+
+    await this.conversationsService.findOrCreateDirect(
+      contact.userId,
+      contact.contactId,
+    );
+
+    return update;
   }
 
   async removeContact(currentUserId: string, contactId: string) {
