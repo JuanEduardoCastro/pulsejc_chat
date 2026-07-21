@@ -4,5 +4,13 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     },
-    "eslint.workingDirectories": [{ "pattern": "server" }, { "pattern": "client" }]
+    "eslint.workingDirectories": [
+      {
+        "pattern": "server"
+      },
+      {
+        "pattern": "client"
+      }
+    ],
+    "js/ts.tsdk.path": "node_modules/typescript/lib"
   }
