@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 export interface CreateUserInput {
   email: string;
-  passwordHash: string;
+  passwordHash?: string;
   googleId?: string;
   firstName?: string;
   lastName?: string;
@@ -23,11 +23,19 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  findByGoogleId(googleId: string) {
+    return this.prisma.user.findUnique({ where: { googleId } });
+  }
+
   create(data: CreateUserInput) {
     return this.prisma.user.create({ data });
   }
 
   update(id: string, data: UpdateUserDto) {
     return this.prisma.user.update({ where: { id }, data });
+  }
+
+  linkGoogleAccount(id: string, googleId: string) {
+    return this.prisma.user.update({ where: { id }, data: { googleId } });
   }
 }

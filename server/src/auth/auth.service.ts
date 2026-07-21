@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { sanitizeUser } from '@/users/users.util';
 import { User } from '../../generated/prisma/browser';
 import { LoginDto } from './dto/login.dto';
+import { GoogleProfile } from './google.strategy';
 
 const SALT_ROUNDS = 10;
 
@@ -49,6 +50,28 @@ export class AuthService {
     );
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+    return this.buildAuthResponse(user);
+  }
+
+  async loginWithGoogle(googleProfile: GoogleProfile) {
+    let user = await this.userService.findByGoogleId(googleProfile.googleId);
+    if (!user) {
+      const existingUser = await this.userService.findByEmail(
+        googleProfile.email,
+      );
+      user = existingUser
+        ? await this.userService.linkGoogleAccount(
+            existingUser.id,
+            googleProfile.googleId,
+          )
+        : await this.userService.create({
+            email: googleProfile.email,
+            googleId: googleProfile.googleId,
+            firstName: googleProfile.firstName,
+            lastName: googleProfile.lastName,
+            avatarURL: googleProfile.avatarUrl,
+          });
     }
     return this.buildAuthResponse(user);
   }
