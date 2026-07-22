@@ -28,6 +28,17 @@ export class MessagesService {
     return message;
   }
 
+  async createAiMessage(conversationId: string, content: string) {
+    return this.prisma.message.create({
+      data: {
+        conversationId,
+        senderId: null,
+        senderType: 'AI',
+        content,
+      },
+    });
+  }
+
   async markAsRead(conversationId: string, userId: string) {
     await this.assertParticipant(conversationId, userId);
 

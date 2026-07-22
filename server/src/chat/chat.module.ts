@@ -6,9 +6,10 @@ import { ChatGateway } from './chat.gateway';
 import { PresenceService } from './presence.service';
 import { AuthModule } from '@/auth/auth.module';
 import { UsersModule } from '@/users/users.module';
+import { AiModule } from '@/ai/ai.module';
 
 @Module({
-  imports: [AuthModule, UsersModule],
+  imports: [AuthModule, UsersModule, AiModule],
   controllers: [ChatController],
   providers: [
     ConversationsService,

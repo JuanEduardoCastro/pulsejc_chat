@@ -31,7 +31,37 @@ export class ConversationsService {
     });
   }
 
+  async findOrCreateAI(userId: string) {
+    const existingConversation = await this.prisma.conversation.findFirst({
+      where: {
+        type: 'AI',
+        participants: { some: { userId } },
+      },
+    });
+
+    if (existingConversation) {
+      return existingConversation;
+    }
+
+    return this.prisma.conversation.create({
+      data: {
+        type: 'AI',
+        participants: { create: [{ userId }] },
+      },
+    });
+  }
+
+  async getType(conversationId: string) {
+    const conversation = await this.prisma.conversation.findUniqueOrThrow({
+      where: { id: conversationId },
+      select: { type: true },
+    });
+    return conversation.type;
+  }
+
   async listForUser(userId: string) {
+    await this.findOrCreateAI(userId);
+
     const participations = await this.prisma.conversationParticipant.findMany({
       where: { userId, hiddenAt: null },
       include: {

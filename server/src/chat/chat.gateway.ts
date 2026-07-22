@@ -15,6 +15,8 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PresenceService } from './presence.service';
 import { MessagesService } from './messages.service';
+import { ConversationsService } from './conversations.service';
+import { AiService } from '@/ai/ai.service';
 
 interface JwtPayload {
   sub: string;
@@ -40,6 +42,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly prisma: PrismaService,
     private readonly messagesService: MessagesService,
     private readonly presenceService: PresenceService,
+    private readonly conversationsService: ConversationsService,
+    private readonly aiService: AiService,
   ) {}
 
   async handleConnection(socket: AuthenticatedSocket) {
@@ -160,14 +164,51 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         `emitting new-message to room ${room}, ${socketsInRoom.size} socket(s):[${[...socketsInRoom].join(', ')}]`,
       );
 
-      this.server
-        .to(`conversation:${data.conversationId}`)
-        .emit('new-message', message);
+      this.server.to(room).emit('new-message', message);
+
+      const conversationType = await this.conversationsService.getType(
+        data.conversationId,
+      );
+
+      if (conversationType === 'AI') {
+        void this.handleAiReply(socket.data.user.id, data.conversationId);
+      }
     } catch (error) {
       this.logger.error(
         `send-message failed: ${(error as Error).message}`,
         (error as Error).stack,
       );
+    }
+  }
+
+  /* -------- */
+
+  private async handleAiReply(userId: string, conversationId: string) {
+    try {
+      const { messages } = await this.messagesService.listForConversation(
+        conversationId,
+        userId,
+      );
+
+      const replayContent = await this.aiService.generateReplay(messages);
+      const aiMessage = await this.messagesService.createAiMessage(
+        conversationId,
+        replayContent,
+      );
+
+      this.server
+        .to(`conversation:${conversationId}`)
+        .emit('new-message', aiMessage);
+    } catch (error) {
+      this.logger.error(
+        `AI reply failed for conversation ${conversationId}: ${
+          (error as Error).message
+        }`,
+      );
+      this.server.to(`user:${userId}`).emit('ai-error', {
+        conversationId,
+        message: 'The AI assistant is currently unavailable.',
+      });
     }
   }
 
