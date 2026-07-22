@@ -7,6 +7,19 @@ const DEFAULT_LIMIT = 30;
 export class MessagesService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async create(conversationId: string, senderId: string, content: string) {
+    await this.assertParticipant(conversationId, senderId);
+
+    return this.prisma.message.create({
+      data: {
+        conversationId,
+        senderId,
+        senderType: 'USER',
+        content,
+      },
+    });
+  }
+
   async listForConversation(
     conversationId: string,
     userId: string,
