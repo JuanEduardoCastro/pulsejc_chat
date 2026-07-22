@@ -16,6 +16,6 @@ import { UsersModule } from '@/users/users.module';
     ChatGateway,
     PresenceService,
   ],
-  exports: [ConversationsService],
+  exports: [ConversationsService, ChatGateway],
 })
 export class ChatModule {}

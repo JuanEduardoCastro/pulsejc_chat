@@ -23,7 +23,7 @@ export class ContactsController {
 
   @Post()
   createContact(@CurrentUser() user: User, @Body() dto: AddContactDto) {
-    return this.contactsService.createContact(user.id, dto.email);
+    return this.contactsService.createContact(user, dto.email);
   }
 
   @Get()
@@ -38,11 +38,11 @@ export class ContactsController {
 
   @Patch(':id/accept')
   acceptContact(@CurrentUser() user: User, @Param('id') contactId: string) {
-    return this.contactsService.acceptContact(user.id, contactId);
+    return this.contactsService.acceptContact(user, contactId);
   }
 
   @Delete(':id')
   removeContact(@CurrentUser() user: User, @Param('id') contactId: string) {
-    return this.contactsService.removeContact(user.id, contactId);
+    return this.contactsService.removeContact(user, contactId);
   }
 }

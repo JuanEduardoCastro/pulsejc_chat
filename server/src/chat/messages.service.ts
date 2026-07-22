@@ -10,14 +10,59 @@ export class MessagesService {
   async create(conversationId: string, senderId: string, content: string) {
     await this.assertParticipant(conversationId, senderId);
 
-    return this.prisma.message.create({
-      data: {
-        conversationId,
-        senderId,
-        senderType: 'USER',
-        content,
-      },
+    const [message] = await this.prisma.$transaction([
+      this.prisma.message.create({
+        data: {
+          conversationId,
+          senderId,
+          senderType: 'USER',
+          content,
+        },
+      }),
+      this.prisma.conversationParticipant.updateMany({
+        where: { conversationId, hiddenAt: { not: null } },
+        data: { hiddenAt: null },
+      }),
+    ]);
+
+    return message;
+  }
+
+  async markAsRead(conversationId: string, userId: string) {
+    await this.assertParticipant(conversationId, userId);
+
+    const unreadMessages = await this.prisma.message.findMany({
+      where: { conversationId, senderId: { not: userId }, readAt: null },
+      select: { id: true, senderId: true },
     });
+
+    if (unreadMessages.length === 0) {
+      return {
+        messageIds: [] as string[],
+        senderIds: [] as string[],
+        readAt: null,
+      };
+    }
+
+    const readAt = new Date();
+    await this.prisma.message.updateMany({
+      where: { id: { in: unreadMessages.map((m) => m.id) } },
+      data: { readAt },
+    });
+
+    const senderIds = [
+      ...new Set(
+        unreadMessages
+          .map((m) => m.senderId)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+
+    return {
+      messageIds: unreadMessages.map((m) => m.id),
+      senderIds,
+      readAt,
+    };
   }
 
   async listForConversation(

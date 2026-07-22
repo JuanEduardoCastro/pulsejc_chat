@@ -9,6 +9,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
 import { sanitizeUser } from '@/users/users.util';
 import { ConversationsService } from '@/chat/conversations.service';
+import { ChatGateway } from '@/chat/chat.gateway';
+import type { User } from '../../generated/prisma/client';
 
 @Injectable()
 export class ContactsService {
@@ -16,23 +18,24 @@ export class ContactsService {
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
     private readonly conversationsService: ConversationsService,
+    private readonly chatGateway: ChatGateway,
   ) {}
 
-  async createContact(currentUserId: string, contactEmail: string) {
+  async createContact(currentUser: User, contactEmail: string) {
     const targetUser = await this.usersService.findByEmail(contactEmail);
     if (!targetUser) {
       throw new NotFoundException('No user found with this email');
     }
 
-    if (targetUser.id === currentUserId) {
+    if (targetUser.id === currentUser.id) {
       throw new BadRequestException('You cannot add yourself as a contact');
     }
 
     const existingContact = await this.prisma.contact.findFirst({
       where: {
         OR: [
-          { userId: currentUserId, contactId: targetUser.id },
-          { userId: targetUser.id, contactId: currentUserId },
+          { userId: currentUser.id, contactId: targetUser.id },
+          { userId: targetUser.id, contactId: currentUser.id },
         ],
       },
     });
@@ -40,13 +43,24 @@ export class ContactsService {
     if (existingContact) {
       throw new ConflictException('Contact already exists or is pending');
     }
-    return this.prisma.contact.create({
+
+    const contact = await this.prisma.contact.create({
       data: {
-        userId: currentUserId,
+        userId: currentUser.id,
         contactId: targetUser.id,
         status: 'PENDING',
       },
     });
+
+    this.chatGateway.server
+      .to(`user:${targetUser.id}`)
+      .emit('contact-request', {
+        id: contact.id,
+        requestedAt: contact.createdAt,
+        user: sanitizeUser(currentUser),
+      });
+
+    return contact;
   }
 
   async findMany(currentUserId: string, status: 'accepted' | 'pending') {
@@ -112,7 +126,7 @@ export class ContactsService {
     };
   }
 
-  async acceptContact(currentUserId: string, contactId: string) {
+  async acceptContact(currentUser: User, contactId: string) {
     const contact = await this.prisma.contact.findUnique({
       where: { id: contactId },
     });
@@ -121,7 +135,7 @@ export class ContactsService {
       throw new NotFoundException('Contact not found');
     }
 
-    if (contact.contactId !== currentUserId) {
+    if (contact.contactId !== currentUser.id) {
       throw new ForbiddenException();
     }
 
@@ -139,10 +153,19 @@ export class ContactsService {
       contact.contactId,
     );
 
+    this.chatGateway.server
+      .to(`user:${contact.userId}`)
+      .emit('contact-request-response', {
+        id: contact.id,
+        status: 'accepted',
+        contactSince: contact.createdAt,
+        user: sanitizeUser(currentUser),
+      });
+
     return update;
   }
 
-  async removeContact(currentUserId: string, contactId: string) {
+  async removeContact(currentUser: User, contactId: string) {
     const contact = await this.prisma.contact.findUnique({
       where: { id: contactId },
     });
@@ -152,12 +175,25 @@ export class ContactsService {
     }
 
     const isParticpant =
-      contact.userId === currentUserId || contact.contactId === currentUserId;
+      contact.userId === currentUser.id || contact.contactId === currentUser.id;
 
     if (!isParticpant) {
       throw new ForbiddenException();
     }
 
     await this.prisma.contact.delete({ where: { id: contactId } });
+
+    if (contact.status === 'PENDING') {
+      const otherUserId =
+        contact.userId === currentUser.id ? contact.contactId : contact.userId;
+
+      this.chatGateway.server
+        .to(`user:${otherUserId}`)
+        .emit('contact-request-response', {
+          id: contact.id,
+          status: 'rejected',
+          user: sanitizeUser(currentUser),
+        });
+    }
   }
 }
