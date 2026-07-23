@@ -1,21 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../prisma/prisma.service';
+import { MailService } from '../mail/mail.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { sanitizeUser } from '@/users/users.util';
 import { User } from '../../generated/prisma/browser';
 import { LoginDto } from './dto/login.dto';
 import { GoogleProfile } from './google.strategy';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 const SALT_ROUNDS = 10;
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+const GENERIC_FORGOT_PASSWORD_MESSAGE =
+  'If that email is registered, you will receive instructions shortly.';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly config: ConfigService,
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
   ) {}
 
   async isEmailAvailable(email: string) {
@@ -76,11 +88,69 @@ export class AuthService {
     return this.buildAuthResponse(user);
   }
 
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const user = await this.userService.findByEmail(dto.email);
+
+    if (user && !user.passwordHash) {
+      await this.mailService.send(
+        user.email,
+        'Pulse.Jc - Password Reset',
+        `<p>Your Pulse.Jc account uses Google Sign-In, so it doesn't have a password to reset. Please log in with Google instead.</p>`,
+      );
+    } else if (user) {
+      await this.prisma.passwordResetToken.deleteMany({
+        where: { userId: user.id },
+      });
+
+      const token = crypto.randomBytes(32).toString('hex');
+      await this.prisma.passwordResetToken.create({
+        data: {
+          userId: user.id,
+          tokenHash: this.hashToken(token),
+          expiresAt: new Date(Date.now() + RESET_TOKEN_TTL_MS),
+        },
+      });
+
+      const resetUrl = `${this.config.getOrThrow<string>('CLIENT_URL')}/reset-password?token=${token}`;
+
+      await this.mailService.send(
+        user.email,
+        'Pulse.Jc - Reset your password',
+        `<p>Click the link below to reset your Pulse.Jc password. This link expires in 1 hour.</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
+      );
+    }
+    return { message: GENERIC_FORGOT_PASSWORD_MESSAGE };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    const resetToken = await this.prisma.passwordResetToken.findUnique({
+      where: { tokenHash: this.hashToken(dto.token) },
+    });
+
+    if (!resetToken || resetToken.expiresAt < new Date()) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    const passwordHash = await bcrypt.hash(dto.newPassword, SALT_ROUNDS);
+    await this.userService.updatePassword(resetToken.userId, passwordHash);
+    await this.prisma.passwordResetToken.deleteMany({
+      where: { userId: resetToken.userId },
+    });
+
+    return { message: 'Password has been reset successfully' };
+  }
+
+  /* ------ */
+
   private buildAuthResponse(user: User) {
     const accessToken = this.jwtService.sign({
       sub: user.id,
       email: user.email,
     });
     return { accessToken, user: sanitizeUser(user) };
+  }
+
+  private hashToken(token: string) {
+    return crypto.createHash('sha256').update(token).digest('hex');
   }
 }

@@ -38,4 +38,8 @@ export class UsersService {
   linkGoogleAccount(id: string, googleId: string) {
     return this.prisma.user.update({ where: { id }, data: { googleId } });
   }
+
+  updatePassword(id: string, passwordHash: string) {
+    return this.prisma.user.update({ where: { id }, data: { passwordHash } });
+  }
 }
