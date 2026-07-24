@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
@@ -38,7 +42,7 @@ export class AuthService {
   async register(dto: RegisterDto) {
     const existingUser = await this.userService.findByEmail(dto.email);
     if (existingUser) {
-      throw new Error('Email already in use');
+      throw new ConflictException('Email already in use');
     }
 
     const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);

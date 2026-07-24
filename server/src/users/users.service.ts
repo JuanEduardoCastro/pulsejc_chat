@@ -42,4 +42,23 @@ export class UsersService {
   updatePassword(id: string, passwordHash: string) {
     return this.prisma.user.update({ where: { id }, data: { passwordHash } });
   }
+
+  findAll() {
+    return this.prisma.user.findMany({ orderBy: { createdAt: 'desc' } });
+  }
+
+  async remove(id: string) {
+    await this.prisma.$transaction([
+      this.prisma.message.updateMany({
+        where: { senderId: id },
+        data: { senderId: null },
+      }),
+      this.prisma.passwordResetToken.deleteMany({ where: { userId: id } }),
+      this.prisma.conversationParticipant.deleteMany({ where: { userId: id } }),
+      this.prisma.contact.deleteMany({
+        where: { OR: [{ userId: id }, { contactId: id }] },
+      }),
+      this.prisma.user.delete({ where: { id } }),
+    ]);
+  }
 }
