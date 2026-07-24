@@ -5,7 +5,10 @@ import { CurrentUser } from '@/auth/current-user.decorator';
 import type { User } from '../../generated/prisma/browser';
 import { sanitizeUser } from './users.util';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {

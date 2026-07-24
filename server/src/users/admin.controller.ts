@@ -2,7 +2,10 @@ import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import { AdminGuard } from '../common/guards/admin.guard';
 import { UsersService } from './users.service';
 import { sanitizeUser } from './users.util';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('admin')
+@ApiSecurity('admin-key')
 @UseGuards(AdminGuard)
 @Controller('admin/users')
 export class AdminController {

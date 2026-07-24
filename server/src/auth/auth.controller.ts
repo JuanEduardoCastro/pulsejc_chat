@@ -19,7 +19,9 @@ import { GoogleProfile } from './google.strategy';
 import { Throttle } from '@nestjs/throttler';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(

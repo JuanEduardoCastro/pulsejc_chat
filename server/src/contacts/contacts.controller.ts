@@ -15,7 +15,10 @@ import { CurrentUser } from '@/auth/current-user.decorator';
 import { AddContactDto } from './dto/add-contact.dto';
 import type { User } from '../../generated/prisma/client';
 import { ListContactsQueryDto } from './dto/list-contacts-query.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('contacts')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('contacts')
 export class ContactsController {

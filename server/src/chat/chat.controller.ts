@@ -12,7 +12,10 @@ import { MessagesService } from './messages.service';
 import { CurrentUser } from '@/auth/current-user.decorator';
 import type { User } from '../../generated/prisma/client';
 import { ListMessagesQueryDto } from './dto/list-messages-query.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('chat')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('chat')
 export class ChatController {
