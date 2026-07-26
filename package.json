@@ -1,6 +1,5 @@
 {
   "name": "pulsejc",
-  "private0": true,
   "workspaces": [
     "client",
     "server"
