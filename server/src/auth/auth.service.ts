@@ -18,6 +18,7 @@ import { LoginDto } from './dto/login.dto';
 import { GoogleProfile } from './google.strategy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { I18nService } from 'nestjs-i18n';
 
 const SALT_ROUNDS = 10;
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
@@ -32,6 +33,7 @@ export class AuthService {
     private readonly config: ConfigService,
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
+    private readonly i18n: I18nService,
   ) {}
 
   async isEmailAvailable(email: string) {
@@ -98,8 +100,8 @@ export class AuthService {
     if (user && !user.passwordHash) {
       await this.mailService.send(
         user.email,
-        'Pulse.Jc - Password Reset',
-        `<p>Your Pulse.Jc account uses Google Sign-In, so it doesn't have a password to reset. Please log in with Google instead.</p>`,
+        this.i18n.t('mail.googleAccount.subject', { lang: user.locale }),
+        this.i18n.t('mail.googleAccount.body', { lang: user.locale }),
       );
     } else if (user) {
       await this.prisma.passwordResetToken.deleteMany({
@@ -119,8 +121,11 @@ export class AuthService {
 
       await this.mailService.send(
         user.email,
-        'Pulse.Jc - Reset your password',
-        `<p>Click the link below to reset your Pulse.Jc password. This link expires in 1 hour.</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
+        this.i18n.t('mail.resetPassword.subject', { lang: user.locale }),
+        this.i18n.t('mail.resetPassword.body', {
+          lang: user.locale,
+          args: { resetUrl },
+        }),
       );
     }
     return { message: GENERIC_FORGOT_PASSWORD_MESSAGE };

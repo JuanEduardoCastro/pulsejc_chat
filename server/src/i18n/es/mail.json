@@ -1,0 +1,10 @@
+{
+  "googleAccount": {
+    "subject": "Pulse.Jc - Restablecimiento de contraseña",
+    "body": "<p>Tu cuenta de Pulse.Jc usa inicio de sesión con Google, por lo que no tiene una contraseña que restablecer. Por favor, inicia sesión con Google.</p>"
+  },
+  "resetPassword": {
+    "subject": "Pulse.Jc - Restablece tu contraseña",
+    "body": "<p>Haz clic en el siguiente enlace para restablecer tu contraseña de Pulse.Jc. Este enlace expira en 1 hora.</p><p><a href=\"{resetUrl}\">{resetUrl}</a></p>"
+  }
+}

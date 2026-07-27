@@ -1,0 +1,10 @@
+{
+  "googleAccount": {
+    "subject": "Pulse.Jc - Password Reset",
+    "body": "<p>Your Pulse.Jc account uses Google Sign-In, so it doesn't have a password to reset. Please log in with Google instead.</p>"
+  },
+  "resetPassword": {
+    "subject": "Pulse.Jc - Reset your password",
+    "body": "<p>Click the link below to reset your Pulse.Jc password. This link expires in 1 hour.</p><p><a href=\"{resetUrl}\">{resetUrl}</a></p>"
+  }
+}

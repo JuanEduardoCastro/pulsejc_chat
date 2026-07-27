@@ -1,0 +1,5 @@
+{
+  "EMAIL_INVALID": "El correo electrónico no es válido",
+  "PASSWORD_MIN_LENGTH": "La contraseña debe tener al menos 8 caracteres",
+  "PASSWORD_NEEDS_NUMBER": "La contraseña debe incluir al menos un número"
+}

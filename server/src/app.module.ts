@@ -9,10 +9,20 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ChatModule } from './chat/chat.module';
+import { join } from 'path';
+import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: join(__dirname, '../i18n/'),
+        watch: true,
+      },
+      resolvers: [new QueryResolver(['lang']), AcceptLanguageResolver],
     }),
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60000, limit: 100 }]),
     PrismaModule,

@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { NextFunction, Request, Response } from 'express';
+import { i18nValidationExceptionFactory } from './common/pipes/i18n-validation-exception.factory';
 
 function swaggerBasicAuth(config: ConfigService) {
   const user = config.getOrThrow<string>('SWAGGER_USER');
@@ -41,6 +42,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      exceptionFactory: i18nValidationExceptionFactory,
     }),
   );
   app.useGlobalFilters(new HttpExceptionFilter());
