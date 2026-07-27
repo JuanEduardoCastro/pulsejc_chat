@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { S3Service } from '../uploads/s3.service';
+import { User } from '../../generated/prisma/client';
 
 export interface CreateUserInput {
   email: string;
@@ -13,7 +15,10 @@ export interface CreateUserInput {
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
@@ -31,8 +36,33 @@ export class UsersService {
     return this.prisma.user.create({ data });
   }
 
-  update(id: string, data: UpdateUserDto) {
-    return this.prisma.user.update({ where: { id }, data });
+  async update(id: string, data: UpdateUserDto) {
+    const existingUser =
+      data.avatarURL !== undefined
+        ? await this.prisma.user.findUnique({ where: { id } })
+        : null;
+
+    const udateUser = await this.prisma.user.update({ where: { id }, data });
+
+    if (existingUser?.avatarURL && existingUser.avatarURL !== data.avatarURL) {
+      await this.s3Service.deleteObjectByUrl(existingUser.avatarURL);
+    }
+
+    return udateUser;
+  }
+
+  createAvatarUploadUrl(userId: string, contentType: string) {
+    return this.s3Service.createAvatarUploadUrl(userId, contentType);
+  }
+
+  async removeAvatar(user: User) {
+    if (user.avatarURL) {
+      await this.s3Service.deleteObjectByUrl(user.avatarURL);
+    }
+    return this.prisma.user.update({
+      where: { id: user.id },
+      data: { avatarURL: null },
+    });
   }
 
   linkGoogleAccount(id: string, googleId: string) {
