@@ -19,7 +19,7 @@ import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: join(__dirname, '../i18n/'),
+        path: join(__dirname, '/i18n/'),
         watch: true,
       },
       resolvers: [new QueryResolver(['lang']), AcceptLanguageResolver],

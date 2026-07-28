@@ -8,5 +8,7 @@
   },
   "moduleNameMapper": {
     "^@/(.*)$": "<rootDir>/../src/$1"
-  }
+  },
+  "setupFiles": ["<rootDir>/jest-e2e.setup.ts"],
+  "globalSetup": "<rootDir>/global-setup.ts"
 }
