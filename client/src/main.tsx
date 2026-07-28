@@ -6,7 +6,7 @@ import { Toaster } from 'sonner';
 import '@/locales/i18n';
 import './index.css';
 import App from './App.tsx';
-import { ErrorBoundary } from './components/ErrorBundary.tsx';
+import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 
 const queryClient = new QueryClient();
 

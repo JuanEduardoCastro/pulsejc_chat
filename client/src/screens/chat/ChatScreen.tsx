@@ -1,5 +1,3 @@
-import React from 'react';
-
 function ChatScreen() {
   return <div>ChatScreen - TODO</div>;
 }
