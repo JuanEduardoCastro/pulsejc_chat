@@ -14,5 +14,5 @@
   ],
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "jest.rootPath": "server",
-  "jest.jestCommandLine": "node_modules/.bin/jest"
+  "jest.jestCommandLine": "node ../node_modules/.bin/jest"
 }

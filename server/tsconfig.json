@@ -26,5 +26,5 @@
     "noFallthroughCasesInSwitch": false,
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*", "generated/**/*"]
+  "include": ["test/**/*", "src/**/*", "generated/**/*"]
 }

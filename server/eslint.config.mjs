@@ -33,14 +33,22 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', 
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           ignoreRestSiblings: true,
-        }
+        },
       ],
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    },
+  },
+  {
+    files: ['**/*.spec.ts', 'test/**/*.e2e-spec.ts'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
     },
   },
 );
