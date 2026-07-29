@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
 import { api } from '@/lib/axios';
 import { useAuthStore, type AuthResponse } from '@/stores/authStore';
-import AuthCard from '@/components/AuthCard';
+import AuthCard from '@/components/auth/AuthCard';
 
 const loginSchema = z.object({
   email: z

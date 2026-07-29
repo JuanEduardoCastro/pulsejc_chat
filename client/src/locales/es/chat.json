@@ -1,0 +1,44 @@
+{
+  "sidebar": {
+    "profile": "Perfil",
+    "logout": "Cerrar sesión",
+    "logoutConfirmTitle": "¿Cerrar sesión?",
+    "logoutConfirmMessage": "Tendrás que iniciar sesión de nuevo para acceder a tus chats.",
+    "theme": {
+      "light": "Modo claro",
+      "dark": "Modo oscuro"
+    },
+    "language": "Idioma"
+  },
+  "emptyState": {
+    "title": "Selecciona una conversación",
+    "subtitle": "Elige un chat de la lista para empezar a escribir"
+  },
+  "tabs": {
+    "chats": "Chats",
+    "requests": "Solicitudes"
+  },
+  "search": {
+    "placeholder": "Buscar conversaciones"
+  },
+  "conversationList": {
+    "empty": "Todavía no tienes conversaciones",
+    "noMessages": "Sin mensajes todavía"
+  },
+  "requests": {
+    "empty": "No hay solicitudes pendientes",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  },
+  "ai": {
+    "name": "Pulse AI"
+  },
+  "messages": {
+    "loadEarlier": "Cargar mensajes anteriores",
+    "inputPlaceholder": "Escribe un mensaje",
+    "send": "Enviar"
+  },
+  "header": {
+    "deleteChat": "Eliminar chat"
+  }
+}

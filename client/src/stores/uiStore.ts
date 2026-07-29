@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { ChatUser } from '@/types/chat';
 
 export type ActiveModal =
   | { type: 'profile' }
   | { type: 'addContact' }
-  | { type: 'contactInfo'; data: { contactId: string } }
+  | { type: 'contactInfo'; data: { user: ChatUser } }
   | {
       type: 'confirm';
       data: { title: string; message: string; onConfirm: () => void };

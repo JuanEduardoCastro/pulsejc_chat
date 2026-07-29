@@ -6,7 +6,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
-import AuthCard from '@/components/AuthCard';
+import AuthCard from '@/components/auth/AuthCard';
 import { api } from '@/lib/axios';
 
 const resetPasswordSchema = z

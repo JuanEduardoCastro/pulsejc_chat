@@ -6,16 +6,18 @@ import commonEn from './en/common.json';
 import commonEs from './es/common.json';
 import authEn from './en/auth.json';
 import authEs from './es/auth.json';
+import chatEn from './en/chat.json';
+import chatEs from './es/chat.json';
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { common: commonEn, auth: authEn },
-      es: { common: commonEs, auth: authEs },
+      en: { common: commonEn, auth: authEn, chat: chatEn },
+      es: { common: commonEs, auth: authEs, chat: chatEs },
     },
-    ns: ['common', 'auth'],
+    ns: ['common', 'auth', 'chat'],
     defaultNS: 'common',
     fallbackLng: 'en',
     interpolation: { escapeValue: false },

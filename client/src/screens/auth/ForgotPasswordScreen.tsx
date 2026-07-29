@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import AuthCard from '@/components/AuthCard';
+import AuthCard from '@/components/auth/AuthCard';
 import { api } from '@/lib/axios';
 
 const forgotPasswordSchema = z.object({

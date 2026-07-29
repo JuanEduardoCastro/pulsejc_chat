@@ -1,0 +1,44 @@
+{
+  "sidebar": {
+    "profile": "Profile",
+    "logout": "Log out",
+    "logoutConfirmTitle": "Log out?",
+    "logoutConfirmMessage": "You'll need to sign in again to access your chats.",
+    "theme": {
+      "light": "Light mode",
+      "dark": "Dark mode"
+    },
+    "language": "Language"
+  },
+  "emptyState": {
+    "title": "Select a conversation",
+    "subtitle": "Choose a chat from the list to start messaging"
+  },
+  "tabs": {
+    "chats": "Chats",
+    "requests": "Requests"
+  },
+  "search": {
+    "placeholder": "Search conversations"
+  },
+  "conversationList": {
+    "empty": "No conversations yet",
+    "noMessages": "No messages yet"
+  },
+  "requests": {
+    "empty": "No pending requests",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "ai": {
+    "name": "Pulse AI"
+  },
+  "messages": {
+    "loadEarlier": "Load earlier messages",
+    "inputPlaceholder": "Type a message",
+    "send": "Send"
+  },
+  "header": {
+    "deleteChat": "Delete chat"
+  }
+}
