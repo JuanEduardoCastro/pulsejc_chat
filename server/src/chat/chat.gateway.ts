@@ -65,14 +65,21 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       await socket.join(`user:${user.id}`);
 
       const wasOffline = this.presenceService.addConnection(user.id, socket.id);
+      const contactIds = await this.getContactUserIds(user.id);
+
       if (wasOffline) {
-        const contactIds = await this.getContactUserIds(user.id);
         for (const contactId of contactIds) {
           this.server
             .to(`user:${contactId}`)
             .emit('user-status', { userId: user.id, online: true });
         }
       }
+
+      const onlineContactIds = contactIds.filter((contactId) =>
+        this.presenceService.isOnline(contactId),
+      );
+
+      socket.emit('presence-snapshot', { onlineUserIds: onlineContactIds });
     } catch (error) {
       this.logger.warn(
         `Rejected socket connection: ${(error as Error).message}`,

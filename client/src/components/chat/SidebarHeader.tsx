@@ -75,9 +75,9 @@ function SidebarHeader() {
           className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full text-sm font-medium text-white uppercase"
           style={{ backgroundColor: 'var(--accent)' }}
         >
-          {user?.avatarUrl ? (
+          {user?.avatarURL ? (
             <img
-              src={user.avatarUrl}
+              src={user.avatarURL}
               alt=""
               className="h-full w-full object-cover"
             />

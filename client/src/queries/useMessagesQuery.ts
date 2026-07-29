@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 import type { Message } from '@/types/chat';
 
-type MessagesPage = {
+export type MessagesPage = {
   messages: Message[];
   nextCursor: string | null;
 };

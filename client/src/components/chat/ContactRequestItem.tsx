@@ -26,9 +26,9 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
         className="flex h-10 w-10 flex-none items-center justify-center overflow-hidden rounded-full text-sm font-medium text-white uppercase"
         style={{ backgroundColor: '#9ca3af' }}
       >
-        {request.user.avatarUrl ? (
+        {request.user.avatarURL ? (
           <img
-            src={request.user.avatarUrl}
+            src={request.user.avatarURL}
             alt=""
             className="h-full w-full object-cover"
           />

@@ -7,7 +7,7 @@ export type AuthUser = {
   firstName: string | null;
   lastName: string | null;
   nickname: string | null;
-  avatarUrl: string | null;
+  avatarURL: string | null;
   hasSeenWelcome: boolean;
   locale: 'es' | 'en';
 };

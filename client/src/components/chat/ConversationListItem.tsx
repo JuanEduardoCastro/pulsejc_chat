@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { es, enUS } from 'date-fns/locale';
 import type { ConversationSummary } from '@/types/chat';
 import { getDisplayName } from '@/lib/displayName';
+import { usePresenceStore } from '@/stores/presenceStore';
 
 type ConversationListItemProps = {
   conversation: ConversationSummary;
@@ -17,6 +18,15 @@ function ConversationListItem({
 }: ConversationListItemProps) {
   const { t, i18n } = useTranslation('chat');
   const isAi = conversation.type === 'AI';
+  const isOnline = usePresenceStore((state) =>
+    conversation.otherUser
+      ? state.onlineUsersIds.has(conversation.otherUser.id)
+      : false,
+  );
+  const unreadCount = usePresenceStore(
+    (state) => state.unreadByConversation[conversation.id] ?? 0,
+  );
+
   const name = isAi ? t('ai.name') : getDisplayName(conversation.otherUser!);
   const preview =
     conversation.lastMessage?.content ?? t('conversationList.noMessages');
@@ -36,19 +46,27 @@ function ConversationListItem({
         backgroundColor: active ? 'var(--accent-bg)' : 'transparent',
       }}
     >
-      <div
-        className="flex h-10 w-10 flex-none items-center justify-center
+      <div className="relative flex-none">
+        <div
+          className="flex h-10 w-10 flex-none items-center justify-center
   overflow-hidden rounded-full text-sm font-medium text-white uppercase"
-        style={{ backgroundColor: isAi ? 'var(--accent)' : '#9ca3af' }}
-      >
-        {!isAi && conversation.otherUser?.avatarUrl ? (
-          <img
-            src={conversation.otherUser.avatarUrl}
-            alt=""
-            className="h-full w-full object-cover"
+          style={{ backgroundColor: isAi ? 'var(--accent)' : '#9ca3af' }}
+        >
+          {!isAi && conversation.otherUser?.avatarURL ? (
+            <img
+              src={conversation.otherUser.avatarURL}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            name[0]
+          )}
+        </div>
+        {!isAi && isOnline && (
+          <span
+            className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2"
+            style={{ backgroundColor: '#22c55e', borderColor: 'var(--bg)' }}
           />
-        ) : (
-          name[0]
         )}
       </div>
 
@@ -62,7 +80,17 @@ function ConversationListItem({
           </span>
           {time && <span className="flex-none text-xs">{time}</span>}
         </div>
-        <p className="truncate text-sm">{preview}</p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="truncate text-sm">{preview}</p>
+          {unreadCount > 0 && (
+            <span
+              className="flex h-4 min-w-4 flex-none items-center justify-center rounded-full px-1 text-[10px] font-semibold text-white"
+              style={{ backgroundColor: 'var(--accent)' }}
+            >
+              {unreadCount}
+            </span>
+          )}
+        </div>
       </div>
     </button>
   );

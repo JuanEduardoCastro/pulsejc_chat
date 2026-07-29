@@ -3,22 +3,40 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 import { useUiStore } from '@/stores/uiStore';
+import { usePresenceStore } from '@/stores/presenceStore';
 import { getDisplayName } from '@/lib/displayName';
 import type { ConversationSummary } from '@/types/chat';
 
 type ChatHeaderProps = {
   conversation: ConversationSummary;
+  isAiResponding: boolean;
 };
 
-function ChatHeader({ conversation }: ChatHeaderProps) {
+function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
   const { t } = useTranslation('chat');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const openModal = useUiStore((state) => state.openModal);
+  const isOnline = usePresenceStore((state) =>
+    conversation.otherUser
+      ? state.onlineUsersIds.has(conversation.otherUser.id)
+      : false,
+  );
+  const isTyping = usePresenceStore(
+    (state) => state.typingByConversation[conversation.id] ?? false,
+  );
 
   const isAi = conversation.type === 'AI';
   const name = isAi ? t('ai.name') : getDisplayName(conversation.otherUser!);
-  const status = isAi ? t('ai.status') : null;
+  const status = isAi
+    ? isAiResponding
+      ? t('ai.thinking')
+      : t('ai.status')
+    : isTyping
+      ? t('presence.typing')
+      : isOnline
+        ? t('presence.online')
+        : t('presence.offline');
 
   function handleDelete() {
     api.delete(`/chat/conversations/${conversation.id}`).then(() => {
@@ -50,9 +68,9 @@ function ChatHeader({ conversation }: ChatHeaderProps) {
           className="flex h-9 w-9 flex-none items-center justify-center overflow-hidden rounded-full text-sm font-medium text-white uppercase"
           style={{ backgroundColor: isAi ? 'var(--accent)' : '#9ca3af' }}
         >
-          {!isAi && conversation.otherUser?.avatarUrl ? (
+          {!isAi && conversation.otherUser?.avatarURL ? (
             <img
-              src={conversation.otherUser.avatarUrl}
+              src={conversation.otherUser.avatarURL}
               alt=""
               className="h-full w-full object-cover"
             />
@@ -67,7 +85,7 @@ function ChatHeader({ conversation }: ChatHeaderProps) {
           >
             {name}
           </p>
-          {status && <p className="truncate text-xs">{status}</p>}
+          <p className="truncate text-xs">{status}</p>
         </div>
       </button>
 

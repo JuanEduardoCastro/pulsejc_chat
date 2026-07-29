@@ -31,7 +31,9 @@
     "reject": "Rechazar"
   },
   "ai": {
-    "name": "Pulse AI"
+    "name": "Pulse AI",
+    "status": "Siempre disponible",
+    "thinking": "Pensando..."
   },
   "messages": {
     "loadEarlier": "Cargar mensajes anteriores",
@@ -40,5 +42,13 @@
   },
   "header": {
     "deleteChat": "Eliminar chat"
+  },
+  "presence": {
+    "online": "En línea",
+    "offline": "Desconectado",
+    "typing": "Escribiendo..."
+  },
+  "connection": {
+    "reconnecting": "Reconectando..."
   }
 }
