@@ -1,3 +1,5 @@
 {
-  "appName": "Pulse Chat"
+  "appName": "Pulse Chat",
+  "cancel": "Cancelar",
+  "confirm": "Confirmar"
 }

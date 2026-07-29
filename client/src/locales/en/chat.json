@@ -50,5 +50,49 @@
   },
   "connection": {
     "reconnecting": "Reconnecting..."
+  },
+  "contactInfo": {
+    "title": "Contact info",
+    "email": "Email",
+    "memberSince": "Member since",
+    "contactSince": "Contact since"
+  },
+  "addContact": {
+    "trigger": "Add contact",
+    "title": "Add contact",
+    "emailLabel": "Email",
+    "submit": "Send request",
+    "success": "Contact request sent",
+    "notFound": "No user found with this email",
+    "alreadyExists": "You're already contacts or a request is pending",
+    "self": "You can't add yourself",
+    "genericError": "Something went wrong",
+    "validation": {
+      "required": "Email is required",
+      "invalid": "Enter a valid email"
+    }
+  },
+  "profile": {
+    "title": "Edit profile",
+    "emailLabel": "Email",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "nicknameLabel": "Nickname",
+    "changeAvatar": "Change photo",
+    "avatarInvalidType": "Use a JPG, PNG or WEBP image",
+    "save": "Save changes",
+    "success": "Profile updated",
+    "genericError": "Something went wrong",
+    "validation": {
+      "nicknameRequired": "Nickname is required"
+    }
+  },
+  "completeProfile": {
+    "title": "Welcome to Pulse Chat",
+    "message": "Pick a nickname so your contacts know who you are.",
+    "nicknameLabel": "Nickname",
+    "skip": "Skip for now",
+    "submit": "Save",
+    "genericError": "Something went wrong"
   }
 }

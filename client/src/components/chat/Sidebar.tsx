@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUiStore } from '@/stores/uiStore';
 import SidebarHeader from './SidebarHeader';
 import SearchInput from './SearchInput';
 import ConversationList from './ConversationList';
@@ -14,6 +15,8 @@ function Sidebar() {
   const [search, setSearch] = useState('');
   const { data: pendingRequests } = usePendingContactsQuery();
   const pendingCount = pendingRequests?.length ?? 0;
+  const openModal = useUiStore((state) => state.openModal);
+
   return (
     <div className="flex h-full flex-col">
       <SidebarHeader />
@@ -51,6 +54,16 @@ function Sidebar() {
               {pendingCount}
             </span>
           )}
+        </button>
+        <button
+          type="button"
+          onClick={() => openModal({ type: 'addContact' })}
+          aria-label={t('addContact.trigger')}
+          title={t('addContact.trigger')}
+          className="flex-none px-3 py-2 text-lg leading-none"
+          style={{ color: 'var(--text)' }}
+        >
+          +
         </button>
       </div>
 

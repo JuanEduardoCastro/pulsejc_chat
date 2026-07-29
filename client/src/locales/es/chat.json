@@ -50,5 +50,49 @@
   },
   "connection": {
     "reconnecting": "Reconectando..."
+  },
+  "contactInfo": {
+    "title": "Información de contacto",
+    "email": "Correo electrónico",
+    "memberSince": "Miembro desde",
+    "contactSince": "Contacto desde"
+  },
+  "addContact": {
+    "trigger": "Agregar contacto",
+    "title": "Agregar contacto",
+    "emailLabel": "Correo electrónico",
+    "submit": "Enviar solicitud",
+    "success": "Solicitud de contacto enviada",
+    "notFound": "No se encontró ningún usuario con ese correo",
+    "alreadyExists": "Ya son contactos o hay una solicitud pendiente",
+    "self": "No puedes agregarte a ti mismo",
+    "genericError": "Algo salió mal",
+    "validation": {
+      "required": "El correo es obligatorio",
+      "invalid": "Ingresa un correo válido"
+    }
+  },
+  "profile": {
+    "title": "Editar perfil",
+    "emailLabel": "Correo electrónico",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellido",
+    "nicknameLabel": "Apodo",
+    "changeAvatar": "Cambiar foto",
+    "avatarInvalidType": "Usa una imagen JPG, PNG o WEBP",
+    "save": "Guardar cambios",
+    "success": "Perfil actualizado",
+    "genericError": "Algo salió mal",
+    "validation": {
+      "nicknameRequired": "El apodo es obligatorio"
+    }
+  },
+  "completeProfile": {
+    "title": "Bienvenido a Pulse Chat",
+    "message": "Elige un apodo para que tus contactos sepan quién eres.",
+    "nicknameLabel": "Apodo",
+    "skip": "Ahora no",
+    "submit": "Guardar",
+    "genericError": "Algo salió mal"
   }
 }

@@ -1,16 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { ChatUser } from '@/types/chat';
 
-export type AuthUser = {
-  id: string;
-  email: string;
-  firstName: string | null;
-  lastName: string | null;
-  nickname: string | null;
-  avatarURL: string | null;
-  hasSeenWelcome: boolean;
-  locale: 'es' | 'en';
-};
+export type AuthUser = ChatUser;
 
 export type AuthResponse = {
   accessToken: string;
