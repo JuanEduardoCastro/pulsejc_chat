@@ -25,9 +25,10 @@ function ConversationList({ search }: ConversationListProps) {
   }
 
   const filtered = (conversations ?? []).filter((conversation) => {
+    if (conversation.type !== 'AI' && !conversation.otherUser) return false;
     if (!search) return true;
     const name =
-      conversation.type === 'AI'
+      conversation.type === 'AI' || !conversation.otherUser
         ? t('ai.name')
         : getDisplayName(conversation.otherUser!);
     return name.toLowerCase().includes(search.toLowerCase());

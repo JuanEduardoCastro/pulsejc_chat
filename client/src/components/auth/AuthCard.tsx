@@ -8,10 +8,15 @@ type AuthCardProps = {
 
 function AuthCard({ title, children, footer }: AuthCardProps) {
   return (
-    <div className="flex min-h-svh items-center justify-center px-4">
+    <div
+      className="flex min-h-svh items-center justify-center px-4"
+      style={{ backgroundColor: 'var(--bg)' }}
+    >
       <div
-        className="w-full max-w-sm rounded-2xl border p-8"
-        style={{ borderColor: 'var(--border)' }}
+        className="w-full max-w-sm rounded-2xl border-2 p-8"
+        style={{
+          borderColor: 'var(--border)',
+        }}
       >
         <h1
           className="mb-6 text-center text-2xl font-semibold"

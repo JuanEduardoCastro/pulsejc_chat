@@ -5,6 +5,8 @@ import {
   useAcceptContactMutation,
   useRejectContactMutation,
 } from '@/queries/useContactMutations';
+import ButtonFull from '../common/ButtonFull';
+import ButtonBorder from '../common/ButtonBorder';
 
 type ContactRequestItemProps = {
   request: ContactRequest;
@@ -37,15 +39,25 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
         )}
       </div>
 
-      <span
-        className="min-w-0 flex-1 truncate font-medium"
-        style={{ color: 'var(--text-h)' }}
-      >
-        {name}
-      </span>
+      <div className="flex flex-col w-full gap-2">
+        <span
+          className="min-w-0 flex-1 truncate font-medium"
+          style={{ color: 'var(--text-h)' }}
+        >
+          {name}
+        </span>
 
-      <div className="flex flex-none gap-2">
-        <button
+        <div className="flex flex-none gap-2 justify-end">
+          <ButtonFull
+            type="button"
+            disabled={isPending}
+            onClick={() => acceptMutation.mutate(request.id)}
+            buttonStyle={{ backgroundColor: 'var(--accent)' }}
+            buttonClassName="rounded-md px-3 py-1 text-sm font-medium text-white disabled:opacity-60"
+          >
+            {t('requests.accept')}
+          </ButtonFull>
+          {/* <button
           type="button"
           disabled={isPending}
           onClick={() => acceptMutation.mutate(request.id)}
@@ -53,8 +65,16 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
           style={{ backgroundColor: 'var(--accent)' }}
         >
           {t('requests.accept')}
-        </button>
-        <button
+        </button> */}
+          <ButtonBorder
+            type="button"
+            disabled={isPending}
+            onClick={() => rejectMutation.mutate(request.id)}
+            buttonStyle={{ borderColor: 'var(--border)' }}
+            buttonClassName="border rounded-md px-3 py-1 text-sm disabled:opacity-60"
+            text={t('requests.reject')}
+          />
+          {/* <button
           type="button"
           disabled={isPending}
           onClick={() => rejectMutation.mutate(request.id)}
@@ -62,7 +82,8 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
           style={{ borderColor: 'var(--border)' }}
         >
           {t('requests.reject')}
-        </button>
+        </button> */}
+        </div>
       </div>
     </div>
   );

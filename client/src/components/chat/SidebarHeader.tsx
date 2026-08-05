@@ -4,6 +4,8 @@ import { useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
+import ButtonMenu from '../common/ButtonMenu';
+import AvatarSmall from '../common/AvatarSmall';
 
 function SidebarHeader() {
   const { t, i18n } = useTranslation(['chat', 'common']);
@@ -56,8 +58,8 @@ function SidebarHeader() {
     });
   }
 
-  const initials =
-    user?.nickname?.[0] ?? user?.firstName?.[0] ?? user?.email[0] ?? '?';
+  // const initials =
+  //   user?.nickname?.[0] ?? user?.firstName?.[0] ?? user?.email[0] ?? '?';
 
   return (
     <div
@@ -69,7 +71,22 @@ function SidebarHeader() {
       </span>
 
       <div className="relative" ref={menuRef}>
-        <button
+        <ButtonMenu
+          type="button"
+          buttonClassName="flex h-10 w-9 items-center justify-center overflow-hidden rounded-full"
+          onClick={() => setMenuOpen((open) => !open)}
+          // buttonStyle={{ backgroundColor: 'var(--accent)' }}
+        >
+          <AvatarSmall
+            isAi={false}
+            username={user?.nickname ?? user?.firstName ?? user?.email}
+            avatarURL={user?.avatarURL}
+            isOnline={false}
+            style={{ backgroundColor: 'var(--accent)' }}
+          />
+        </ButtonMenu>
+
+        {/* <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
           className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full text-sm font-medium text-white uppercase"
@@ -84,16 +101,26 @@ function SidebarHeader() {
           ) : (
             initials
           )}
-        </button>
+        </button> */}
         {menuOpen && (
           <div
-            className="absolute right-0 z-10 mt-2 w-48 rounded-md border py-1 shadow-lg"
+            className="absolute right-0 z-10 mt-2 w-52 rounded-md border py-1 px-1 shadow-lg"
             style={{
               borderColor: 'var(--border)',
               backgroundColor: 'var(--bg)',
             }}
           >
-            <button
+            <ButtonMenu
+              type="button"
+              buttonClassName="text-left"
+              onClick={() => {
+                setMenuOpen(false);
+                openModal({ type: 'profile' });
+              }}
+            >
+              {t('chat:sidebar.profile')}
+            </ButtonMenu>
+            {/* <button
               type="button"
               onClick={() => {
                 setMenuOpen(false);
@@ -102,8 +129,18 @@ function SidebarHeader() {
               className="block w-full px-4 py-2 text-left text-sm hover:opacity-80"
             >
               {t('chat:sidebar.profile')}
-            </button>
-            <button
+            </button> */}
+
+            <ButtonMenu
+              type="button"
+              buttonClassName="text-left"
+              onClick={toggleTheme}
+            >
+              {theme === 'light'
+                ? t('chat:sidebar.theme.dark')
+                : t('chat:sidebar.theme.light')}
+            </ButtonMenu>
+            {/* <button
               type="button"
               onClick={toggleTheme}
               className="block w-full px-4 py-2 text-left text-sm hover:opacity-80"
@@ -111,21 +148,37 @@ function SidebarHeader() {
               {theme === 'light'
                 ? t('chat:sidebar.theme.dark')
                 : t('chat:sidebar.theme.light')}
-            </button>
-            <button
+            </button> */}
+
+            <ButtonMenu
+              type="button"
+              buttonClassName="text-left"
+              onClick={toggleLanguage}
+            >
+              {t('chat:sidebar.language')}: {i18n.language.toUpperCase()}
+            </ButtonMenu>
+            {/* <button
               type="button"
               onClick={toggleLanguage}
               className="block w-full px-4 py-2 text-left text-sm hover:opacity-80"
             >
               {t('chat:sidebar.language')}: {i18n.language.toUpperCase()}
-            </button>
-            <button
+            </button> */}
+
+            <ButtonMenu
+              type="button"
+              buttonClassName="text-left"
+              onClick={handleLogout}
+            >
+              {t('chat:sidebar.logout')}
+            </ButtonMenu>
+            {/* <button
               type="button"
               onClick={handleLogout}
               className="block w-full px-4 py-2 text-left text-sm hover:opacity-80"
             >
               {t('chat:sidebar.logout')}
-            </button>
+            </button> */}
           </div>
         )}
       </div>

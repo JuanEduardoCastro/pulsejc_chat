@@ -9,6 +9,9 @@ import { isAxiosError } from 'axios';
 import { api } from '@/lib/axios';
 import { useAuthStore, type AuthResponse } from '@/stores/authStore';
 import AuthCard from '@/components/auth/AuthCard';
+import FormInputField from '@/components/common/FormInputField';
+import ButtonFull from '@/components/common/ButtonFull';
+import GoogleAuthButton from '@/components/common/GoogleAuthButton';
 
 const loginSchema = z.object({
   email: z
@@ -57,69 +60,54 @@ function LoginScreen() {
           <Link to="/forgot-password">{t('auth:login.forgotPassword')}</Link>
           <p className="mt-2">
             {t('auth:login.noAccount')}{' '}
-            <Link to="/register">{t('auth:login.registerLink')}</Link>
+            <Link
+              className="underline underline-offset-4 "
+              to="/register"
+              style={{ color: 'var(--accent)' }}
+            >
+              {t('auth:login.registerLink')}
+            </Link>
           </p>
         </>
       }
     >
       <form
-        action=""
         onSubmit={handleSubmit((values) => loginMutation.mutate(values))}
-        className="flex flex-col gap-4"
+        className="flex flex-col"
       >
-        <div className="">
-          <label htmlFor="email" className="mb-1 block text-sm">
-            {t('auth:login.emailLabel')}
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            disabled={loginMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('email')}
-          />
-          {errors.email?.message && (
-            <p className="mt-1 text-sm text-red-500">
-              {t(errors.email.message)}
-            </p>
-          )}
-        </div>
+        <FormInputField
+          label={t('auth:login.emailLabel')}
+          id="email"
+          type="email"
+          autoComplete="email"
+          disabled={loginMutation.isPending}
+          register={register}
+          errorMessage={t(errors.email?.message || '')}
+          error={!!errors.email?.message}
+        />
 
-        <div className="">
-          <label htmlFor="password" className="mb-1 block text-sm">
-            {t('auth:login.passwordLabel')}
-          </label>
+        <FormInputField
+          label={t('auth:login.passwordLabel')}
+          id="password"
+          type="password"
+          autoComplete="current-password"
+          disabled={loginMutation.isPending}
+          register={register}
+          errorMessage={t(errors.password?.message || '')}
+          error={!!errors.password?.message}
+        />
 
-          <input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-            disabled={loginMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('password')}
-          />
-          {errors.password?.message && (
-            <p className="mt-1 text-sm text-red-500">
-              {t(errors.password.message)}
-            </p>
-          )}
-        </div>
-
-        <button
+        <ButtonFull
           type="submit"
           disabled={loginMutation.isPending}
-          className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
-          style={{ backgroundColor: 'var(--accent)' }}
+          buttonStyle={{ backgroundColor: 'var(--accent)' }}
         >
           {loginMutation.isPending ? (
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
           ) : (
             t('auth:login.submit')
           )}
-        </button>
+        </ButtonFull>
       </form>
 
       <div
@@ -130,14 +118,8 @@ function LoginScreen() {
         {t('auth:login.or')}
         <span className="h-px flex-1" style={{ background: 'var(--border)' }} />
       </div>
-      <a
-        href={`${import.meta.env.VITE_API_URL}/auth/google`}
-        className="flex items-center justify-center gap-2 rounded-md border px-4 
-  py-2 text-sm"
-        style={{ borderColor: 'var(--border)' }}
-      >
-        {t('auth:login.googleButton')}
-      </a>
+
+      <GoogleAuthButton />
     </AuthCard>
   );
 }

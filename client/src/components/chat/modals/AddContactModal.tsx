@@ -7,6 +7,8 @@ import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
 import { api } from '@/lib/axios';
 import Modal from './Modal';
+import FormInputField from '@/components/common/FormInputField';
+import ButtonFull from '@/components/common/ButtonFull';
 
 const addContactSchema = z.object({
   email: z
@@ -56,12 +58,22 @@ function AddContactModal() {
         onSubmit={handleSubmit((values) => addContactMutation.mutate(values))}
         className="flex flex-col gap-4"
       >
-        <div>
-          <label htmlFor="contactEmail" className="mb-1 block text-sm">
+        <FormInputField
+          label={t('chat:addContact.emailLabel')}
+          id="email"
+          type="email"
+          autoComplete="email"
+          disabled={addContactMutation.isPending}
+          errorMessage={t(errors.email?.message || '')}
+          error={!!errors.email?.message}
+          register={register}
+        />
+        {/* <div>
+          <label htmlFor="email" className="mb-1 block text-sm">
             {t('chat:addContact.emailLabel')}
           </label>
           <input
-            id="contactEmail"
+            id="email"
             type="email"
             autoComplete="email"
             disabled={addContactMutation.isPending}
@@ -74,9 +86,21 @@ function AddContactModal() {
               {t(errors.email.message)}
             </p>
           )}
-        </div>
+        </div> */}
 
-        <button
+        <ButtonFull
+          type="submit"
+          disabled={addContactMutation.isPending}
+          buttonStyle={{ backgroundColor: 'var(--accent)' }}
+        >
+          {addContactMutation.isPending ? (
+            <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
+          ) : (
+            t('chat:addContact.submit')
+          )}
+        </ButtonFull>
+
+        {/* <button
           type="submit"
           disabled={addContactMutation.isPending}
           className="flex items-center justify-center rounded-md px-4 py-2   font-medium text-white disabled:opacity-60"
@@ -87,7 +111,7 @@ function AddContactModal() {
           ) : (
             t('chat:addContact.submit')
           )}
-        </button>
+        </button> */}
       </form>
     </Modal>
   );

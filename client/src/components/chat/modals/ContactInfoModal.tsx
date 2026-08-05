@@ -5,6 +5,7 @@ import type { ChatUser } from '@/types/chat';
 import { getDisplayName } from '@/lib/displayName';
 import { useAcceptedContactsQuery } from '@/queries/useAcceptedContactsQuery';
 import Modal from './Modal';
+import AvatarBig from '@/components/common/AvatarBig';
 
 type ContactInfoModalProps = {
   user: ChatUser;
@@ -19,7 +20,13 @@ function ContactInfoModal({ user }: ContactInfoModalProps) {
   return (
     <Modal title={t('contactInfo.title')}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <div
+        <AvatarBig
+          username={getDisplayName(user)}
+          avatarURL={user.avatarURL}
+          editable={false}
+          // avatarClassName="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full text-xl font-medium text-white uppercase"
+        />
+        {/* <div
           className="flex h-16 w-16 items-center justify-center overflow-hidden
   rounded-full text-xl font-medium text-white uppercase"
           style={{ backgroundColor: '#9ca3af' }}
@@ -33,7 +40,7 @@ function ContactInfoModal({ user }: ContactInfoModalProps) {
           ) : (
             getDisplayName(user)[0]
           )}
-        </div>
+        </div> */}
         <p className="text-lg font-medium" style={{ color: 'var(--text-h)' }}>
           {getDisplayName(user)}
         </p>

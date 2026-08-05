@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import ButtonFull from '../common/ButtonFull';
+import CustomInputField from '../common/CustomInputField';
 
 type MessageInputProps = {
   onSend: (content: string) => void;
@@ -58,7 +60,16 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
       className="flex items-center gap-2 border-t px-4 py-3"
       style={{ borderColor: 'var(--border)' }}
     >
-      <input
+      <CustomInputField
+        id="messageInput"
+        type="text"
+        value={value}
+        onChange={handleChange}
+        disabled={disabled}
+        placeholder={t('messages.inputPlaceholder')}
+      />
+
+      {/* <input
         type="text"
         value={value}
         onChange={(event) => handleChange(event.target.value)}
@@ -66,7 +77,18 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
         placeholder={t('messages.inputPlaceholder')}
         className="flex-1 rounded-md border px-3 py-2 text-sm"
         style={{ borderColor: 'var(--border)' }}
-      />
+      /> */}
+
+      <div className="w-24">
+        <ButtonFull
+          type="submit"
+          disabled={disabled || !value.trim()}
+          buttonStyle={{ backgroundColor: 'var(--accent)' }}
+        >
+          {t('messages.send')}
+        </ButtonFull>
+      </div>
+      {/* 
       <button
         type="submit"
         disabled={disabled || !value.trim()}
@@ -75,7 +97,7 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
         style={{ backgroundColor: 'var(--accent)' }}
       >
         {t('messages.send')}
-      </button>
+      </button> */}
     </form>
   );
 }

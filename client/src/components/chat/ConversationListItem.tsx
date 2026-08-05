@@ -4,6 +4,7 @@ import { es, enUS } from 'date-fns/locale';
 import type { ConversationSummary } from '@/types/chat';
 import { getDisplayName } from '@/lib/displayName';
 import { usePresenceStore } from '@/stores/presenceStore';
+import AvatarSmall from '../common/AvatarSmall';
 
 type ConversationListItemProps = {
   conversation: ConversationSummary;
@@ -46,7 +47,13 @@ function ConversationListItem({
         backgroundColor: active ? 'var(--accent-bg)' : 'transparent',
       }}
     >
-      <div className="relative flex-none">
+      <AvatarSmall
+        isAi={isAi}
+        username={name}
+        avatarURL={conversation.otherUser?.avatarURL}
+        isOnline={isOnline}
+      />
+      {/* <div className="relative flex-none">
         <div
           className="flex h-10 w-10 flex-none items-center justify-center
   overflow-hidden rounded-full text-sm font-medium text-white uppercase"
@@ -68,7 +75,7 @@ function ConversationListItem({
             style={{ backgroundColor: '#22c55e', borderColor: 'var(--bg)' }}
           />
         )}
-      </div>
+      </div> */}
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-2">

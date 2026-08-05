@@ -25,7 +25,7 @@ function Modal({ title, children }: ModalProps) {
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-sm rounded-2xl border p-6"
+        className="thin-scrollbar w-full max-w-sm max-h-[85svh] overflow-y-auto rounded-2xl border p-6"
         style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg)' }}
       >
         <div className="mb-4 flex items-center justify-between">

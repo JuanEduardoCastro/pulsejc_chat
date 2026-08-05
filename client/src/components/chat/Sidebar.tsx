@@ -6,6 +6,7 @@ import SearchInput from './SearchInput';
 import ConversationList from './ConversationList';
 import ContactRequestItem from './ContactRequestItem';
 import { usePendingContactsQuery } from '@/queries/usePendingContactsQuery';
+import ButtonMenu from '../common/ButtonMenu';
 
 type Tab = 'chats' | 'requests';
 
@@ -23,7 +24,19 @@ function Sidebar() {
       <SearchInput value={search} onChange={setSearch} />
 
       <div className="flex border-b" style={{ borderColor: 'var(--border)' }}>
-        <button
+        <ButtonMenu
+          type="button"
+          onClick={() => setActiveTab('chats')}
+          buttonClassName="flex-1/3 text-center border-b-2"
+          buttonStyle={{
+            borderColor:
+              activeTab === 'chats' ? 'var(--accent)' : 'transparent',
+            color: activeTab === 'chats' ? 'var(--text-h)' : 'var(--text)',
+          }}
+        >
+          {t('tabs.chats')}
+        </ButtonMenu>
+        {/* <button
           type="button"
           onClick={() => setActiveTab('chats')}
           className="flex-1 border-b-2 px-4 py-2 text-sm font-medium"
@@ -34,11 +47,31 @@ function Sidebar() {
           }}
         >
           {t('tabs.chats')}
-        </button>
-        <button
+        </button> */}
+        <ButtonMenu
           type="button"
           onClick={() => setActiveTab('requests')}
-          className="flex-1 border-b-2 px-4 py-2 text-sm font-medium"
+          buttonClassName="flex-1/3 text-center border-b-2"
+          buttonStyle={{
+            borderColor:
+              activeTab === 'requests' ? 'var(--accent)' : 'transparent',
+            color: activeTab === 'requests' ? 'var(--text-h)' : 'var(--text)',
+          }}
+        >
+          {t('tabs.requests')}
+          {pendingCount > 0 && (
+            <span
+              className="ml-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold text-white"
+              style={{ backgroundColor: 'var(--accent)' }}
+            >
+              {pendingCount}
+            </span>
+          )}
+        </ButtonMenu>
+        {/* <button
+          type="button"
+          onClick={() => setActiveTab('requests')}
+          className="flex-1/3 border-b-2 px-4 py-2 text-sm font-medium"
           style={{
             borderColor:
               activeTab === 'requests' ? 'var(--accent)' : 'transparent',
@@ -54,16 +87,18 @@ function Sidebar() {
               {pendingCount}
             </span>
           )}
-        </button>
+        </button> */}
         <button
           type="button"
           onClick={() => openModal({ type: 'addContact' })}
           aria-label={t('addContact.trigger')}
           title={t('addContact.trigger')}
-          className="flex-none px-3 py-2 text-lg leading-none"
-          style={{ color: 'var(--text)' }}
+          className="flex-1/8 px-3 py-2 text-lg leading-none justify-center items-center"
+          // style={{ color: 'var(--text)' }}
         >
-          +
+          <p className="w-5 h-5 flex items-center justify-center font-semibold text-xl rounded-full">
+            +
+          </p>
         </button>
       </div>
 

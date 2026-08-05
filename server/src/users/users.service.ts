@@ -78,10 +78,28 @@ export class UsersService {
   }
 
   async remove(id: string) {
+    const directConversations =
+      await this.prisma.conversationParticipant.findMany({
+        where: { userId: id, conversation: { type: 'DIRECT' } },
+        select: { conversationId: true },
+      });
+    const directConversationIds = directConversations.map(
+      (c) => c.conversationId,
+    );
+
     await this.prisma.$transaction([
       this.prisma.message.updateMany({
         where: { senderId: id },
         data: { senderId: null },
+      }),
+      this.prisma.message.deleteMany({
+        where: { conversationId: { in: directConversationIds } },
+      }),
+      this.prisma.conversationParticipant.deleteMany({
+        where: { conversationId: { in: directConversationIds } },
+      }),
+      this.prisma.conversation.deleteMany({
+        where: { id: { in: directConversationIds } },
       }),
       this.prisma.passwordResetToken.deleteMany({ where: { userId: id } }),
       this.prisma.conversationParticipant.deleteMany({ where: { userId: id } }),

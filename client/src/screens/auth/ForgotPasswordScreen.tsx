@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import AuthCard from '@/components/auth/AuthCard';
 import { api } from '@/lib/axios';
+import ButtonFull from '@/components/common/ButtonFull';
+import FormInputField from '@/components/common/FormInputField';
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -39,7 +41,15 @@ function ForgotPasswordScreen() {
   return (
     <AuthCard
       title={t('auth:forgotPassword.title')}
-      footer={<Link to="/login">{t('auth:forgotPassword.backToLogin')}</Link>}
+      footer={
+        <Link
+          to="/login"
+          className="underline underline-offset-4"
+          style={{ color: 'var(--accent)' }}
+        >
+          {t('auth:forgotPassword.backToLogin')}
+        </Link>
+      }
     >
       {forgotPasswordMutation.isSuccess ? (
         <p className="text-center text-sm">
@@ -55,38 +65,30 @@ function ForgotPasswordScreen() {
           <p className="text-sm" style={{ color: 'var(--text)' }}>
             {t('auth:forgotPassword.description')}
           </p>
-          <div>
-            <label htmlFor="email" className="mb-1 block text-sm">
-              {t('auth:forgotPassword.emailLabel')}
-            </label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              disabled={forgotPasswordMutation.isPending}
-              className="w-full rounded-md border px-3 py-2"
-              style={{ borderColor: 'var(--border)' }}
-              {...register('email')}
-            />
-            {errors.email?.message && (
-              <p className="mt-1 text-sm text-red-500">
-                {t(errors.email.message)}
-              </p>
-            )}
-          </div>
 
-          <button
+          <FormInputField
+            label={t('auth:forgotPassword.emailLabel')}
+            id="email"
+            type="email"
+            autoComplete="email"
+            disabled={forgotPasswordMutation.isPending}
+            errorMessage={t(errors.email?.message || '')}
+            error={!!errors.email?.message}
+            register={register}
+          />
+
+          <ButtonFull
             type="submit"
             disabled={forgotPasswordMutation.isPending}
-            className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
-            style={{ backgroundColor: 'var(--accent)' }}
-          >
-            {forgotPasswordMutation.isPending ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
-            ) : (
-              t('auth:forgotPassword.submit')
-            )}
-          </button>
+            buttonStyle={{ backgroundColor: 'var(--accent)' }}
+            children={
+              forgotPasswordMutation.isPending ? (
+                <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
+              ) : (
+                t('auth:forgotPassword.submit')
+              )
+            }
+          />
         </form>
       )}
     </AuthCard>

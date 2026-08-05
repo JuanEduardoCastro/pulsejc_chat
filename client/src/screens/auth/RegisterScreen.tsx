@@ -10,6 +10,10 @@ import { isAxiosError } from 'axios';
 import AuthCard from '@/components/auth/AuthCard';
 import { api } from '@/lib/axios';
 import { useAuthStore, type AuthResponse } from '@/stores/authStore';
+import FormInputField from '@/components/common/FormInputField';
+import ButtonFull from '@/components/common/ButtonFull';
+import ButtonBorder from '@/components/common/ButtonBorder';
+import Separator from '@/components/common/Separator';
 
 const emailSchema = z.object({
   email: z
@@ -105,7 +109,13 @@ function RegisterScreen() {
         step === 1 ? (
           <p>
             {t('auth:register.hasAccount')}{' '}
-            <Link to="/login">{t('auth:register.loginLink')}</Link>
+            <Link
+              to="/login"
+              className="underline underline-offset-4 "
+              style={{ color: 'var(--accent)' }}
+            >
+              {t('auth:register.loginLink')}
+            </Link>
           </p>
         ) : undefined
       }
@@ -115,9 +125,20 @@ function RegisterScreen() {
           onSubmit={emailForm.handleSubmit((values) =>
             checkEmailMutation.mutate(values),
           )}
-          className="flex flex-col gap-4"
+          className="flex flex-col"
         >
-          <div>
+          <FormInputField
+            label={t('auth:register.emailLabel')}
+            id="email"
+            type="email"
+            autoComplete="email"
+            disabled={checkEmailMutation.isPending}
+            errorMessage={t(emailForm.formState.errors.email?.message || '')}
+            error={!!emailForm.formState.errors.email?.message}
+            register={emailForm.register}
+          />
+          {/* <div>
+
             <label htmlFor="email" className="mb-1 block text-sm">
               {t('auth:register.emailLabel')}
             </label>
@@ -135,9 +156,21 @@ function RegisterScreen() {
                 {t(emailForm.formState.errors.email.message)}
               </p>
             )}
-          </div>
+          </div> */}
 
-          <button
+          <ButtonFull
+            type="submit"
+            disabled={isPending}
+            buttonStyle={{ backgroundColor: 'var(--accent)' }}
+          >
+            {isPending ? (
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+            ) : (
+              t('auth:register.continueButton')
+            )}
+          </ButtonFull>
+
+          {/* <button
             type="submit"
             disabled={isPending}
             className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
@@ -148,16 +181,39 @@ function RegisterScreen() {
             ) : (
               t('auth:register.continueButton')
             )}
-          </button>
+          </button> */}
         </form>
       ) : (
         <form
           onSubmit={passwordForm.handleSubmit((values) =>
             registerMutation.mutate(values),
           )}
-          className="flex flex-col gap-4"
+          className="flex flex-col"
         >
-          <div>
+          <input
+            type="text"
+            name="username"
+            autoComplete="username"
+            value={emailForm.getValues('email')}
+            readOnly
+            aria-hidden="true"
+            tabIndex={-1}
+            className="sr-only"
+          />
+
+          <FormInputField
+            label={t('auth:register.passwordLabel')}
+            id="password"
+            type="password"
+            autoComplete="new-password"
+            disabled={registerMutation.isPending}
+            errorMessage={t(
+              passwordForm.formState.errors.password?.message || '',
+            )}
+            error={!!passwordForm.formState.errors.password?.message}
+            register={passwordForm.register}
+          />
+          {/* <div>
             <label htmlFor="password" className="mb-1 block text-sm">
               {t('auth:register.passwordLabel')}
             </label>
@@ -175,9 +231,22 @@ function RegisterScreen() {
                 {t(passwordForm.formState.errors.password.message)}
               </p>
             )}
-          </div>
+          </div> */}
 
-          <div>
+          <FormInputField
+            label={t('auth:register.confirmPasswordLabel')}
+            id="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            disabled={registerMutation.isPending}
+            errorMessage={t(
+              passwordForm.formState.errors.confirmPassword?.message || '',
+            )}
+            error={!!passwordForm.formState.errors.confirmPassword?.message}
+            register={passwordForm.register}
+          />
+
+          {/* <div>
             <label htmlFor="confirmPassword" className="mb-1 block text-sm">
               {t('auth:register.confirmPasswordLabel')}
             </label>
@@ -195,33 +264,52 @@ function RegisterScreen() {
                 {t(passwordForm.formState.errors.confirmPassword.message)}
               </p>
             )}
-          </div>
+          </div> */}
 
-          <button
+          <Separator />
+          <ButtonFull
             type="submit"
             disabled={isPending}
-            className="mt-2 flex items-center justify-center rounded-md px-4 py-2
-  font-medium text-white disabled:opacity-60"
-            style={{ backgroundColor: 'var(--accent)' }}
+            buttonStyle={{ backgroundColor: 'var(--accent)' }}
           >
             {isPending ? (
-              <span
-                className="h-4 w-4 animate-spin rounded-full border-2
-  border-white/40 border-t-white"
-              />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
             ) : (
               t('auth:register.submit')
             )}
-          </button>
+          </ButtonFull>
 
-          <button
+          {/* <button
+            type="submit"
+            disabled={isPending}
+            className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
+            style={{ backgroundColor: 'var(--accent)' }}
+          >
+            {isPending ? (
+              <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
+            ) : (
+              t('auth:register.submit')
+            )}
+          </button> */}
+
+          <Separator height="h-2" />
+
+          <ButtonBorder
+            type="button"
+            onClick={() => setStep(1)}
+            disabled={isPending}
+            buttonStyle={{ color: 'var(--text)' }}
+            text={t('auth:register.backButton')}
+          />
+
+          {/* <button
             type="button"
             onClick={() => setStep(1)}
             disabled={isPending}
             className="text-sm underline"
           >
             {t('auth:register.backButton')}
-          </button>
+          </button> */}
         </form>
       )}
     </AuthCard>

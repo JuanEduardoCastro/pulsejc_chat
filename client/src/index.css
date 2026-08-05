@@ -3,33 +3,48 @@
 :root,
 :root[data-theme='light'] {
   --text: #6b6375;
+  --text-d: #6b63759a;
   --text-h: #08060d;
   --bg: #fff;
   --border: #e5e4e7;
-  --accent: #aa3bff;
+  --accent: #02893d;
+  --accent-bg: rgba(2, 137, 61, 0.1);
+  --accent-border: rgba(2, 137, 61, 0.5);
+  --transparent: transparent;
+  /* --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
+  --accent-border: rgba(170, 59, 255, 0.5); */
 }
 
 :root[data-theme='dark'] {
   --text: #9ca3af;
+  --text-d: #9ca3af9a;
   --text-h: #f3f4f6;
-  --bg: #16171d;
+  --bg-card: #16171d;
+  /* --bg: #010f01; */
   --border: #2e303a;
-  --accent: #c084fc;
+  --accent: #34b463;
+  --accent-bg: rgba(52, 180, 99, 0.15);
+  --accent-border: rgba(52, 180, 99, 0.5);
+  --transparent: transparent;
+  /* --accent: #c084fc;
   --accent-bg: rgba(192, 132, 252, 0.15);
-  --accent-border: rgba(192, 132, 252, 0.5);
+  --accent-border: rgba(192, 132, 252, 0.5); */
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --text: #9ca3af;
+    --text-d: #9ca3af9a;
     --text-h: #f3f4f6;
-    --bg: #16171d;
+    /* --bg-card: #011701; */
+    /* --bg: #16171d; */
+    --bg: #081408;
     --border: #2e303a;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
+    --accent: #34b463;
+    --accent-bg: rgba(52, 180, 99, 0.15);
+    --accent-border: rgba(52, 180, 99, 0.5);
+    --transparent: transparent;
   }
 }
 
@@ -67,4 +82,37 @@ body {
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--text-h);
+  caret-color: var(--text-h);
+  box-shadow: 0 0 0 1000px var(--bg) inset;
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text);
 }

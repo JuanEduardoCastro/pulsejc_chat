@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from 'react';
+import ButtonBorder from './common/ButtonBorder';
 
 type Props = { children: ReactNode };
 type State = { hasError: boolean };
@@ -19,14 +20,20 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-4 text-center">
           <p>Something went wrong.</p>
-          <button
+          <ButtonBorder
+            type="button"
+            onClick={() => window.location.reload()}
+            buttonStyle={{ borderColor: 'var(--border)' }}
+            text="Reload"
+          />
+          {/* <button
             type="button"
             onClick={() => window.location.reload()}
             className="rounded-md border px-4 py-2"
             style={{ borderColor: 'var(--border)' }}
           >
             Reload
-          </button>
+          </button> */}
         </div>
       );
     }

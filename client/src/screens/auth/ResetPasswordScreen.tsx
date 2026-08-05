@@ -8,6 +8,8 @@ import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
 import AuthCard from '@/components/auth/AuthCard';
 import { api } from '@/lib/axios';
+import FormInputField from '@/components/common/FormInputField';
+import ButtonFull from '@/components/common/ButtonFull';
 
 const resetPasswordSchema = z
   .object({
@@ -86,7 +88,29 @@ function ResetPasswordScreen() {
         )}
         className="flex flex-col gap-4"
       >
-        <div>
+        <FormInputField
+          label={t('auth:resetPassword.passwordLabel')}
+          id="password"
+          type="password"
+          autoComplete="new-password"
+          disabled={resetPasswordMutation.isPending}
+          errorMessage={t(errors.password?.message || '')}
+          error={!!errors.password?.message}
+          register={register}
+        />
+
+        <FormInputField
+          label={t('auth:resetPassword.confirmPasswordLabel')}
+          id="confirmPassword"
+          type="password"
+          autoComplete="new-password"
+          disabled={resetPasswordMutation.isPending}
+          errorMessage={t(errors.confirmPassword?.message || '')}
+          error={!!errors.confirmPassword?.message}
+          register={register}
+        />
+
+        {/* <div>
           <label htmlFor="password" className="mb-1 block text-sm">
             {t('auth:resetPassword.passwordLabel')}
           </label>
@@ -104,9 +128,9 @@ function ResetPasswordScreen() {
               {t(errors.password.message)}
             </p>
           )}
-        </div>
+        </div> */}
 
-        <div>
+        {/* <div>
           <label htmlFor="confirmPassword" className="mb-1 block text-sm">
             {t('auth:resetPassword.confirmPasswordLabel')}
           </label>
@@ -124,9 +148,20 @@ function ResetPasswordScreen() {
               {t(errors.confirmPassword.message)}
             </p>
           )}
-        </div>
+        </div> */}
 
-        <button
+        <ButtonFull
+          type="submit"
+          disabled={resetPasswordMutation.isPending}
+          buttonStyle={{ backgroundColor: 'var(--accent)' }}
+        >
+          {resetPasswordMutation.isPending ? (
+            <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
+          ) : (
+            t('auth:resetPassword.submit')
+          )}
+        </ButtonFull>
+        {/* <button
           type="submit"
           disabled={resetPasswordMutation.isPending}
           className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
@@ -137,7 +172,7 @@ function ResetPasswordScreen() {
           ) : (
             t('auth:resetPassword.submit')
           )}
-        </button>
+        </button> */}
       </form>
     </AuthCard>
   );
