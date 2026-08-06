@@ -16,19 +16,42 @@ function MessageList({ conversationId, conversationType }: MessageListProps) {
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useMessagesQuery(conversationId);
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(false);
+  const lastMessageRef = useRef<string | null>(null);
 
   const messages = data
     ? [...data.pages].reverse().flatMap((page) => page.messages)
     : [];
+  const newestMessage = messages[messages.length - 1];
 
   useEffect(() => {
-    if (!isLoading && !hasScrolledRef.current && messages.length > 0) {
-      bottomRef.current?.scrollIntoView();
-      hasScrolledRef.current = true;
+    if (isLoading || !newestMessage) return;
+
+    const isInitialLoad = !hasScrolledRef.current;
+    const isNewestMessageChanged = newestMessage.id !== lastMessageRef.current;
+    lastMessageRef.current = newestMessage.id;
+
+    if (!isInitialLoad && !isNewestMessageChanged) return;
+
+    const container = containerRef.current;
+    const isNearBottom =
+      !container ||
+      container.scrollHeight - container.scrollTop - container.clientHeight <
+        150;
+    const isOwnMessage =
+      newestMessage.senderType === 'USER' &&
+      newestMessage.senderId === currentUserId;
+
+    if (isInitialLoad || isNearBottom || isOwnMessage) {
+      bottomRef.current?.scrollIntoView({
+        behavior: isInitialLoad ? 'auto' : 'smooth',
+      });
     }
-  }, [isLoading, messages.length]);
+
+    hasScrolledRef.current = true;
+  }, [isLoading, newestMessage, currentUserId]);
 
   if (isLoading) {
     return (
@@ -46,7 +69,10 @@ function MessageList({ conversationId, conversationType }: MessageListProps) {
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-y-auto py-2">
+    <div
+      ref={containerRef}
+      className="flex flex-1 flex-col overflow-y-auto py-2"
+    >
       {hasNextPage && (
         <div className="flex justify-center py-2">
           <button
