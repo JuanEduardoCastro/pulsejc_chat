@@ -38,6 +38,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const { conversationId: routeConversationId } = useParams<{
     conversationId: string;
   }>();
+  const setOnlineSnapshot = usePresenceStore(
+    (state) => state.setOnlineSnapshot,
+  );
 
   const socketRef = useRef<Socket | null>(null);
   const activeConversationIdRef = useRef<string | undefined>(
@@ -71,7 +74,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.on(
       'presence-snapshot',
       ({ onlineUserIds }: { onlineUserIds: string[] }) => {
-        onlineUserIds.forEach((userId) => setOnline(userId, true));
+        setOnlineSnapshot(onlineUserIds);
       },
     );
 
@@ -106,12 +109,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
               : conversation,
           );
         },
-
-        // prev?.map((conversation) =>
-        //   conversation.id === message.conversationId
-        //     ? { ...conversation, lastMessage: message }
-        //     : conversation,
-        // ),
       );
 
       const isActiveConversation =
@@ -197,6 +194,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     setOnline,
     setTypingState,
     incrementUnread,
+    setOnlineSnapshot,
   ]);
 
   const sendMessage = useCallback((conversationId: string, content: string) => {

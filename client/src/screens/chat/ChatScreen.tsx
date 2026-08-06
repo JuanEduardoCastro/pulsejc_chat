@@ -69,7 +69,7 @@ function ChatScreen() {
 
   return (
     <SocketProvider>
-      <ChatLayout />
+      {isLoading ? <ChatSplash /> : <ChatLayout />}
     </SocketProvider>
   );
 }

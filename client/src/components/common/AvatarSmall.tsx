@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 type AvatarSmallProps = {
   isAi: boolean;
   username?: string;
@@ -13,6 +15,16 @@ function AvatarSmall({
   isOnline,
   style,
 }: AvatarSmallProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [loadedForUrl, setLoadedForUrl] = useState(avatarURL);
+
+  if (avatarURL !== loadedForUrl) {
+    setLoadedForUrl(avatarURL);
+    setImageLoaded(false);
+  }
+
+  const showImage = !isAi && !!avatarURL;
+
   return (
     <div className="relative flex-none">
       <div
@@ -24,12 +36,18 @@ function AvatarSmall({
           ...style,
         }}
       >
-        {!isAi && avatarURL ? (
-          <img src={avatarURL} alt="" className="h-full w-full object-cover" />
-        ) : (
+        {!(showImage && imageLoaded) && (
           <p className="font-semibold text-2xl">
             {username ? username[0] : '?'}
           </p>
+        )}
+        {showImage && (
+          <img
+            src={avatarURL}
+            alt=""
+            onLoad={() => setImageLoaded(true)}
+            className={`h-full w-full object-cover ${imageLoaded ? '' : 'hidden'}`}
+          />
         )}
       </div>
       {!isAi && isOnline && (

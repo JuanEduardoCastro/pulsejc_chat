@@ -8,12 +8,16 @@ type PresenceState = {
   setTyping: (conversationId: string, isTyping: boolean) => void;
   incrementUnread: (conversationId: string) => void;
   clearUnread: (conversationId: string) => void;
+  setOnlineSnapshot: (onlineUserIds: string[]) => void;
 };
 
 export const usePresenceStore = create<PresenceState>((set) => ({
   onlineUsersIds: new Set(),
   typingByConversation: {},
   unreadByConversation: {},
+  setOnlineSnapshot: (onlineUserIds) =>
+    set({ onlineUsersIds: new Set(onlineUserIds) }),
+
   setOnline: (userId, online) =>
     set((state) => {
       const next = new Set(state.onlineUsersIds);

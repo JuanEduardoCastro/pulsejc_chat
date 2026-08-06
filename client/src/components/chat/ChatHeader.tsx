@@ -87,7 +87,7 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
         </div>
       </ButtonMenu>
 
-      <div className="">
+      <div className="w-40 ">
         {!isAi && (
           <ButtonMenu
             type="button"
