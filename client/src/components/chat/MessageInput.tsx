@@ -69,16 +69,6 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
         placeholder={t('messages.inputPlaceholder')}
       />
 
-      {/* <input
-        type="text"
-        value={value}
-        onChange={(event) => handleChange(event.target.value)}
-        disabled={disabled}
-        placeholder={t('messages.inputPlaceholder')}
-        className="flex-1 rounded-md border px-3 py-2 text-sm"
-        style={{ borderColor: 'var(--border)' }}
-      /> */}
-
       <div className="w-24">
         <ButtonFull
           type="submit"
@@ -88,16 +78,6 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
           {t('messages.send')}
         </ButtonFull>
       </div>
-      {/* 
-      <button
-        type="submit"
-        disabled={disabled || !value.trim()}
-        className="rounded-md px-4 py-2 text-sm font-medium text-white 
-  disabled:opacity-60"
-        style={{ backgroundColor: 'var(--accent)' }}
-      >
-        {t('messages.send')}
-      </button> */}
     </form>
   );
 }

@@ -137,26 +137,6 @@ function RegisterScreen() {
             error={!!emailForm.formState.errors.email?.message}
             register={emailForm.register}
           />
-          {/* <div>
-
-            <label htmlFor="email" className="mb-1 block text-sm">
-              {t('auth:register.emailLabel')}
-            </label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              disabled={checkEmailMutation.isPending}
-              className="w-full rounded-md border px-3 py-2"
-              style={{ borderColor: 'var(--border)' }}
-              {...emailForm.register('email')}
-            />
-            {emailForm.formState.errors.email?.message && (
-              <p className="mt-1 text-sm text-red-500">
-                {t(emailForm.formState.errors.email.message)}
-              </p>
-            )}
-          </div> */}
 
           <ButtonFull
             type="submit"
@@ -169,19 +149,6 @@ function RegisterScreen() {
               t('auth:register.continueButton')
             )}
           </ButtonFull>
-
-          {/* <button
-            type="submit"
-            disabled={isPending}
-            className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
-            style={{ backgroundColor: 'var(--accent)' }}
-          >
-            {isPending ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-            ) : (
-              t('auth:register.continueButton')
-            )}
-          </button> */}
         </form>
       ) : (
         <form
@@ -213,25 +180,6 @@ function RegisterScreen() {
             error={!!passwordForm.formState.errors.password?.message}
             register={passwordForm.register}
           />
-          {/* <div>
-            <label htmlFor="password" className="mb-1 block text-sm">
-              {t('auth:register.passwordLabel')}
-            </label>
-            <input
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              disabled={registerMutation.isPending}
-              className="w-full rounded-md border px-3 py-2"
-              style={{ borderColor: 'var(--border)' }}
-              {...passwordForm.register('password')}
-            />
-            {passwordForm.formState.errors.password?.message && (
-              <p className="mt-1 text-sm text-red-500">
-                {t(passwordForm.formState.errors.password.message)}
-              </p>
-            )}
-          </div> */}
 
           <FormInputField
             label={t('auth:register.confirmPasswordLabel')}
@@ -246,26 +194,6 @@ function RegisterScreen() {
             register={passwordForm.register}
           />
 
-          {/* <div>
-            <label htmlFor="confirmPassword" className="mb-1 block text-sm">
-              {t('auth:register.confirmPasswordLabel')}
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              disabled={registerMutation.isPending}
-              className="w-full rounded-md border px-3 py-2"
-              style={{ borderColor: 'var(--border)' }}
-              {...passwordForm.register('confirmPassword')}
-            />
-            {passwordForm.formState.errors.confirmPassword?.message && (
-              <p className="mt-1 text-sm text-red-500">
-                {t(passwordForm.formState.errors.confirmPassword.message)}
-              </p>
-            )}
-          </div> */}
-
           <Separator />
           <ButtonFull
             type="submit"
@@ -279,19 +207,6 @@ function RegisterScreen() {
             )}
           </ButtonFull>
 
-          {/* <button
-            type="submit"
-            disabled={isPending}
-            className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
-            style={{ backgroundColor: 'var(--accent)' }}
-          >
-            {isPending ? (
-              <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
-            ) : (
-              t('auth:register.submit')
-            )}
-          </button> */}
-
           <Separator height="h-2" />
 
           <ButtonBorder
@@ -301,15 +216,6 @@ function RegisterScreen() {
             buttonStyle={{ color: 'var(--text)' }}
             text={t('auth:register.backButton')}
           />
-
-          {/* <button
-            type="button"
-            onClick={() => setStep(1)}
-            disabled={isPending}
-            className="text-sm underline"
-          >
-            {t('auth:register.backButton')}
-          </button> */}
         </form>
       )}
     </AuthCard>

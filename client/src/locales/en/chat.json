@@ -19,7 +19,10 @@
     "requests": "Requests"
   },
   "search": {
-    "placeholder": "Search conversations"
+    "placeholder": "Search chats or contacts",
+    "chatsSection": "Chats",
+    "contactsSection": "Contacts",
+    "empty": "No results found"
   },
   "conversationList": {
     "empty": "No conversations yet",

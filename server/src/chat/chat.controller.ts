@@ -1,6 +1,8 @@
 import {
   Controller,
   Get,
+  Post,
+  Body,
   Query,
   UseGuards,
   Param,
@@ -12,6 +14,7 @@ import { MessagesService } from './messages.service';
 import { CurrentUser } from '@/auth/current-user.decorator';
 import type { User } from '../../generated/prisma/client';
 import { ListMessagesQueryDto } from './dto/list-messages-query.dto';
+import { OpenDirectConversationDto } from './dto/open-direct-conversation.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('chat')
@@ -27,6 +30,17 @@ export class ChatController {
   @Get('conversations')
   listConversations(@CurrentUser() user: User) {
     return this.conversationsService.listForUser(user.id);
+  }
+
+  @Post('conversations/direct')
+  openDirectConversation(
+    @CurrentUser() user: User,
+    @Body() dto: OpenDirectConversationDto,
+  ) {
+    return this.conversationsService.openDirectWithContact(
+      user.id,
+      dto.contactUserId,
+    );
   }
 
   @Get('conversations/:id/messages')

@@ -86,47 +86,6 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
           <p className="truncate text-xs">{status}</p>
         </div>
       </ButtonMenu>
-      {/* <button
-        type="button"
-        disabled={isAi}
-        onClick={() =>
-          openModal({
-            type: 'contactInfo',
-            data: { user: conversation.otherUser! },
-          })
-        }
-        className="flex min-w-0 items-center gap-3 text-left disabled:cursor-default"
-      >
-        <AvatarSmall
-          isAi={isAi}
-          username={name}
-          avatarURL={conversation.otherUser?.avatarURL}
-          isOnline={isOnline}
-        />
-         <div
-          className="flex h-9 w-9 flex-none items-center justify-center overflow-hidden rounded-full text-sm font-medium text-white uppercase"
-          style={{ backgroundColor: isAi ? 'var(--accent)' : '#9ca3af' }}
-        >
-          {!isAi && conversation.otherUser?.avatarURL ? (
-            <img
-              src={conversation.otherUser.avatarURL}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            name[0]
-          )}
-        </div> 
-        <div className="min-w-0">
-          <p
-            className="truncate font-medium"
-            style={{ color: 'var(--text-h)' }}
-          >
-            {name}
-          </p>
-          <p className="truncate text-xs">{status}</p>
-        </div>
-      </button> */}
 
       <div className="">
         {!isAi && (
@@ -139,16 +98,6 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
           >
             {t('header.deleteChat')}
           </ButtonMenu>
-          //    <button
-          //   type="button"
-          //   onClick={handleDelete}
-          //   className="text-sm"
-          //   style={{
-          //     color: 'var(--text)',
-          //   }}
-          // >
-          //   {t('header.deleteChat')}
-          // </button>
         )}
       </div>
     </div>

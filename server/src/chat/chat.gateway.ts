@@ -165,13 +165,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         data.content,
       );
 
-      const room = `conversation:${data.conversationId}`;
-      const socketsInRoom = await this.server.in(room).allSockets();
-      this.logger.log(
-        `emitting new-message to room ${room}, ${socketsInRoom.size} socket(s):[${[...socketsInRoom].join(', ')}]`,
-      );
+      // const room = `conversation:${data.conversationId}`;
+      // const socketsInRoom = await this.server.in(room).allSockets();
+      // this.logger.log(
+      //   `emitting new-message to room ${room}, ${socketsInRoom.size} socket(s):[${[...socketsInRoom].join(', ')}]`,
+      // );
 
-      this.server.to(room).emit('new-message', message);
+      // this.server.to(room).emit('new-message', message);
+      await this.broadcastToParticipants(data.conversationId, message);
 
       const conversationType = await this.conversationsService.getType(
         data.conversationId,
@@ -190,6 +191,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   /* -------- */
 
+  private async broadcastToParticipants(
+    conversationId: string,
+    message: unknown,
+  ) {
+    const participantIds =
+      await this.conversationsService.getParticipantIds(conversationId);
+
+    for (const participantId of participantIds) {
+      this.server.to(`user:${participantId}`).emit('new-message', message);
+    }
+  }
+
   private async handleAiReply(userId: string, conversationId: string) {
     try {
       const { messages } = await this.messagesService.listForConversation(
@@ -203,9 +216,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         replayContent,
       );
 
-      this.server
-        .to(`conversation:${conversationId}`)
-        .emit('new-message', aiMessage);
+      await this.broadcastToParticipants(conversationId, aiMessage);
+      // this.server
+      //   .to(`conversation:${conversationId}`)
+      //   .emit('new-message', aiMessage);
     } catch (error) {
       this.logger.error(
         `AI reply failed for conversation ${conversationId}: ${

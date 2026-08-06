@@ -26,14 +26,6 @@ export class ErrorBoundary extends Component<Props, State> {
             buttonStyle={{ borderColor: 'var(--border)' }}
             text="Reload"
           />
-          {/* <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="rounded-md border px-4 py-2"
-            style={{ borderColor: 'var(--border)' }}
-          >
-            Reload
-          </button> */}
         </div>
       );
     }

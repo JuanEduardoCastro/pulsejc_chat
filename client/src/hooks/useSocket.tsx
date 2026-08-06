@@ -93,12 +93,25 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
       queryClient.setQueryData<ConversationSummary[]>(
         ['conversations'],
-        (prev) =>
-          prev?.map((conversation) =>
+        (prev) => {
+          if (!prev) return prev;
+          const exists = prev.some((c) => c.id === message.conversationId);
+          if (!exists) {
+            queryClient.invalidateQueries({ queryKey: ['conversations'] });
+            return prev;
+          }
+          return prev.map((conversation) =>
             conversation.id === message.conversationId
               ? { ...conversation, lastMessage: message }
               : conversation,
-          ),
+          );
+        },
+
+        // prev?.map((conversation) =>
+        //   conversation.id === message.conversationId
+        //     ? { ...conversation, lastMessage: message }
+        //     : conversation,
+        // ),
       );
 
       const isActiveConversation =

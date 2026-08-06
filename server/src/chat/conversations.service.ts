@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { sanitizeUser } from '@/users/users.util';
 
@@ -31,6 +35,48 @@ export class ConversationsService {
     });
   }
 
+  async openDirectWithContact(currentUserId: string, otherUserId: string) {
+    const isAcceptedContact = await this.prisma.contact.findFirst({
+      where: {
+        status: 'ACCEPTED',
+        OR: [{ userId: currentUserId, contactId: otherUserId }],
+      },
+    });
+
+    if (!isAcceptedContact) {
+      throw new ForbiddenException('Not an accepted contact');
+    }
+
+    const conversation = await this.findOrCreateDirect(
+      currentUserId,
+      otherUserId,
+    );
+
+    await this.prisma.conversationParticipant.updateMany({
+      where: { conversationId: conversation.id, userId: currentUserId },
+      data: { hiddenAt: null },
+    });
+
+    const full = await this.prisma.conversation.findUniqueOrThrow({
+      where: { id: conversation.id },
+      include: {
+        participants: { include: { user: true } },
+        messages: { orderBy: { createdAt: 'desc' }, take: 1 },
+      },
+    });
+
+    const otherParticipant = full.participants.find(
+      (p) => p.userId !== currentUserId,
+    );
+
+    return {
+      id: full.id,
+      type: full.type,
+      otherUser: otherParticipant ? sanitizeUser(otherParticipant.user) : null,
+      lastMessage: full.messages[0] ?? null,
+    };
+  }
+
   async findOrCreateAI(userId: string) {
     const existingConversation = await this.prisma.conversation.findFirst({
       where: {
@@ -57,6 +103,14 @@ export class ConversationsService {
       select: { type: true },
     });
     return conversation.type;
+  }
+
+  async getParticipantIds(conversationId: string): Promise<string[]> {
+    const participants = await this.prisma.conversationParticipant.findMany({
+      where: { conversationId },
+      select: { userId: true },
+    });
+    return participants.map((p) => p.userId);
   }
 
   async listForUser(userId: string) {

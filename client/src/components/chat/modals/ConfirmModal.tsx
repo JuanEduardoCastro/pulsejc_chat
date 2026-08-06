@@ -29,14 +29,6 @@ function ConfirmModal({ title, message, onConfirm }: ConfirmModalProps) {
           onClick={closeModal}
           buttonStyle={{ borderColor: 'var(--border)' }}
         />
-        {/* <button
-          type="button"
-          onClick={closeModal}
-          className="rounded-md border px-4 py-2 text-sm"
-          style={{ borderColor: 'var(--border)' }}
-        >
-          {t('cancel')}
-        </button> */}
 
         <ButtonFull
           type="button"
@@ -44,14 +36,6 @@ function ConfirmModal({ title, message, onConfirm }: ConfirmModalProps) {
           onClick={handleConfirm}
           buttonStyle={{ backgroundColor: 'var(--accent)' }}
         />
-        {/* <button
-          type="button"
-          onClick={handleConfirm}
-          className="rounded-md px-4 py-2 text-sm font-medium text-white"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          {t('confirm')}
-        </button> */}
       </div>
     </Modal>
   );

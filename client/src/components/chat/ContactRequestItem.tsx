@@ -57,15 +57,7 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
           >
             {t('requests.accept')}
           </ButtonFull>
-          {/* <button
-          type="button"
-          disabled={isPending}
-          onClick={() => acceptMutation.mutate(request.id)}
-          className="rounded-md px-3 py-1 text-sm font-medium text-white disabled:opacity-60"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          {t('requests.accept')}
-        </button> */}
+
           <ButtonBorder
             type="button"
             disabled={isPending}
@@ -74,15 +66,6 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
             buttonClassName="border rounded-md px-3 py-1 text-sm disabled:opacity-60"
             text={t('requests.reject')}
           />
-          {/* <button
-          type="button"
-          disabled={isPending}
-          onClick={() => rejectMutation.mutate(request.id)}
-          className="rounded-md border px-3 py-1 text-sm disabled:opacity-60"
-          style={{ borderColor: 'var(--border)' }}
-        >
-          {t('requests.reject')}
-        </button> */}
         </div>
       </div>
     </div>

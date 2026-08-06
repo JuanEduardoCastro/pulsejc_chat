@@ -111,30 +111,7 @@ function ProfileModal() {
             avatarClassName="flex h-16 w-16 cursor-pointer items-center justify-center overflow-hidden rounded-full text-xl font-medium text-white uppercase"
             onFileChange={(file) => handleAvatarChange(file)}
           />
-          {/* <label
-            htmlFor="avatarInput"
-            className="flex h-16 w-16 cursor-pointer items-center justify-center overflow-hidden rounded-full text-xl font-medium text-white uppercase"
-            style={{ backgroundColor: '#9ca3af' }}
-          >
-            {avatarPreview ? (
-              <img
-                src={avatarPreview}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              getDisplayName(user)[0]
-            )}
-          </label>
-          <input
-            id="avatarInput"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            className="hidden"
-            onChange={(event) =>
-              handleAvatarChange(event.target.files?.[0] ?? null)
-            }
-          /> */}
+
           <span className="text-xs">{t('chat:profile.changeAvatar')}</span>
         </div>
 
@@ -147,18 +124,6 @@ function ProfileModal() {
           disabled={true}
           register={register}
         />
-        {/* <div>
-          <label className="mb-1 block text-sm">
-            {t('chat:profile.emailLabel')}
-          </label>
-          <input
-            type="email"
-            value={user.email}
-            disabled
-            className="w-full rounded-md border px-3 py-2 opacity-60"
-            style={{ borderColor: 'var(--border)' }}
-          />
-        </div> */}
 
         <FormInputField
           label={t('chat:profile.firstNameLabel')}
@@ -168,19 +133,6 @@ function ProfileModal() {
           register={register}
         />
 
-        {/* <div>
-          <label htmlFor="firstName" className="mb-1 block text-sm">
-            {t('chat:profile.firstNameLabel')}
-          </label>
-          <input
-            id="firstName"
-            disabled={updateProfileMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('firstName')}
-          />
-        </div> */}
-
         <FormInputField
           label={t('chat:profile.lastNameLabel')}
           id="lastName"
@@ -188,18 +140,6 @@ function ProfileModal() {
           disabled={updateProfileMutation.isPending}
           register={register}
         />
-        {/* <div>
-          <label htmlFor="lastName" className="mb-1 block text-sm">
-            {t('chat:profile.lastNameLabel')}
-          </label>
-          <input
-            id="lastName"
-            disabled={updateProfileMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('lastName')}
-          />
-        </div> */}
 
         <FormInputField
           label={t('chat:profile.nicknameLabel')}
@@ -210,25 +150,6 @@ function ProfileModal() {
           errorMessage={t(errors.nickname?.message || '')}
           error={!!errors.nickname?.message}
         />
-
-        {/* <div>
-          <label htmlFor="nickname" className="mb-1 block text-sm">
-            {t('chat:profile.nicknameLabel')}
-          </label>
-
-          <input
-            id="nickname"
-            disabled={updateProfileMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('nickname')}
-          />
-          {errors.nickname?.message && (
-            <p className="mt-1 text-sm text-red-500">
-              {t(errors.nickname.message)}
-            </p>
-          )}
-        </div> */}
 
         <ButtonFull
           type="submit"
@@ -241,18 +162,6 @@ function ProfileModal() {
             t('chat:profile.save')
           )}
         </ButtonFull>
-        {/* <button
-          type="submit"
-          disabled={updateProfileMutation.isPending}
-          className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          {updateProfileMutation.isPending ? (
-            <span className="h-4 w-4 animate-spin rounded-full border-2  border-white/40 border-t-white" />
-          ) : (
-            t('chat:profile.save')
-          )}
-        </button> */}
       </form>
     </Modal>
   );

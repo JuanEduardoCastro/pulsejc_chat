@@ -19,14 +19,6 @@ function SearchInput({ value, onChange }: SearchInputProps) {
         placeholder={t('search.placeholder')}
         inputClassName="w-full rounded-md border px-3 py-2 text-sm"
       />
-      {/* <input
-        type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={t('search.placeholder')}
-        className="w-full rounded-md border px-3 py-1.5 text-sm"
-        style={{ borderColor: 'var(--border)' }}
-      /> */}
     </div>
   );
 }

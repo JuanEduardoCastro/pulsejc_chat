@@ -68,25 +68,6 @@ function AddContactModal() {
           error={!!errors.email?.message}
           register={register}
         />
-        {/* <div>
-          <label htmlFor="email" className="mb-1 block text-sm">
-            {t('chat:addContact.emailLabel')}
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            disabled={addContactMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('email')}
-          />
-          {errors.email?.message && (
-            <p className="mt-1 text-sm text-red-500">
-              {t(errors.email.message)}
-            </p>
-          )}
-        </div> */}
 
         <ButtonFull
           type="submit"
@@ -99,19 +80,6 @@ function AddContactModal() {
             t('chat:addContact.submit')
           )}
         </ButtonFull>
-
-        {/* <button
-          type="submit"
-          disabled={addContactMutation.isPending}
-          className="flex items-center justify-center rounded-md px-4 py-2   font-medium text-white disabled:opacity-60"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          {addContactMutation.isPending ? (
-            <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
-          ) : (
-            t('chat:addContact.submit')
-          )}
-        </button> */}
       </form>
     </Modal>
   );

@@ -5,6 +5,7 @@ import SidebarHeader from './SidebarHeader';
 import SearchInput from './SearchInput';
 import ConversationList from './ConversationList';
 import ContactRequestItem from './ContactRequestItem';
+import SearchResults from './SearchResults';
 import { usePendingContactsQuery } from '@/queries/usePendingContactsQuery';
 import ButtonMenu from '../common/ButtonMenu';
 
@@ -36,18 +37,7 @@ function Sidebar() {
         >
           {t('tabs.chats')}
         </ButtonMenu>
-        {/* <button
-          type="button"
-          onClick={() => setActiveTab('chats')}
-          className="flex-1 border-b-2 px-4 py-2 text-sm font-medium"
-          style={{
-            borderColor:
-              activeTab === 'chats' ? 'var(--accent)' : 'transparent',
-            color: activeTab === 'chats' ? 'var(--text-h)' : 'var(--text)',
-          }}
-        >
-          {t('tabs.chats')}
-        </button> */}
+
         <ButtonMenu
           type="button"
           onClick={() => setActiveTab('requests')}
@@ -68,26 +58,7 @@ function Sidebar() {
             </span>
           )}
         </ButtonMenu>
-        {/* <button
-          type="button"
-          onClick={() => setActiveTab('requests')}
-          className="flex-1/3 border-b-2 px-4 py-2 text-sm font-medium"
-          style={{
-            borderColor:
-              activeTab === 'requests' ? 'var(--accent)' : 'transparent',
-            color: activeTab === 'requests' ? 'var(--text-h)' : 'var(--text)',
-          }}
-        >
-          {t('tabs.requests')}
-          {pendingCount > 0 && (
-            <span
-              className="ml-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold text-white"
-              style={{ backgroundColor: 'var(--accent)' }}
-            >
-              {pendingCount}
-            </span>
-          )}
-        </button> */}
+
         <button
           type="button"
           onClick={() => openModal({ type: 'addContact' })}
@@ -102,8 +73,10 @@ function Sidebar() {
         </button>
       </div>
 
-      {activeTab === 'chats' ? (
-        <ConversationList search={search} />
+      {search.trim() ? (
+        <SearchResults search={search} onSelect={() => setSearch('')} />
+      ) : activeTab === 'chats' ? (
+        <ConversationList />
       ) : (
         <div className="flex-1 overflow-y-auto">
           {pendingCount === 0 ? (
@@ -117,6 +90,22 @@ function Sidebar() {
           )}
         </div>
       )}
+
+      {/* {activeTab === 'chats' ? (
+        <ConversationList search={search} />
+      ) : (
+        <div className="flex-1 overflow-y-auto">
+          {pendingCount === 0 ? (
+            <div className="flex h-full items-center justify-center px-4 text-center text-sm">
+              {t('requests.empty')}
+            </div>
+          ) : (
+            pendingRequests!.map((request) => (
+              <ContactRequestItem key={request.id} request={request} />
+            ))
+          )}
+        </div>
+      )} */}
     </div>
   );
 }

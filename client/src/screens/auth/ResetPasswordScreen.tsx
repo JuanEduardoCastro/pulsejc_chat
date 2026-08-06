@@ -110,46 +110,6 @@ function ResetPasswordScreen() {
           register={register}
         />
 
-        {/* <div>
-          <label htmlFor="password" className="mb-1 block text-sm">
-            {t('auth:resetPassword.passwordLabel')}
-          </label>
-          <input
-            id="password"
-            type="password"
-            autoComplete="new-password"
-            disabled={resetPasswordMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('password')}
-          />
-          {errors.password?.message && (
-            <p className="mt-1 text-sm text-red-500">
-              {t(errors.password.message)}
-            </p>
-          )}
-        </div> */}
-
-        {/* <div>
-          <label htmlFor="confirmPassword" className="mb-1 block text-sm">
-            {t('auth:resetPassword.confirmPasswordLabel')}
-          </label>
-          <input
-            id="confirmPassword"
-            type="password"
-            autoComplete="new-password"
-            disabled={resetPasswordMutation.isPending}
-            className="w-full rounded-md border px-3 py-2"
-            style={{ borderColor: 'var(--border)' }}
-            {...register('confirmPassword')}
-          />
-          {errors.confirmPassword?.message && (
-            <p className="mt-1 text-sm text-red-500">
-              {t(errors.confirmPassword.message)}
-            </p>
-          )}
-        </div> */}
-
         <ButtonFull
           type="submit"
           disabled={resetPasswordMutation.isPending}
@@ -161,18 +121,6 @@ function ResetPasswordScreen() {
             t('auth:resetPassword.submit')
           )}
         </ButtonFull>
-        {/* <button
-          type="submit"
-          disabled={resetPasswordMutation.isPending}
-          className="mt-2 flex items-center justify-center rounded-md px-4 py-2 font-medium text-white disabled:opacity-60"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          {resetPasswordMutation.isPending ? (
-            <span className="h-4 w-4 animate-spin rounded-full border-2   border-white/40 border-t-white" />
-          ) : (
-            t('auth:resetPassword.submit')
-          )}
-        </button> */}
       </form>
     </AuthCard>
   );
