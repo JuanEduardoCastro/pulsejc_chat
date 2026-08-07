@@ -19,9 +19,29 @@ function ChatPanel({ conversationId }: ChatPanelProps) {
 
   useEffect(() => {
     if (!conversationId) return;
-    joinConversation(conversationId);
-    markAsRead(conversationId);
-    clearUnread(conversationId);
+    const id = conversationId;
+
+    function markConversationRead() {
+      markAsRead(id);
+      clearUnread(id);
+    }
+
+    joinConversation(id);
+    markConversationRead();
+
+    function handleFocusOrVisible() {
+      if (document.visibilityState === 'visible') {
+        markConversationRead();
+      }
+    }
+
+    window.addEventListener('focus', handleFocusOrVisible);
+    document.addEventListener('visibilitychange', handleFocusOrVisible);
+
+    return () => {
+      window.removeEventListener('focus', handleFocusOrVisible);
+      document.removeEventListener('visibilitychange', handleFocusOrVisible);
+    };
   }, [conversationId, joinConversation, markAsRead, clearUnread]);
 
   if (!conversationId || !conversation) {

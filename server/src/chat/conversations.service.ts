@@ -39,7 +39,10 @@ export class ConversationsService {
     const isAcceptedContact = await this.prisma.contact.findFirst({
       where: {
         status: 'ACCEPTED',
-        OR: [{ userId: currentUserId, contactId: otherUserId }],
+        OR: [
+          { userId: currentUserId, contactId: otherUserId },
+          { userId: otherUserId, contactId: currentUserId },
+        ],
       },
     });
 
@@ -155,6 +158,21 @@ export class ConversationsService {
 
     await this.prisma.conversationParticipant.update({
       where: { id: participant.id },
+      data: { hiddenAt: new Date() },
+    });
+  }
+
+  async hideForBothParticipants(conversationId: string, userId: string) {
+    const participants = await this.prisma.conversationParticipant.findUnique({
+      where: { conversationId_userId: { conversationId, userId } },
+    });
+
+    if (!participants) {
+      throw new NotFoundException('Conversation not found');
+    }
+
+    await this.prisma.conversationParticipant.updateMany({
+      where: { conversationId },
       data: { hiddenAt: new Date() },
     });
   }

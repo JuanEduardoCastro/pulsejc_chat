@@ -44,7 +44,13 @@
     "send": "Enviar"
   },
   "header": {
-    "deleteChat": "Eliminar chat"
+    "optionsTrigger": "Opciones del chat",
+    "close": "Cerrar chat",
+    "closeConfirmTitle": "¿Cerrar este chat?",
+    "closeConfirmMessage": "Se quitará de tu lista de chats. Puedes volver a encontrar a este contacto cuando quieras a través del buscador.",
+    "delete": "Eliminar para ambos",
+    "deleteConfirmTitle": "¿Eliminar esta conversación para ambos?",
+    "deleteConfirmMessage": "Se quitará de la lista de chats de los dos. Cualquiera de los dos puede volver a encontrarse a través del buscador para retomarla."
   },
   "presence": {
     "online": "En línea",

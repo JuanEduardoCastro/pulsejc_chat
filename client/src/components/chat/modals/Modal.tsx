@@ -19,13 +19,12 @@ function Modal({ title, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 
-  px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
       onClick={closeModal}
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="thin-scrollbar w-full max-w-sm max-h-[85svh] overflow-y-auto rounded-2xl border p-6"
+        className="w-full max-w-md max-h-[85svh] overflow-y-auto rounded-2xl border p-6 thin-scrollbar "
         style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg)' }}
       >
         <div className="mb-4 flex items-center justify-between">

@@ -44,7 +44,13 @@
     "send": "Send"
   },
   "header": {
-    "deleteChat": "Delete chat"
+    "optionsTrigger": "Chat options",
+    "close": "Close chat",
+    "closeConfirmTitle": "Close this chat?",
+    "closeConfirmMessage": "It will be removed from your chat list. You can find this contact again anytime through search.",
+    "delete": "Delete for both",
+    "deleteConfirmTitle": "Delete this conversation for both of you?",
+    "deleteConfirmMessage": "It will be removed from both chat lists. Either of you can find each other again through search to resume it."
   },
   "presence": {
     "online": "Online",

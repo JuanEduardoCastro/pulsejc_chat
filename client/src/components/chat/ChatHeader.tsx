@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
@@ -28,6 +29,19 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
     (state) => state.typingByConversation[conversation.id] ?? false,
   );
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const isAi = conversation.type === 'AI';
   const name =
     isAi || !conversation.otherUser
@@ -43,13 +57,48 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
         ? t('presence.online')
         : t('presence.offline');
 
-  function handleDelete() {
+  function removeFromCacheAndNavigateAway() {
+    queryClient.setQueryData<ConversationSummary[]>(['conversations'], (prev) =>
+      prev?.filter((c) => c.id !== conversation.id),
+    );
+    navigate('/chat');
+  }
+
+  function closeConversation() {
     api.delete(`/chat/conversations/${conversation.id}`).then(() => {
-      queryClient.setQueryData<ConversationSummary[]>(
-        ['conversations'],
-        (prev) => prev?.filter((c) => c.id !== conversation.id),
-      );
-      navigate('/chat');
+      removeFromCacheAndNavigateAway();
+    });
+  }
+
+  function deleteConversationForBoth() {
+    api
+      .delete(`/chat/conversations/${conversation.id}`, {
+        params: { scope: 'both' },
+      })
+      .then(removeFromCacheAndNavigateAway);
+  }
+
+  function handleCloseClick() {
+    setMenuOpen(false);
+    openModal({
+      type: 'confirm',
+      data: {
+        title: t('header.closeConfirmTitle'),
+        message: t('header.closeConfirmMessage'),
+        onConfirm: closeConversation,
+      },
+    });
+  }
+
+  function handleDeleteClick() {
+    setMenuOpen(false);
+    openModal({
+      type: 'confirm',
+      data: {
+        title: t('header.deleteConfirmTitle'),
+        message: t('header.deleteConfirmMessage'),
+        onConfirm: deleteConversationForBoth,
+      },
     });
   }
 
@@ -87,19 +136,44 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
         </div>
       </ButtonMenu>
 
-      <div className="w-40 ">
-        {!isAi && (
+      {!isAi && (
+        <div className="w-40 ">
           <ButtonMenu
             type="button"
-            onClick={handleDelete}
+            onClick={() => setMenuOpen((prev) => !prev)}
             buttonStyle={{
               color: 'var(--text)',
             }}
           >
-            {t('header.deleteChat')}
+            {t('header.optionsTrigger')}
           </ButtonMenu>
-        )}
-      </div>
+
+          {menuOpen && (
+            <div
+              className="absolute right-0 z-10 mt-2 w-56 rounded-md border py-1 px-1 shadow-lg"
+              style={{
+                backgroundColor: 'var(--bg)',
+                borderColor: 'var(--border)',
+              }}
+            >
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
+                onClick={handleCloseClick}
+              >
+                {t('header.close')}
+              </ButtonMenu>
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
+                onClick={handleDeleteClick}
+              >
+                {t('header.delete')}
+              </ButtonMenu>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
