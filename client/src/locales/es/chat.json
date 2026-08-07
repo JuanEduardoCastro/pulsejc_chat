@@ -31,8 +31,11 @@
   "requests": {
     "empty": "No hay solicitudes pendientes",
     "accept": "Aceptar",
-    "reject": "Rechazar"
+    "reject": "Rechazar",
+    "rejectConfirmTitle": "¿Rechazar esta solicitud?",
+    "rejectConfirmMessage": "Esta solicitud de contacto será rechazada permanentemente. No se le notificará a menos que envíe una nueva solicitud."
   },
+
   "ai": {
     "name": "Pulse AI",
     "status": "Siempre disponible",

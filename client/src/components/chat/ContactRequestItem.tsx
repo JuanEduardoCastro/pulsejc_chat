@@ -5,6 +5,7 @@ import {
   useAcceptContactMutation,
   useRejectContactMutation,
 } from '@/queries/useContactMutations';
+import { useUiStore } from '@/stores/uiStore';
 import ButtonFull from '../common/ButtonFull';
 import ButtonBorder from '../common/ButtonBorder';
 
@@ -16,6 +17,7 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
   const { t } = useTranslation('chat');
   const acceptMutation = useAcceptContactMutation();
   const rejectMutation = useRejectContactMutation();
+  const openModal = useUiStore((state) => state.openModal);
   const isPending = acceptMutation.isPending || rejectMutation.isPending;
   const name = getDisplayName(request.user);
 
@@ -61,7 +63,16 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
           <ButtonBorder
             type="button"
             disabled={isPending}
-            onClick={() => rejectMutation.mutate(request.id)}
+            onClick={() =>
+              openModal({
+                type: 'confirm',
+                data: {
+                  title: t('requests.rejectConfirmTitle'),
+                  message: t('requests.rejectConfirmMessage'),
+                  onConfirm: () => rejectMutation.mutate(request.id),
+                },
+              })
+            }
             buttonStyle={{ borderColor: 'var(--border)' }}
             buttonClassName="border rounded-md px-3 py-1 text-sm disabled:opacity-60"
             text={t('requests.reject')}

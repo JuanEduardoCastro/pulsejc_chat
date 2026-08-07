@@ -31,8 +31,11 @@
   "requests": {
     "empty": "No pending requests",
     "accept": "Accept",
-    "reject": "Reject"
+    "reject": "Reject",
+    "rejectConfirmTitle": "Reject this request?",
+    "rejectConfirmMessage": "This contact request will be permanently rejected. They won't be notified unless they send a new request."
   },
+
   "ai": {
     "name": "Pulse AI",
     "status": "Always available",
