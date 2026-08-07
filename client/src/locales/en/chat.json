@@ -44,8 +44,10 @@
   "messages": {
     "loadEarlier": "Load earlier messages",
     "inputPlaceholder": "Type a message",
-    "send": "Send"
+    "send": "Send",
+    "emojiPickerTrigger": "Add emoji"
   },
+
   "header": {
     "optionsTrigger": "Chat options",
     "close": "Close chat",
