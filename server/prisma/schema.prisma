@@ -36,6 +36,12 @@ enum AttachmentType {
   FILE
 }
 
+enum NotificationType {
+  CONTACT_REQUEST
+  CONTACT_ACCEPTED
+  CONTACT_REJECTED
+}
+
 model User {
   id             String        @id @default(uuid())
   email          String        @unique
@@ -55,6 +61,8 @@ model User {
   participations    ConversationParticipant[]
   messages          Message[]
   resetTokens       PasswordResetToken[]
+  notifications         Notification[] @relation("UserNotification")
+  notificationsCaused   Notification[] @relation("NotificationActor")
 }
 
 model Contact {
@@ -107,6 +115,19 @@ model Message {
 
   conversation    Conversation    @relation(fields: [conversationId], references: [id])
   sender          User?           @relation(fields: [senderId], references: [id])
+}
+
+model Notification {
+  id              String          @id @default(uuid())
+  userId          String
+  type            NotificationType
+  actorId         String?
+  contactId       String?         
+  readAt          DateTime?
+  createdAt       DateTime        @default(now())
+
+  user            User            @relation("UserNotification", fields: [userId], references: [id])
+  actor          User?           @relation("NotificationActor", fields: [actorId], references: [id])
 }
 
 model PasswordResetToken {

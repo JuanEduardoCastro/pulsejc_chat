@@ -10,6 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
 import { ConversationsService } from '../chat/conversations.service';
 import { ChatGateway } from '../chat/chat.gateway';
+import { NotificationsService } from '../notifications/notifications.service';
 import type { User } from '../../generated/prisma/client';
 
 describe('ContactsService', () => {
@@ -26,6 +27,7 @@ describe('ContactsService', () => {
   };
   let usersService: jest.Mocked<UsersService>;
   let conversationsService: jest.Mocked<ConversationsService>;
+  let notificationsService: jest.Mocked<NotificationsService>;
   let emit: jest.Mock;
 
   const currentUser = {
@@ -63,12 +65,17 @@ describe('ContactsService', () => {
           provide: ChatGateway,
           useValue: { server: { to: jest.fn().mockReturnValue({ emit }) } },
         },
+        {
+          provide: NotificationsService,
+          useValue: { notifyUser: jest.fn() },
+        },
       ],
     }).compile();
 
     contactsService = module.get(ContactsService);
     usersService = module.get(UsersService);
     conversationsService = module.get(ConversationsService);
+    notificationsService = module.get(NotificationsService);
   });
 
   describe('createContact', () => {

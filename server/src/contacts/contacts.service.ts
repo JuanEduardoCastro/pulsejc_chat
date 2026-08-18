@@ -11,6 +11,7 @@ import { sanitizeUser } from '@/users/users.util';
 import { ConversationsService } from '@/chat/conversations.service';
 import { ChatGateway } from '@/chat/chat.gateway';
 import type { User } from '../../generated/prisma/client';
+import { NotificationsService } from '@/notifications/notifications.service';
 
 @Injectable()
 export class ContactsService {
@@ -19,6 +20,7 @@ export class ContactsService {
     private readonly usersService: UsersService,
     private readonly conversationsService: ConversationsService,
     private readonly chatGateway: ChatGateway,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async createContact(currentUser: User, contactEmail: string) {
@@ -59,6 +61,13 @@ export class ContactsService {
         requestedAt: contact.createdAt,
         user: sanitizeUser(currentUser),
       });
+
+    await this.notificationsService.notifyUser(
+      targetUser.id,
+      'CONTACT_REQUEST',
+      currentUser.id,
+      contact.id,
+    );
 
     return contact;
   }
@@ -162,6 +171,13 @@ export class ContactsService {
         user: sanitizeUser(currentUser),
       });
 
+    await this.notificationsService.notifyUser(
+      contact.userId,
+      'CONTACT_ACCEPTED',
+      currentUser.id,
+      contact.id,
+    );
+
     return update;
   }
 
@@ -194,6 +210,13 @@ export class ContactsService {
           status: 'rejected',
           user: sanitizeUser(currentUser),
         });
+
+      await this.notificationsService.notifyUser(
+        otherUserId,
+        'CONTACT_REJECTED',
+        currentUser.id,
+        null,
+      );
     }
   }
 }

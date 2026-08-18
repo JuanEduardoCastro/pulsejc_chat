@@ -11,6 +11,7 @@ import { ContactsModule } from './contacts/contacts.module';
 import { ChatModule } from './chat/chat.module';
 import { join } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import { NotificationsModule } from './notifications/notifications.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +31,7 @@ import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
     AuthModule,
     ContactsModule,
     ChatModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
