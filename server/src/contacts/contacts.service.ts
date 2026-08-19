@@ -197,12 +197,19 @@ export class ContactsService {
       throw new ForbiddenException();
     }
 
+    const otherUserId =
+      contact.userId === currentUser.id ? contact.contactId : contact.userId;
+
+    if (contact.status === 'ACCEPTED') {
+      await this.conversationsService.deleteDirectConversation(
+        currentUser.id,
+        otherUserId,
+      );
+    }
+
     await this.prisma.contact.delete({ where: { id: contactId } });
 
     if (contact.status === 'PENDING') {
-      const otherUserId =
-        contact.userId === currentUser.id ? contact.contactId : contact.userId;
-
       this.chatGateway.server
         .to(`user:${otherUserId}`)
         .emit('contact-request-response', {
@@ -217,6 +224,10 @@ export class ContactsService {
         currentUser.id,
         null,
       );
+    } else {
+      this.chatGateway.server
+        .to(`user:${otherUserId}`)
+        .emit('contact-removed', { contactId: contact.id });
     }
   }
 }

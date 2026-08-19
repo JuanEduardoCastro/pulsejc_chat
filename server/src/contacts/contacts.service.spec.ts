@@ -59,7 +59,10 @@ describe('ContactsService', () => {
         { provide: UsersService, useValue: { findByEmail: jest.fn() } },
         {
           provide: ConversationsService,
-          useValue: { findOrCreateDirect: jest.fn() },
+          useValue: {
+            findOrCreateDirect: jest.fn(),
+            deleteDirectConversation: jest.fn(),
+          },
         },
         {
           provide: ChatGateway,
@@ -299,7 +302,7 @@ describe('ContactsService', () => {
       );
     });
 
-    it('does not emit anything when removing an already-accepted contact', async () => {
+    it('deletes the conversation and notifies the other user when removing an accepted contact', async () => {
       prisma.contact.findUnique.mockResolvedValue({
         id: 'c1',
         userId: currentUser.id,
@@ -309,7 +312,13 @@ describe('ContactsService', () => {
 
       await contactsService.removeContact(currentUser, 'c1');
 
-      expect(emit).not.toHaveBeenCalled();
+      expect(
+        conversationsService.deleteDirectConversation,
+      ).toHaveBeenCalledWith(currentUser.id, targetUser.id);
+      expect(prisma.contact.delete).toHaveBeenCalledWith({
+        where: { id: 'c1' },
+      });
+      expect(emit).toHaveBeenCalledWith('contact-removed', { contactId: 'c1' });
     });
   });
 });

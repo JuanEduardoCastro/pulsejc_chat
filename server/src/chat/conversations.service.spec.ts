@@ -6,29 +6,43 @@ import { PrismaService } from '../prisma/prisma.service';
 describe('ConversationsService', () => {
   let conversationsService: ConversationsService;
   let prisma: {
+    $transaction: jest.Mock;
+    contact: { findMany: jest.Mock };
     conversation: {
       findFirst: jest.Mock;
       create: jest.Mock;
       findUniqueOrThrow: jest.Mock;
+      delete: jest.Mock;
     };
     conversationParticipant: {
       findMany: jest.Mock;
       findUnique: jest.Mock;
       update: jest.Mock;
+      deleteMany: jest.Mock;
+    };
+    message: {
+      deleteMany: jest.Mock;
     };
   };
 
   beforeEach(async () => {
     prisma = {
+      $transaction: jest.fn(),
+      contact: { findMany: jest.fn() },
       conversation: {
         findFirst: jest.fn(),
         create: jest.fn(),
         findUniqueOrThrow: jest.fn(),
+        delete: jest.fn(),
       },
       conversationParticipant: {
         findMany: jest.fn(),
         findUnique: jest.fn(),
         update: jest.fn(),
+        deleteMany: jest.fn(),
+      },
+      message: {
+        deleteMany: jest.fn(),
       },
     };
 
@@ -132,6 +146,34 @@ describe('ConversationsService', () => {
           lastMessage,
         },
       ]);
+    });
+  });
+  describe('deleteDirectConversation', () => {
+    it('deletes messages, participants and the conversation when one exists', async () => {
+      prisma.conversation.findFirst.mockResolvedValue({ id: 'conv-1' });
+      prisma.$transaction.mockImplementation((ops: unknown[]) =>
+        Promise.all(ops),
+      );
+
+      await conversationsService.deleteDirectConversation('user-1', 'user-2');
+
+      expect(prisma.message.deleteMany).toHaveBeenCalledWith({
+        where: { conversationId: 'conv-1' },
+      });
+      expect(prisma.conversationParticipant.deleteMany).toHaveBeenCalledWith({
+        where: { conversationId: 'conv-1' },
+      });
+      expect(prisma.conversation.delete).toHaveBeenCalledWith({
+        where: { id: 'conv-1' },
+      });
+    });
+
+    it('does nothing when no DIRECT conversation exists between the two users', async () => {
+      prisma.conversation.findFirst.mockResolvedValue(null);
+
+      await conversationsService.deleteDirectConversation('user-1', 'user-2');
+
+      expect(prisma.$transaction).not.toHaveBeenCalled();
     });
   });
 });

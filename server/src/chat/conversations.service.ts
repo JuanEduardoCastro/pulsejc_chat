@@ -147,6 +147,32 @@ export class ConversationsService {
     });
   }
 
+  async deleteDirectConversation(userIdA: string, userIdB: string) {
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        type: 'DIRECT',
+        AND: [
+          { participants: { some: { userId: userIdA } } },
+          { participants: { some: { userId: userIdB } } },
+        ],
+      },
+    });
+
+    if (!conversation) return;
+
+    await this.prisma.$transaction([
+      this.prisma.message.deleteMany({
+        where: { conversationId: conversation.id },
+      }),
+      this.prisma.conversationParticipant.deleteMany({
+        where: { conversationId: conversation.id },
+      }),
+      this.prisma.conversation.delete({
+        where: { id: conversation.id },
+      }),
+    ]);
+  }
+
   async hideForUser(conversationId: string, userId: string) {
     const participant = await this.prisma.conversationParticipant.findUnique({
       where: { conversationId_userId: { conversationId, userId } },
