@@ -7,6 +7,7 @@ import { useUiStore } from '@/stores/uiStore';
 import ButtonMenu from '../common/ButtonMenu';
 import AvatarSmall from '../common/AvatarSmall';
 import NotificationBell from './NotificationBell';
+import PulseIcon from '@/assets/icons/pulse.svg?react';
 
 function SidebarHeader() {
   const { t, i18n } = useTranslation(['chat', 'common']);
@@ -64,9 +65,15 @@ function SidebarHeader() {
       className="flex items-center justify-between border-b px-4 py-3"
       style={{ borderColor: 'var(--border)' }}
     >
-      <span className="font-semibold" style={{ color: 'var(--text-h)' }}>
-        {t('common:appName')}
-      </span>
+      <div
+        className="font-semibold flex flex-row gap-2"
+        style={{ color: 'var(--text-h)' }}
+      >
+        <PulseIcon className="h-5 w-5" style={{ color: 'var(--accent)' }} />
+        <span className="font-semibold" style={{ color: 'var(--text-h)' }}>
+          {t('common:appName')}
+        </span>
+      </div>
 
       <div className="flex items-center gap-1">
         <NotificationBell />

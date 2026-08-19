@@ -41,7 +41,7 @@ function ContactRequestItem({ request }: ContactRequestItemProps) {
         )}
       </div>
 
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex min-w-0 flex-col w-full gap-2">
         <span
           className="min-w-0 flex-1 truncate font-medium"
           style={{ color: 'var(--text-h)' }}

@@ -15,7 +15,7 @@
     "subtitle": "Elige un chat de la lista para empezar a escribir"
   },
   "tabs": {
-    "chats": "Chats",
+    "chats": "Contactos",
     "requests": "Solicitudes"
   },
   "search": {
@@ -26,7 +26,7 @@
   },
   "conversationList": {
     "empty": "Todavía no tienes conversaciones",
-    "noMessages": "Sin mensajes todavía"
+    "noMessages": "Toca para iniciar un chat"
   },
   "requests": {
     "empty": "No hay solicitudes pendientes",
@@ -64,13 +64,7 @@
   },
 
   "header": {
-    "optionsTrigger": "Opciones del chat",
-    "close": "Cerrar chat",
-    "closeConfirmTitle": "¿Cerrar este chat?",
-    "closeConfirmMessage": "Se quitará de tu lista de chats. Puedes volver a encontrar a este contacto cuando quieras a través del buscador.",
-    "delete": "Eliminar para ambos",
-    "deleteConfirmTitle": "¿Eliminar esta conversación para ambos?",
-    "deleteConfirmMessage": "Se quitará de la lista de chats de los dos. Cualquiera de los dos puede volver a encontrarse a través del buscador para retomarla."
+    "closeTrigger": "Cerrar chat"
   },
   "presence": {
     "online": "En línea",
@@ -84,7 +78,13 @@
     "title": "Información de contacto",
     "email": "Correo electrónico",
     "memberSince": "Miembro desde",
-    "contactSince": "Contacto desde"
+    "contactSince": "Contacto desde",
+    "deleteConversation": "Eliminar conversación para ambos",
+    "deleteConfirmTitle": "¿Eliminar esta conversación para ambos?",
+    "deleteConfirmMessage": "Se reinicia como un chat nuevo para los dos. No se pierde nada en realidad — el historial vuelve en cuanto cualquiera de los dos la reabra.",
+    "removeContact": "Eliminar contacto",
+    "removeConfirmTitle": "¿Eliminar este contacto?",
+    "removeConfirmMessage": "Esto elimina permanentemente el historial de conversación con esta persona y la quita de tus contactos. No se puede deshacer."
   },
   "addContact": {
     "trigger": "Agregar contacto",

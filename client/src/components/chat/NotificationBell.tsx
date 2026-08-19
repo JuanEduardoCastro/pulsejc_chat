@@ -20,11 +20,11 @@ function notificationText(
   const name = notification.actor ? getDisplayName(notification.actor) : '';
   switch (notification.type) {
     case 'CONTACT_REQUEST':
-      return t('notification.contactRequest', { name });
+      return t('notifications.item.contactRequest', { name });
     case 'CONTACT_ACCEPTED':
-      return t('notification.contactAccepted', { name });
+      return t('notifications.item.contactAccepted', { name });
     case 'CONTACT_REJECTED':
-      return t('notification.contactRejected', { name });
+      return t('notifications.item.contactRejected', { name });
     default:
       return '';
   }
@@ -97,7 +97,7 @@ function NotificationBell() {
                 style={{ color: 'var(--accent)' }}
                 onClick={() => markAllAsRead.mutate()}
               >
-                {t('notifications.markAllAsRead')}
+                {t('notifications.markAllRead')}
               </button>
             )}
           </div>

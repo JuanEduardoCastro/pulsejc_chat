@@ -1,11 +1,17 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { es, enUS } from 'date-fns/locale';
 import type { ChatUser } from '@/types/chat';
 import { getDisplayName } from '@/lib/displayName';
 import { useAcceptedContactsQuery } from '@/queries/useAcceptedContactsQuery';
+import { useConversationsQuery } from '@/queries/useConversationsQuery';
+import { api } from '@/lib/axios';
+import { useUiStore } from '@/stores/uiStore';
 import Modal from './Modal';
 import AvatarBig from '@/components/common/AvatarBig';
+import ButtonBorder from '@/components/common/ButtonBorder';
 
 type ContactInfoModalProps = {
   user: ChatUser;
@@ -13,9 +19,67 @@ type ContactInfoModalProps = {
 
 function ContactInfoModal({ user }: ContactInfoModalProps) {
   const { t, i18n } = useTranslation('chat');
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const openModal = useUiStore((state) => state.openModal);
+  const { conversationId: routeConversationId } = useParams<{
+    conversationId: string;
+  }>();
   const { data: contacts } = useAcceptedContactsQuery();
+  const { data: conversations } = useConversationsQuery();
   const contact = contacts?.find((c) => c.user.id === user.id);
+  const conversation = conversations?.find((c) => c.otherUser?.id === user.id);
   const locale = i18n.language === 'es' ? es : enUS;
+
+  function handleDeleteConversation() {
+    if (!conversation) return;
+    const conversationId = conversation.id;
+
+    openModal({
+      type: 'confirm',
+      data: {
+        title: t('contactInfo.deleteConfirmTitle'),
+        message: t('contactInfo.deleteConfirmMessage'),
+        onConfirm: () => {
+          api.delete(`/chat/conversations/${conversationId}`).then(() => {
+            queryClient.invalidateQueries({ queryKey: ['conversations'] });
+            if (conversationId === routeConversationId) {
+              navigate('/chat');
+            }
+          });
+        },
+      },
+    });
+  }
+
+  function handleRemoveContact() {
+    if (!contact) return;
+    const contactId = contact.id;
+    const conversationIdToLeave = conversation?.id;
+
+    openModal({
+      type: 'confirm',
+      data: {
+        title: t('contactInfo.removeConfirmTitle'),
+        message: t('contactInfo.removeConfirmMessage'),
+        onConfirm: () => {
+          api.delete(`/contacts/${contactId}`).then(() => {
+            queryClient.invalidateQueries({ queryKey: ['conversations'] });
+            queryClient.invalidateQueries({
+              queryKey: ['contacts', 'accepted'],
+            });
+
+            if (
+              conversationIdToLeave &&
+              conversationIdToLeave === routeConversationId
+            ) {
+              navigate('/chat');
+            }
+          });
+        },
+      },
+    });
+  }
 
   return (
     <Modal title={t('contactInfo.title')}>
@@ -24,23 +88,7 @@ function ContactInfoModal({ user }: ContactInfoModalProps) {
           username={getDisplayName(user)}
           avatarURL={user.avatarURL}
           editable={false}
-          // avatarClassName="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full text-xl font-medium text-white uppercase"
         />
-        {/* <div
-          className="flex h-16 w-16 items-center justify-center overflow-hidden
-  rounded-full text-xl font-medium text-white uppercase"
-          style={{ backgroundColor: '#9ca3af' }}
-        >
-          {user.avatarURL ? (
-            <img
-              src={user.avatarURL}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            getDisplayName(user)[0]
-          )}
-        </div> */}
         <p className="text-lg font-medium" style={{ color: 'var(--text-h)' }}>
           {getDisplayName(user)}
         </p>
@@ -73,6 +121,23 @@ function ContactInfoModal({ user }: ContactInfoModalProps) {
           </div>
         )}
       </dl>
+      <div className="mt-6 flex flex-col gap-2">
+        <ButtonBorder
+          type="button"
+          text={t('contactInfo.deleteConversation')}
+          onClick={handleDeleteConversation}
+          disabled={!conversation}
+          buttonStyle={{ borderColor: 'var(--border)' }}
+        />
+        <ButtonBorder
+          type="button"
+          text={t('contactInfo.removeContact')}
+          onClick={handleRemoveContact}
+          disabled={!contact}
+          buttonStyle={{ borderColor: 'var(--danger)' }}
+          textStyle={{ color: 'var(--danger)' }}
+        />
+      </div>
     </Modal>
   );
 }

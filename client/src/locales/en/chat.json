@@ -15,7 +15,7 @@
     "subtitle": "Choose a chat from the list to start messaging"
   },
   "tabs": {
-    "chats": "Chats",
+    "chats": "Contacts",
     "requests": "Requests"
   },
   "search": {
@@ -26,7 +26,7 @@
   },
   "conversationList": {
     "empty": "No conversations yet",
-    "noMessages": "No messages yet"
+    "noMessages": "Click to start a chat"
   },
   "requests": {
     "empty": "No pending requests",
@@ -64,13 +64,7 @@
   },
 
   "header": {
-    "optionsTrigger": "Chat options",
-    "close": "Close chat",
-    "closeConfirmTitle": "Close this chat?",
-    "closeConfirmMessage": "It will be removed from your chat list. You can find this contact again anytime through search.",
-    "delete": "Delete for both",
-    "deleteConfirmTitle": "Delete this conversation for both of you?",
-    "deleteConfirmMessage": "It will be removed from both chat lists. Either of you can find each other again through search to resume it."
+    "closeTrigger": "Close chat"
   },
   "presence": {
     "online": "Online",
@@ -84,7 +78,13 @@
     "title": "Contact info",
     "email": "Email",
     "memberSince": "Member since",
-    "contactSince": "Contact since"
+    "contactSince": "Contact since",
+    "deleteConversation": "Delete conversation for both",
+    "deleteConfirmTitle": "Delete this conversation for both of you?",
+    "deleteConfirmMessage": "It resets to a fresh chat for both of you. Nothing is actually lost — the history comes right back as soon as either of you reopens it.",
+    "removeContact": "Remove contact",
+    "removeConfirmTitle": "Remove this contact?",
+    "removeConfirmMessage": "This permanently deletes your conversation history with them and removes them from your contacts. This can't be undone."
   },
   "addContact": {
     "trigger": "Add contact",

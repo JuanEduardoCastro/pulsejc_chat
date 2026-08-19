@@ -117,34 +117,79 @@ export class ConversationsService {
   }
 
   async listForUser(userId: string) {
-    await this.findOrCreateAI(userId);
+    const iaConversation = await this.findOrCreateAI(userId);
 
-    const participations = await this.prisma.conversationParticipant.findMany({
-      where: { userId, hiddenAt: null },
-      include: {
-        conversation: {
-          include: {
-            participants: { include: { user: true } },
-            messages: { orderBy: { createdAt: 'desc' }, take: 1 },
+    const [acceptedContacts, participations] = await Promise.all([
+      this.prisma.contact.findMany({
+        where: { status: 'ACCEPTED', OR: [{ userId }, { contactId: userId }] },
+        include: { user: true, contact: true },
+      }),
+      this.prisma.conversationParticipant.findMany({
+        where: { userId },
+        include: {
+          conversation: {
+            include: {
+              participants: true,
+              messages: { orderBy: { createdAt: 'desc' }, take: 1 },
+            },
           },
         },
-      },
-    });
-    return participations.map(({ conversation }) => {
-      const otherParticipant = conversation.participants.find(
+      }),
+    ]);
+
+    const participationByOtherUserId = new Map<
+      string,
+      (typeof participations)[number]
+    >();
+    for (const participation of participations) {
+      if (participation.conversation.type !== 'DIRECT') continue;
+      const otherParticipant = participation.conversation.participants.find(
         (p) => p.userId !== userId,
       );
-      const lastMessage = conversation.messages[0];
+      if (otherParticipant) {
+        participationByOtherUserId.set(otherParticipant.userId, participation);
+      }
+    }
 
-      return {
-        id: conversation.id,
-        type: conversation.type,
-        otherUser: otherParticipant
-          ? sanitizeUser(otherParticipant.user)
-          : null,
-        lastMessage: lastMessage,
-      };
-    });
+    const contactItems = acceptedContacts
+      .map((contact) => {
+        const otherUser =
+          contact.userId === userId ? contact.contact : contact.user;
+
+        const participation = participationByOtherUserId.get(otherUser.id);
+        if (!participation) return null;
+
+        const lastMessage = participation.hiddenAt
+          ? null
+          : (participation.conversation.messages[0] ?? null);
+
+        return {
+          activityAt: lastMessage?.createdAt ?? contact.updatedAt,
+          item: {
+            id: participation.conversation.id,
+            type: 'DIRECT' as const,
+            otherUser: sanitizeUser(otherUser),
+            lastMessage,
+          },
+        };
+      })
+      .filter((entry) => entry !== null)
+      .sort((a, b) => b.activityAt.getTime() - a.activityAt.getTime())
+      .map((entry) => entry.item);
+
+    const aiParticipation = participations.find(
+      (p) => p.conversationId === iaConversation.id,
+    );
+
+    return [
+      {
+        id: iaConversation.id,
+        type: 'AI' as const,
+        otherUser: null,
+        lastMessage: aiParticipation?.conversation.messages[0] ?? null,
+      },
+      ...contactItems,
+    ];
   }
 
   async deleteDirectConversation(userIdA: string, userIdB: string) {
@@ -171,21 +216,6 @@ export class ConversationsService {
         where: { id: conversation.id },
       }),
     ]);
-  }
-
-  async hideForUser(conversationId: string, userId: string) {
-    const participant = await this.prisma.conversationParticipant.findUnique({
-      where: { conversationId_userId: { conversationId, userId } },
-    });
-
-    if (!participant) {
-      throw new NotFoundException('Conversation not found');
-    }
-
-    await this.prisma.conversationParticipant.update({
-      where: { id: participant.id },
-      data: { hiddenAt: new Date() },
-    });
   }
 
   async hideForBothParticipants(conversationId: string, userId: string) {

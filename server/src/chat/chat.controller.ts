@@ -58,17 +58,13 @@ export class ChatController {
   }
 
   @Delete('conversations/:id')
-  hideConversation(
+  deleteConversation(
     @CurrentUser() user: User,
     @Param('id') conversationId: string,
-    @Query('scope') scope?: string,
   ) {
-    if (scope === 'both') {
-      return this.conversationsService.hideForBothParticipants(
-        conversationId,
-        user.id,
-      );
-    }
-    return this.conversationsService.hideForUser(conversationId, user.id);
+    return this.conversationsService.hideForBothParticipants(
+      conversationId,
+      user.id,
+    );
   }
 }

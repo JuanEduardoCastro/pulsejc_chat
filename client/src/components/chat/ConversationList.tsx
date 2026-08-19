@@ -19,13 +19,12 @@ function ConversationList() {
     );
   }
 
-  const isVisible = (conversations ?? []).filter(
-    (conversation) => conversation.type === 'AI' || conversation.otherUser,
-  );
-
-  if (isVisible.length === 0) {
+  if (!conversations || conversations.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center px-4 text-center text-sm">
+      <div
+        className="flex flex-1 items-center justify-center px-4 text-center
+  text-sm"
+      >
         {t('conversationList.empty')}
       </div>
     );
@@ -33,7 +32,7 @@ function ConversationList() {
 
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
-      {isVisible.map((conversation) => (
+      {conversations.map((conversation) => (
         <ConversationListItem
           key={conversation.id}
           conversation={conversation}

@@ -1,8 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/axios';
 import { useUiStore } from '@/stores/uiStore';
 import { usePresenceStore } from '@/stores/presenceStore';
 import { getDisplayName } from '@/lib/displayName';
@@ -18,7 +15,6 @@ type ChatHeaderProps = {
 function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
   const { t } = useTranslation('chat');
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const openModal = useUiStore((state) => state.openModal);
   const isOnline = usePresenceStore((state) =>
     conversation.otherUser
@@ -28,19 +24,6 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
   const isTyping = usePresenceStore(
     (state) => state.typingByConversation[conversation.id] ?? false,
   );
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   const isAi = conversation.type === 'AI';
   const name =
@@ -56,51 +39,6 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
       : isOnline
         ? t('presence.online')
         : t('presence.offline');
-
-  function removeFromCacheAndNavigateAway() {
-    queryClient.setQueryData<ConversationSummary[]>(['conversations'], (prev) =>
-      prev?.filter((c) => c.id !== conversation.id),
-    );
-    navigate('/chat');
-  }
-
-  function closeConversation() {
-    api.delete(`/chat/conversations/${conversation.id}`).then(() => {
-      removeFromCacheAndNavigateAway();
-    });
-  }
-
-  function deleteConversationForBoth() {
-    api
-      .delete(`/chat/conversations/${conversation.id}`, {
-        params: { scope: 'both' },
-      })
-      .then(removeFromCacheAndNavigateAway);
-  }
-
-  function handleCloseClick() {
-    setMenuOpen(false);
-    openModal({
-      type: 'confirm',
-      data: {
-        title: t('header.closeConfirmTitle'),
-        message: t('header.closeConfirmMessage'),
-        onConfirm: closeConversation,
-      },
-    });
-  }
-
-  function handleDeleteClick() {
-    setMenuOpen(false);
-    openModal({
-      type: 'confirm',
-      data: {
-        title: t('header.deleteConfirmTitle'),
-        message: t('header.deleteConfirmMessage'),
-        onConfirm: deleteConversationForBoth,
-      },
-    });
-  }
 
   return (
     <div
@@ -136,44 +74,15 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
         </div>
       </ButtonMenu>
 
-      {!isAi && (
-        <div className="w-40 ">
-          <ButtonMenu
-            type="button"
-            onClick={() => setMenuOpen((prev) => !prev)}
-            buttonStyle={{
-              color: 'var(--text)',
-            }}
-          >
-            {t('header.optionsTrigger')}
-          </ButtonMenu>
-
-          {menuOpen && (
-            <div
-              className="absolute right-0 z-10 mt-2 w-56 rounded-md border py-1 px-1 shadow-lg"
-              style={{
-                backgroundColor: 'var(--bg)',
-                borderColor: 'var(--border)',
-              }}
-            >
-              <ButtonMenu
-                type="button"
-                buttonClassName="text-left"
-                onClick={handleCloseClick}
-              >
-                {t('header.close')}
-              </ButtonMenu>
-              <ButtonMenu
-                type="button"
-                buttonClassName="text-left"
-                onClick={handleDeleteClick}
-              >
-                {t('header.delete')}
-              </ButtonMenu>
-            </div>
-          )}
-        </div>
-      )}
+      <button
+        type="button"
+        onClick={() => navigate('/chat')}
+        className="px-1 text-2xl leading-none"
+        style={{ color: 'var(--text)' }}
+        aria-label={t('header.closeTrigger')}
+      >
+        x
+      </button>
     </div>
   );
 }

@@ -71,7 +71,7 @@ function MessageList({ conversationId, conversationType }: MessageListProps) {
   return (
     <div
       ref={containerRef}
-      className="flex flex-1 flex-col overflow-y-auto py-2"
+      className="flex flex-1 flex-col justify-end overflow-y-auto py-2"
     >
       {hasNextPage && (
         <div className="flex justify-center py-2">

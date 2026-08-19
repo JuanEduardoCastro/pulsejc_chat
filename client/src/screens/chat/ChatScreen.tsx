@@ -10,6 +10,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import { SocketProvider, useSocket } from '@/hooks/useSocket';
 import SidebarHeader from '@/components/chat/SidebarHeader';
+import { useTabBadge } from '@/hooks/useTabBadge';
 
 function ChatLayout() {
   const { t } = useTranslation('chat');
@@ -18,6 +19,7 @@ function ChatLayout() {
   const user = useAuthStore((state) => state.user);
   const openModal = useUiStore((state) => state.openModal);
   const hasCheckedProfileReminderRef = useRef(false);
+  useTabBadge();
 
   useEffect(() => {
     if (hasCheckedProfileReminderRef.current) return;

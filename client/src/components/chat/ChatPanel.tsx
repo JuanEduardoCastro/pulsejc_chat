@@ -56,6 +56,7 @@ function ChatPanel({ conversationId }: ChatPanelProps) {
     <div className="flex h-full flex-col">
       <ChatHeader conversation={conversation} isAiResponding={isAiResponding} />
       <MessageList
+        key={conversation.id}
         conversationId={conversation.id}
         conversationType={conversation.type}
       />

@@ -189,6 +189,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
     });
 
+    socket.on('contact-removed', () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['contacts', 'accepted'] });
+    });
+
     socket.on('notification', (notification: AppNotification) => {
       queryClient.setQueryData<AppNotification[]>(['notifications'], (prev) =>
         prev ? [notification, ...prev] : [notification],
@@ -197,10 +202,10 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       const name = notification.actor ? getDisplayName(notification.actor) : '';
       const key =
         notification.type === 'CONTACT_REQUEST'
-          ? 'notification.toast.contactRequest'
+          ? 'notifications.toast.contactRequest'
           : notification.type === 'CONTACT_ACCEPTED'
-            ? 'notification.toast.contactAccepted'
-            : 'notification.toast.contactRejected';
+            ? 'notifications.toast.contactAccepted'
+            : 'notifications.toast.contactRejected';
 
       toast(tRef.current(key, { name }));
     });
