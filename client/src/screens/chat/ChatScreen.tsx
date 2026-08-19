@@ -9,6 +9,7 @@ import { useConversationsQuery } from '@/queries/useConversationsQuery';
 import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import { SocketProvider, useSocket } from '@/hooks/useSocket';
+import SidebarHeader from '@/components/chat/SidebarHeader';
 
 function ChatLayout() {
   const { t } = useTranslation('chat');
@@ -52,6 +53,9 @@ function ChatLayout() {
         <div
           className={`flex-1 flex-col ${conversationId ? 'flex' : 'hidden md:flex'}`}
         >
+          <div className="md:hidden">
+            <SidebarHeader />
+          </div>
           <ChatPanel conversationId={conversationId ?? null} />
         </div>
       </div>

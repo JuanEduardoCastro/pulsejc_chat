@@ -35,6 +35,21 @@
     "rejectConfirmTitle": "Reject this request?",
     "rejectConfirmMessage": "This contact request will be permanently rejected. They won't be notified unless they send a new request."
   },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications yet",
+    "markAllRead": "Mark all as read",
+    "item": {
+      "contactRequest": "{{name}} sent you a contact request",
+      "contactAccepted": "{{name}} accepted your contact request",
+      "contactRejected": "{{name}} declined your contact request"
+    },
+    "toast": {
+      "contactRequest": "{{name}} sent you a contact request",
+      "contactAccepted": "{{name}} accepted your contact request",
+      "contactRejected": "{{name}} declined your contact request"
+    }
+  },
 
   "ai": {
     "name": "Pulse AI",

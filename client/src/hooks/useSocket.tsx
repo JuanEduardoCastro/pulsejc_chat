@@ -13,8 +13,14 @@ import { useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/authStore';
 import { usePresenceStore } from '@/stores/presenceStore';
-import type { ConversationSummary, Message } from '@/types/chat';
+import type {
+  ConversationSummary,
+  Message,
+  AppNotification,
+} from '@/types/chat';
 import type { MessagesPage } from '@/queries/useMessagesQuery';
+import { useTranslation } from 'react-i18next';
+import { getDisplayName } from '@/lib/displayName';
 
 type SocketContextValue = {
   isConnected: boolean;
@@ -29,6 +35,8 @@ const SocketContext = createContext<SocketContextValue | null>(null);
 const TYPING_SAFETY_TIMEOUT_MS = 5000;
 
 export function SocketProvider({ children }: { children: ReactNode }) {
+  const { t } = useTranslation('chat');
+  const tRef = useRef(t);
   const queryClient = useQueryClient();
   const token = useAuthStore((state) => state.token);
   const currentUserId = useAuthStore((state) => state.user?.id);
@@ -50,6 +58,10 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     Record<string, ReturnType<typeof setTimeout>>
   >({});
   const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
 
   useEffect(() => {
     activeConversationIdRef.current = routeConversationId;
@@ -175,6 +187,22 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.on('contact-request-response', () => {
       queryClient.invalidateQueries({ queryKey: ['contacts', 'pending'] });
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    });
+
+    socket.on('notification', (notification: AppNotification) => {
+      queryClient.setQueryData<AppNotification[]>(['notifications'], (prev) =>
+        prev ? [notification, ...prev] : [notification],
+      );
+
+      const name = notification.actor ? getDisplayName(notification.actor) : '';
+      const key =
+        notification.type === 'CONTACT_REQUEST'
+          ? 'notification.toast.contactRequest'
+          : notification.type === 'CONTACT_ACCEPTED'
+            ? 'notification.toast.contactAccepted'
+            : 'notification.toast.contactRejected';
+
+      toast(tRef.current(key, { name }));
     });
 
     socket.on('ai-error', ({ message }: { message: string }) => {

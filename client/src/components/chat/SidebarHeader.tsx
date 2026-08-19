@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import ButtonMenu from '../common/ButtonMenu';
 import AvatarSmall from '../common/AvatarSmall';
+import NotificationBell from './NotificationBell';
 
 function SidebarHeader() {
   const { t, i18n } = useTranslation(['chat', 'common']);
@@ -67,68 +68,72 @@ function SidebarHeader() {
         {t('common:appName')}
       </span>
 
-      <div className="relative" ref={menuRef}>
-        <ButtonMenu
-          type="button"
-          buttonClassName="flex h-10 w-9 items-center justify-center overflow-hidden rounded-full"
-          onClick={() => setMenuOpen((open) => !open)}
-          // buttonStyle={{ backgroundColor: 'var(--accent)' }}
-        >
-          <AvatarSmall
-            isAi={false}
-            username={user?.nickname ?? user?.firstName ?? user?.email}
-            avatarURL={user?.avatarURL}
-            isOnline={false}
-            style={{ backgroundColor: 'var(--accent)' }}
-          />
-        </ButtonMenu>
+      <div className="flex items-center gap-1">
+        <NotificationBell />
 
-        {menuOpen && (
-          <div
-            className="absolute right-0 z-10 mt-2 w-52 rounded-md border py-1 px-1 shadow-lg"
-            style={{
-              borderColor: 'var(--border)',
-              backgroundColor: 'var(--bg)',
-            }}
+        <div className="relative" ref={menuRef}>
+          <ButtonMenu
+            type="button"
+            buttonClassName="flex h-10 w-9 items-center justify-center overflow-hidden rounded-full"
+            onClick={() => setMenuOpen((open) => !open)}
+            // buttonStyle={{ backgroundColor: 'var(--accent)' }}
           >
-            <ButtonMenu
-              type="button"
-              buttonClassName="text-left"
-              onClick={() => {
-                setMenuOpen(false);
-                openModal({ type: 'profile' });
+            <AvatarSmall
+              isAi={false}
+              username={user?.nickname ?? user?.firstName ?? user?.email}
+              avatarURL={user?.avatarURL}
+              isOnline={false}
+              style={{ backgroundColor: 'var(--accent)' }}
+            />
+          </ButtonMenu>
+
+          {menuOpen && (
+            <div
+              className="absolute right-0 md:left-0 md:right-auto z-10 mt-2 w-52 rounded-md border py-1 px-1 shadow-lg"
+              style={{
+                borderColor: 'var(--border)',
+                backgroundColor: 'var(--bg)',
               }}
             >
-              {t('chat:sidebar.profile')}
-            </ButtonMenu>
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
+                onClick={() => {
+                  setMenuOpen(false);
+                  openModal({ type: 'profile' });
+                }}
+              >
+                {t('chat:sidebar.profile')}
+              </ButtonMenu>
 
-            <ButtonMenu
-              type="button"
-              buttonClassName="text-left"
-              onClick={toggleTheme}
-            >
-              {theme === 'light'
-                ? t('chat:sidebar.theme.dark')
-                : t('chat:sidebar.theme.light')}
-            </ButtonMenu>
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
+                onClick={toggleTheme}
+              >
+                {theme === 'light'
+                  ? t('chat:sidebar.theme.dark')
+                  : t('chat:sidebar.theme.light')}
+              </ButtonMenu>
 
-            <ButtonMenu
-              type="button"
-              buttonClassName="text-left"
-              onClick={toggleLanguage}
-            >
-              {t('chat:sidebar.language')}: {i18n.language.toUpperCase()}
-            </ButtonMenu>
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
+                onClick={toggleLanguage}
+              >
+                {t('chat:sidebar.language')}: {i18n.language.toUpperCase()}
+              </ButtonMenu>
 
-            <ButtonMenu
-              type="button"
-              buttonClassName="text-left"
-              onClick={handleLogout}
-            >
-              {t('chat:sidebar.logout')}
-            </ButtonMenu>
-          </div>
-        )}
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
+                onClick={handleLogout}
+              >
+                {t('chat:sidebar.logout')}
+              </ButtonMenu>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

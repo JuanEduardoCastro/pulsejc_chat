@@ -45,3 +45,15 @@ export type ContactRequest = {
   requestedAt: string;
   user: ChatUser;
 };
+
+export type NotificationType =
+  'CONTACT_REQUEST' | 'CONTACT_ACCEPTED' | 'CONTACT_REJECTED';
+
+export type AppNotification = {
+  id: string;
+  type: NotificationType;
+  actor: ChatUser | null;
+  contactId: string | null;
+  readAt: string | null;
+  createdAt: string;
+};

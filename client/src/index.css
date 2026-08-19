@@ -11,6 +11,7 @@
   --accent-bg: rgba(2, 137, 61, 0.1);
   --accent-border: rgba(2, 137, 61, 0.5);
   --transparent: transparent;
+  --danger: #cc1616;
   /* --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5); */
@@ -27,6 +28,7 @@
   --accent-bg: rgba(52, 180, 99, 0.15);
   --accent-border: rgba(52, 180, 99, 0.5);
   --transparent: transparent;
+  --danger: #cc1616;
   /* --accent: #c084fc;
   --accent-bg: rgba(192, 132, 252, 0.15);
   --accent-border: rgba(192, 132, 252, 0.5); */
@@ -45,6 +47,7 @@
     --accent-bg: rgba(52, 180, 99, 0.15);
     --accent-border: rgba(52, 180, 99, 0.5);
     --transparent: transparent;
+    --danger: #cc1616;
   }
 }
 

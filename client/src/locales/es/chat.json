@@ -35,6 +35,21 @@
     "rejectConfirmTitle": "¿Rechazar esta solicitud?",
     "rejectConfirmMessage": "Esta solicitud de contacto será rechazada permanentemente. No se le notificará a menos que envíe una nueva solicitud."
   },
+  "notifications": {
+    "title": "Notificaciones",
+    "empty": "Todavía no tienes notificaciones",
+    "markAllRead": "Marcar todas como leídas",
+    "item": {
+      "contactRequest": "{{name}} te envió una solicitud de contacto",
+      "contactAccepted": "{{name}} aceptó tu solicitud de contacto",
+      "contactRejected": "{{name}} rechazó tu solicitud de contacto"
+    },
+    "toast": {
+      "contactRequest": "{{name}} te envió una solicitud de contacto",
+      "contactAccepted": "{{name}} aceptó tu solicitud de contacto",
+      "contactRejected": "{{name}} rechazó tu solicitud de contacto"
+    }
+  },
 
   "ai": {
     "name": "Pulse AI",
