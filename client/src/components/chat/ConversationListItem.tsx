@@ -53,29 +53,6 @@ function ConversationListItem({
         avatarURL={conversation.otherUser?.avatarURL}
         isOnline={isOnline}
       />
-      {/* <div className="relative flex-none">
-        <div
-          className="flex h-10 w-10 flex-none items-center justify-center
-  overflow-hidden rounded-full text-sm font-medium text-white uppercase"
-          style={{ backgroundColor: isAi ? 'var(--accent)' : '#9ca3af' }}
-        >
-          {!isAi && conversation.otherUser?.avatarURL ? (
-            <img
-              src={conversation.otherUser.avatarURL}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            name[0]
-          )}
-        </div>
-        {!isAi && isOnline && (
-          <span
-            className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2"
-            style={{ backgroundColor: '#22c55e', borderColor: 'var(--bg)' }}
-          />
-        )}
-      </div> */}
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-2">
@@ -85,10 +62,19 @@ function ConversationListItem({
           >
             {name}
           </span>
-          {time && <span className="flex-none text-xs">{time}</span>}
+          {time && (
+            <span
+              className="flex-none text-xs"
+              style={{ color: 'var(--text-d-h)' }}
+            >
+              {time}
+            </span>
+          )}
         </div>
         <div className="flex items-center justify-between gap-2">
-          <p className="truncate text-sm">{preview}</p>
+          <p className="truncate text-sm" style={{ color: 'var(--text-d-h)' }}>
+            {preview}
+          </p>
           {unreadCount > 0 && (
             <span
               className="flex h-4 min-w-4 flex-none items-center justify-center rounded-full px-1 text-[10px] font-semibold text-white"

@@ -33,14 +33,19 @@ function MessageBubble({
       className={`flex px-4 py-1 ${isOwn ? 'justify-end' : 'justify-start'}`}
     >
       <div className="max-w-[60%] rounded-2xl px-4 py-2" style={bubbleStyle}>
-        <p className="text-sm wrap-break-word whitespace-pre-wrap">
+        <p
+          className="text-sm wrap-break-word whitespace-pre-wrap"
+          style={{ color: 'var(--text-h)' }}
+        >
           {message.content}
           <span className="float-right mt-1 ml-3 flex translate-y-1 items-center gap-1 text-[11px] opacity-70">
             <span className="whitespace-nowrap">{time}</span>
             {showReadReceipt && (
               <span
                 className="tracking-[-6px] font-semibold text-[13px]"
-                style={{ color: message.readAt ? '#38bdf8' : 'inherit' }}
+                style={{
+                  color: message.readAt ? 'var(--check-icon)' : 'inherit',
+                }}
               >
                 ✓✓
               </span>

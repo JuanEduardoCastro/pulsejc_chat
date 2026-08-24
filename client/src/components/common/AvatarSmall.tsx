@@ -31,7 +31,7 @@ function AvatarSmall({
         className="flex h-10 w-10 flex-none items-center justify-center overflow-hidden rounded-full text-sm font-medium text-white uppercase"
         style={{
           backgroundColor: isAi
-            ? 'var(--accent-border)'
+            ? 'var(--avatar-AI)'
             : 'oklch(60.9% 0.126 221.723)',
           ...style,
         }}

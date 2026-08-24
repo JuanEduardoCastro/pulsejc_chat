@@ -2,16 +2,19 @@
 
 :root,
 :root[data-theme='light'] {
-  --text: #6b6375;
-  --text-d: #6b63759a;
+  --text: #222123;
+  --text-d: #6f6d719a;
+  --text-d-h: #3d3d3db9;
   --text-h: #08060d;
   --bg: #fff;
   --border: #e5e4e7;
   --accent: #02893d;
-  --accent-bg: rgba(2, 137, 61, 0.1);
+  --accent-bg: rgba(0, 183, 79, 0.8);
   --accent-border: rgba(2, 137, 61, 0.5);
+  --avatar-AI: #c084fc;
   --transparent: transparent;
   --danger: #cc1616;
+  --check-icon: #3d9ac2;
   /* --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5); */
@@ -21,14 +24,17 @@
   --text: #9ca3af;
   --text-d: #9ca3af9a;
   --text-h: #f3f4f6;
+  --text-d-h: #b1adadb9;
   --bg-card: #16171d;
-  /* --bg: #010f01; */
   --border: #2e303a;
   --accent: #34b463;
-  --accent-bg: rgba(52, 180, 99, 0.15);
+  --accent-bg: rgba(52, 180, 99, 0.8);
   --accent-border: rgba(52, 180, 99, 0.5);
+  --avatar-AI: #c084fc;
   --transparent: transparent;
   --danger: #cc1616;
+  --check-icon: #38bdf8;
+
   /* --accent: #c084fc;
   --accent-bg: rgba(192, 132, 252, 0.15);
   --accent-border: rgba(192, 132, 252, 0.5); */
@@ -39,13 +45,14 @@
     --text: #9ca3af;
     --text-d: #9ca3af9a;
     --text-h: #f3f4f6;
-    /* --bg-card: #011701; */
-    /* --bg: #16171d; */
+    --text-d-h: #cecbcbe3;
+    --bg-card: #16171d;
     --bg: #081408;
     --border: #2e303a;
     --accent: #34b463;
-    --accent-bg: rgba(52, 180, 99, 0.15);
+    --accent-bg: rgba(52, 180, 99, 0.8);
     --accent-border: rgba(52, 180, 99, 0.5);
+    --avatar-AI: #c084fc;
     --transparent: transparent;
     --danger: #cc1616;
   }
