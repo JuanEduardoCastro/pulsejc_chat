@@ -5,6 +5,14 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "allowScripts": {
+    "@prisma/engines@7.8.0": true,
+    "@scarf/scarf@1.4.0": true,
+    "bcrypt@6.0.0": true,
+    "esbuild@0.28.1": true,
+    "prisma@7.8.0": true,
+    "unrs-resolver@1.12.2": true
+  },
   "scripts": {
     "build": "nest build && tsc-alias -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
