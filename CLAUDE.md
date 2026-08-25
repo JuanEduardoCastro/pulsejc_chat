@@ -11,7 +11,8 @@ Docs live in `.claude-context/` (not committed to git — internal working refer
 - General architecture / stack → `.claude-context/ARCHITECTURE_OVERVIEW.md`
 - Data model, business flows, socket events → `.claude-context/BACKEND_SPEC.md`
 - Backend operational details (auth, rate limiting, etc.) → `.claude-context/BACKEND_REFINEMENTS.md`
-- AWS infrastructure → `.claude-context/AWS_INFRASTRUCTURE.md`
+- AWS infrastructure (target architecture/plan) → `.claude-context/AWS_INFRASTRUCTURE.md`
+- Step-by-step AWS deployment runbook (how it was actually provisioned) → `.claude-context/AWS_DEPLOYMENT_GUIDE.md`
 - Frontend routes, screens, components → `.claude-context/FRONTEND_SPEC.md`
 - Frontend UX/behavior details → `.claude-context/FRONTEND_REFINEMENTS.md`
 
@@ -21,7 +22,7 @@ These docs are currently in Spanish — they'll be translated to English in a la
 
 Never use the Edit or Write tools to modify files. This rule has no exceptions, not even for trivial changes (a typo, an import, a config line) — `.claude/settings.json` already blocks this at the permissions level, so don't even attempt it.
 
-The one exception is the session recap written by the `/wrap-up` command to `.claude-context/session-log/`, which is explicitly allowed in `.claude/settings.json`. Everything else — all actual project code — is off-limits to Edit/Write.
+Exceptions: the session recap written by the `/wrap-up` command to `.claude-context/session-log/`, and the reference docs under `.claude-context/` (ARCHITECTURE_OVERVIEW.md, BACKEND_SPEC.md, AWS_INFRASTRUCTURE.md, etc.) — these aren't code, so Claude may Edit/Write them directly when asked to keep them in sync. Everything else — all actual project code (`client/`, `server/`, config files) — is off-limits to Edit/Write.
 
 When asked to review a bug, implement something, or provide a piece of code, always follow this sequence:
 
