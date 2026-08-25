@@ -174,6 +174,9 @@ export class AuthService {
     await this.prisma.passwordResetToken.deleteMany({
       where: { userId: resetToken.userId },
     });
+    await this.prisma.refreshToken.deleteMany({
+      where: { userId: resetToken.userId },
+    });
 
     return { message: 'Password has been reset successfully' };
   }
