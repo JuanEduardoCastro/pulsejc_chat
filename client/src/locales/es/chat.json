@@ -111,6 +111,7 @@
     "avatarInvalidType": "Usa una imagen JPG, PNG o WEBP",
     "save": "Guardar cambios",
     "success": "Perfil actualizado",
+    "deleteAccount": "Eliminar cuenta",
     "genericError": "Algo salió mal",
     "validation": {
       "nicknameRequired": "El apodo es obligatorio"
@@ -123,5 +124,12 @@
     "skip": "Ahora no",
     "submit": "Guardar",
     "genericError": "Algo salió mal"
+  },
+  "deleteAccount": {
+    "title": "Eliminar cuenta",
+    "warning": "Esto elimina permanentemente tu cuenta y todas tus conversaciones. Esto no se puede deshacer.",
+    "confirmLabel": "Escribe {{email}} para confirmar",
+    "confirmButton": "Eliminar mi cuenta permanentemente",
+    "genericError": "Algo salió mal. Por favor, inténtalo de nuevo."
   }
 }

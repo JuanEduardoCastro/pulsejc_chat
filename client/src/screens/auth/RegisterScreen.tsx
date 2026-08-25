@@ -44,7 +44,7 @@ function RegisterScreen() {
   const [step, setStep] = useState<1 | 2>(1);
   const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const emailForm = useForm<EmailFormValues>({
     resolver: zodResolver(emailSchema),
@@ -79,8 +79,8 @@ function RegisterScreen() {
           password: values.password,
         })
         .then((res) => res.data),
-    onSuccess: ({ accessToken, user }) => {
-      setAuth(accessToken, user);
+    onSuccess: ({ user }) => {
+      setUser(user);
       navigate('/chat', { replace: true });
     },
     onError: (error) => {

@@ -111,6 +111,7 @@
     "avatarInvalidType": "Use a JPG, PNG or WEBP image",
     "save": "Save changes",
     "success": "Profile updated",
+    "deleteAccount": "Delete account",
     "genericError": "Something went wrong",
     "validation": {
       "nicknameRequired": "Nickname is required"
@@ -123,5 +124,12 @@
     "skip": "Skip for now",
     "submit": "Save",
     "genericError": "Something went wrong"
+  },
+  "deleteAccount": {
+    "title": "Delete account",
+    "warning": "This permanently deletes your account and all your conversations. This cannot be undone.",
+    "confirmLabel": "Type {{email}} to confirm",
+    "confirmButton": "Delete my account permanently",
+    "genericError": "Something went wrong. Please try again."
   }
 }

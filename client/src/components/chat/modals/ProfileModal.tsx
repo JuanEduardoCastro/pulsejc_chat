@@ -14,6 +14,7 @@ import Modal from './Modal';
 import FormInputField from '@/components/common/FormInputField';
 import ButtonFull from '@/components/common/ButtonFull';
 import AvatarBig from '@/components/common/AvatarBig';
+import { useUiStore } from '@/stores/uiStore';
 
 const ALLOWED_AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
@@ -33,6 +34,7 @@ function ProfileModal() {
   const { t } = useTranslation(['chat', 'common']);
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
+  const openModal = useUiStore((state) => state.openModal);
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
@@ -163,6 +165,19 @@ function ProfileModal() {
           )}
         </ButtonFull>
       </form>
+      <div
+        className="mt-6 border-t pt-4"
+        style={{ borderColor: 'var(--border)' }}
+      >
+        <button
+          type="button"
+          className="text-sm underline"
+          style={{ color: 'var(--danger, #dc2626)' }}
+          onClick={() => openModal({ type: 'deleteAccount' })}
+        >
+          {t('chat:profile.deleteAccount')}
+        </button>
+      </div>
     </Modal>
   );
 }

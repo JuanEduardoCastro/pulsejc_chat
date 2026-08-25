@@ -38,7 +38,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation('chat');
   const tRef = useRef(t);
   const queryClient = useQueryClient();
-  const token = useAuthStore((state) => state.token);
+  const user = useAuthStore((state) => state.user);
   const currentUserId = useAuthStore((state) => state.user?.id);
   const setOnline = usePresenceStore((state) => state.setOnline);
   const setTypingState = usePresenceStore((state) => state.setTyping);
@@ -68,9 +68,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, [routeConversationId]);
 
   useEffect(() => {
-    if (!token) return;
+    if (!user) return;
 
-    const socket = io(import.meta.env.VITE_SOCKET_URL, { auth: { token } });
+    const socket = io(import.meta.env.VITE_SOCKET_URL, {
+      withCredentials: true,
+    });
     socketRef.current = socket;
 
     socket.on('connect', () => setIsConnected(true));
@@ -221,7 +223,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       typingTimeoutsRef.current = {};
     };
   }, [
-    token,
+    user,
     currentUserId,
     queryClient,
     setOnline,

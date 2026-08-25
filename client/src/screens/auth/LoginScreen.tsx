@@ -26,7 +26,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 function LoginScreen() {
   const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const {
     register,
@@ -39,8 +39,8 @@ function LoginScreen() {
   const loginMutation = useMutation({
     mutationFn: (values: LoginFormValues) =>
       api.post<AuthResponse>('/auth/login', values).then((res) => res.data),
-    onSuccess: ({ accessToken, user }) => {
-      setAuth(accessToken, user);
+    onSuccess: ({ user }) => {
+      setUser(user);
       navigate('/chat', { replace: true });
     },
     onError: (error) => {

@@ -4,6 +4,7 @@ import AddContactModal from './AddContactModal';
 import ContactInfoModal from './ContactInfoModal';
 import ConfirmModal from './ConfirmModal';
 import CompleteProfileReminder from './CompleteProfileReminder';
+import DeleteAccountModal from './DeleteAccountModal';
 
 function ModalRoot() {
   const activeModal = useUiStore((state) => state.activeModal);
@@ -21,6 +22,8 @@ function ModalRoot() {
       return <ConfirmModal {...activeModal.data} />;
     case 'completeProfileReminder':
       return <CompleteProfileReminder />;
+    case 'deleteAccount':
+      return <DeleteAccountModal />;
     default:
       return null;
   }

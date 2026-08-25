@@ -11,6 +11,7 @@ export type ActiveModal =
       data: { title: string; message: string; onConfirm: () => void };
     }
   | { type: 'completeProfileReminder' }
+  | { type: 'deleteAccount' }
   | null;
 
 type Theme = 'light' | 'dark';

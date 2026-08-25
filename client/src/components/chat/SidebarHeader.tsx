@@ -55,7 +55,9 @@ function SidebarHeader() {
       data: {
         title: t('chat:sidebar.logoutConfirmTitle'),
         message: t('chat:sidebar.logoutConfirmMessage'),
-        onConfirm: logout,
+        onConfirm: () => {
+          api.post('/auth/logout').finally(() => logout());
+        },
       },
     });
   }
