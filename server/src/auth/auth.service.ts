@@ -22,6 +22,8 @@ import { I18nService } from 'nestjs-i18n';
 
 const SALT_ROUNDS = 10;
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+const MAX_REFRESH_TOKENS_PER_USER = 2;
 const GENERIC_FORGOT_PASSWORD_MESSAGE =
   'If that email is registered, you will receive instructions shortly.';
 
@@ -53,7 +55,7 @@ export class AuthService {
       passwordHash: passwordHash,
     });
 
-    return this.buildAuthResponse(newUser);
+    return await this.buildAuthResponse(newUser);
   }
 
   async login(dto: LoginDto) {
@@ -69,7 +71,7 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    return this.buildAuthResponse(user);
+    return await this.buildAuthResponse(user);
   }
 
   async loginWithGoogle(googleProfile: GoogleProfile) {
@@ -91,7 +93,34 @@ export class AuthService {
             avatarURL: googleProfile.avatarUrl,
           });
     }
-    return this.buildAuthResponse(user);
+    return await this.buildAuthResponse(user);
+  }
+
+  async refreshTokens(rawRefreshToken: string) {
+    const tokenHash = this.hashToken(rawRefreshToken);
+    const stored = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash },
+    });
+
+    if (!stored || stored.expiresAt < new Date()) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
+    await this.prisma.refreshToken.delete({ where: { tokenHash } });
+
+    const user = await this.userService.findById(stored.userId);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return await this.buildAuthResponse(user);
+  }
+
+  async logout(rawRefreshToken: string | undefined) {
+    if (!rawRefreshToken) return;
+    await this.prisma.refreshToken
+      .delete({ where: { tokenHash: this.hashToken(rawRefreshToken) } })
+      .catch(() => undefined);
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {
@@ -151,12 +180,36 @@ export class AuthService {
 
   /* ------ */
 
-  private buildAuthResponse(user: User) {
+  private async buildAuthResponse(user: User) {
     const accessToken = this.jwtService.sign({
       sub: user.id,
       email: user.email,
     });
-    return { accessToken, user: sanitizeUser(user) };
+    const refreshToken = await this.issueRefreshToken(user.id);
+    return { accessToken, refreshToken, user: sanitizeUser(user) };
+  }
+
+  private async issueRefreshToken(userId: string) {
+    const activeTokens = await this.prisma.refreshToken.findMany({
+      where: { userId, expiresAt: { gt: new Date() } },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    if (activeTokens.length >= MAX_REFRESH_TOKENS_PER_USER) {
+      await this.prisma.refreshToken.delete({
+        where: { id: activeTokens[0].id },
+      });
+    }
+
+    const rawToken = crypto.randomBytes(48).toString('hex');
+    await this.prisma.refreshToken.create({
+      data: {
+        userId,
+        tokenHash: this.hashToken(rawToken),
+        expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL_MS),
+      },
+    });
+    return rawToken;
   }
 
   private hashToken(token: string) {

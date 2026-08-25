@@ -102,6 +102,7 @@ export class UsersService {
         where: { id: { in: directConversationIds } },
       }),
       this.prisma.passwordResetToken.deleteMany({ where: { userId: id } }),
+      this.prisma.refreshToken.deleteMany({ where: { userId: id } }),
       this.prisma.conversationParticipant.deleteMany({ where: { userId: id } }),
       this.prisma.contact.deleteMany({
         where: { OR: [{ userId: id }, { contactId: id }] },

@@ -1,6 +1,7 @@
 import type { User } from '../../generated/prisma/client';
 import { Server, Socket } from 'socket.io';
 import { UsersService } from '../users/users.service';
+import { parse as parseCookie } from 'cookie';
 import {
   ConnectedSocket,
   MessageBody,
@@ -29,7 +30,9 @@ interface AuthenticatedSocket extends Socket {
   };
 }
 
-@WebSocketGateway({ cors: { origin: '*' } })
+@WebSocketGateway({
+  cors: { origin: process.env.CLIENT_URL, credentials: true },
+})
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -48,9 +51,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(socket: AuthenticatedSocket) {
     try {
-      const token =
-        (socket.handshake.auth?.token as string | undefined) ??
-        (socket.handshake.query?.token as string | undefined);
+      const cookieHeader = socket.handshake.headers.cookie;
+      const token = cookieHeader
+        ? parseCookie(cookieHeader).accessToken
+        : undefined;
       if (!token) {
         throw new Error('No token provided');
       }

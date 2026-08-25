@@ -1,7 +1,9 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import Helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -36,9 +38,28 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
+  const clientUrl = configService.getOrThrow<string>('CLIENT_URL');
 
-  app.use(Helmet({ contentSecurityPolicy: false }));
-  app.enableCors({ origin: configService.getOrThrow<string>('CLIENT_URL') });
+  app.use(cookieParser());
+  app.use(
+    Helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: [
+            "'self'",
+            'data:',
+            'https://pulsejc-users-uploads.s3.amazonaws.com',
+            'https://lh3.googleusercontent.com',
+          ],
+          connectSrc: ["'self'"],
+        },
+      },
+    }),
+  );
+  app.enableCors({ origin: clientUrl, credentials: true });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -56,7 +77,7 @@ async function bootstrap() {
     .setDescription(
       'Pulse.Jc backend API — real-time 1-to-1 chat with an integrated AI assistant',
     )
-    .setVersion('1.0')
+    .setVersion('1.1.1')
     .addBearerAuth()
     .addApiKey(
       { type: 'apiKey', name: 'x-admin-api-key', in: 'header' },
