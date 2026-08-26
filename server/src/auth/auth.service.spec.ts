@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { CreateUserInput, UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
@@ -112,9 +112,8 @@ describe('AuthService', () => {
 
     it('hashes the password and returns an access token with a sanitized user', async () => {
       usersService.findByEmail.mockResolvedValue(null);
-      usersService.create.mockImplementation((data) =>
-        Promise.resolve({ ...baseUser, ...data }),
-      );
+      usersService.create.mockImplementation(((data: CreateUserInput) =>
+        Promise.resolve({ ...baseUser, ...data })) as any);
 
       const result = await authService.register({
         email: 'new@example.com',

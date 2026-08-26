@@ -103,6 +103,11 @@ export class UsersService {
       }),
       this.prisma.passwordResetToken.deleteMany({ where: { userId: id } }),
       this.prisma.refreshToken.deleteMany({ where: { userId: id } }),
+      this.prisma.notification.updateMany({
+        where: { userId: id },
+        data: { actorId: null },
+      }),
+      this.prisma.notification.deleteMany({ where: { userId: id } }),
       this.prisma.conversationParticipant.deleteMany({ where: { userId: id } }),
       this.prisma.contact.deleteMany({
         where: { OR: [{ userId: id }, { contactId: id }] },
