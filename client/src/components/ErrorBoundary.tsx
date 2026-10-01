@@ -1,5 +1,6 @@
-import { Component, type ReactNode } from 'react';
+import { Component, type ReactNode, type ErrorInfo } from 'react';
 import ButtonBorder from './common/ButtonBorder';
+import * as Sentry from '@sentry/react';
 
 type Props = { children: ReactNode };
 type State = { hasError: boolean };
@@ -11,8 +12,11 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: unknown) {
+  componentDidCatch(error: unknown, info: ErrorInfo) {
     console.error(error);
+    Sentry.captureException(error, {
+      contexts: { react: { componentStack: info.componentStack } },
+    });
   }
 
   render() {

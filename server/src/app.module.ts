@@ -12,8 +12,10 @@ import { ChatModule } from './chat/chat.module';
 import { join } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { NotificationsModule } from './notifications/notifications.module';
+import { SentryModule } from '@sentry/nestjs/setup';
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
