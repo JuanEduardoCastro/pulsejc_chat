@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import cookieParser from 'cookie-parser';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
@@ -16,6 +17,7 @@ describe('Contacts (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.use(cookieParser());
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -32,13 +34,16 @@ describe('Contacts (e2e)', () => {
     await app.close();
   });
 
+  // Each user gets their own agent, which keeps the auth cookies set by /auth/register.
   async function registerAndLogin(email: string) {
-    const response = await request(app.getHttpServer())
+    const agent = request.agent(app.getHttpServer());
+    const response = await agent
       .post('/auth/register')
       .send({ email, password: 'Passw0rd1' })
       .expect(201);
 
-    return response.body as { accessToken: string; user: { id: string } };
+    const { user } = response.body as { user: { id: string } };
+    return { agent, user };
   }
 
   it('sends a contact request, accepts it, and shows it in the accepted list for both users', async () => {
@@ -49,32 +54,26 @@ describe('Contacts (e2e)', () => {
     const requester = await registerAndLogin(requesterEmail);
     const recipient = await registerAndLogin(recipientEmail);
 
-    const createResponse = await request(app.getHttpServer())
+    const createResponse = await requester.agent
       .post('/contacts')
-      .set('Authorization', `Bearer ${requester.accessToken}`)
       .send({ email: recipientEmail })
       .expect(201);
 
     const contactId = (createResponse.body as { id: string }).id;
 
-    const pendingResponse = await request(app.getHttpServer())
+    const pendingResponse = await recipient.agent
       .get('/contacts')
       .query({ status: 'pending' })
-      .set('Authorization', `Bearer ${recipient.accessToken}`)
       .expect(200);
 
     const pendingList = pendingResponse.body as Array<{ id: string }>;
     expect(pendingList.some((c) => c.id === contactId)).toBe(true);
 
-    await request(app.getHttpServer())
-      .patch(`/contacts/${contactId}/accept`)
-      .set('Authorization', `Bearer ${recipient.accessToken}`)
-      .expect(200);
+    await recipient.agent.patch(`/contacts/${contactId}/accept`).expect(200);
 
-    const acceptedForRecipientResponse = await request(app.getHttpServer())
+    const acceptedForRecipientResponse = await recipient.agent
       .get('/contacts')
       .query({ status: 'accepted' })
-      .set('Authorization', `Bearer ${recipient.accessToken}`)
       .expect(200);
 
     const acceptedForRecipient = acceptedForRecipientResponse.body as Array<{
@@ -84,10 +83,9 @@ describe('Contacts (e2e)', () => {
       acceptedForRecipient.some((c) => c.user.id === requester.user.id),
     ).toBe(true);
 
-    const acceptedForRequesterResponse = await request(app.getHttpServer())
+    const acceptedForRequesterResponse = await requester.agent
       .get('/contacts')
       .query({ status: 'accepted' })
-      .set('Authorization', `Bearer ${requester.accessToken}`)
       .expect(200);
 
     const acceptedForRequester = acceptedForRequesterResponse.body as Array<{

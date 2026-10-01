@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import cookieParser from 'cookie-parser';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
@@ -16,6 +17,7 @@ describe('Auth (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.use(cookieParser());
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -42,25 +44,18 @@ describe('Auth (e2e)', () => {
       .expect(201);
 
     const registerBody = registerResponse.body as {
-      accessToken: string;
       user: { id: string; email: string };
     };
-    expect(registerBody.accessToken).toEqual(expect.any(String));
     expect(registerBody.user.email).toBe(email);
     expect(registerBody.user).not.toHaveProperty('passwordHash');
+    expect(registerBody).not.toHaveProperty('accessToken');
 
-    const loginResponse = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({ email, password })
-      .expect(201);
+    // The agent keeps the cookies from login and sends them on later requests, like a browser.
+    const agent = request.agent(app.getHttpServer());
 
-    const loginBody = loginResponse.body as { accessToken: string };
-    expect(loginBody.accessToken).toEqual(expect.any(String));
+    await agent.post('/auth/login').send({ email, password }).expect(201);
 
-    const profileResponse = await request(app.getHttpServer())
-      .get('/users/me')
-      .set('Authorization', `Bearer ${loginBody.accessToken}`)
-      .expect(200);
+    const profileResponse = await agent.get('/users/me').expect(200);
 
     const profileBody = profileResponse.body as { email: string };
     expect(profileBody.email).toBe(email);
