@@ -43,6 +43,12 @@ describe('AuthService', () => {
     avatarURL: null,
     hasSeenWelcome: false,
     locale: 'en',
+    plan: 'FREE' as const,
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    subscriptionStatus: null,
+    currentPeriodEnd: null,
+    cancelAtPeriodEnd: false,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
