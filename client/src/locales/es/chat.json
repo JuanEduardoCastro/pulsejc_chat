@@ -53,9 +53,12 @@
   },
 
   "ai": {
-    "name": "Pulse AI",
+    "name": "Pulse IA",
     "status": "Siempre disponible",
-    "thinking": "Pensando..."
+    "thinking": "Pensando...",
+    "errorBusy": "Pulse IA está saturado en este momento y no pudo responder.",
+    "errorUnavailable": "Pulse IA no pudo responder.",
+    "retry": "Reintentar"
   },
   "messages": {
     "loadEarlier": "Cargar mensajes anteriores",
@@ -141,12 +144,20 @@
     "renewsOn": "Se renueva el {{date}}",
     "endsOn": "El acceso Pro termina el {{date}}",
     "pastDue": "Tu último pago falló. Actualiza tu tarjeta para mantener Pro.",
-    "proFeatureAi": "Límite diario más alto para el asistente de IA",
+    "proFeatureAi": "300 mensajes con el asistente de IA cada 24 h (Free: 10)",
     "proFeatureSupport": "Apoya el proyecto ❤",
     "testModeHint": "Modo demo, sin cargos reales. Usa la tarjeta 4242 4242 4242 4242, cualquier fecha futura y cualquier CVC.",
     "checkoutCanceled": "Pago cancelado. Sigues en el plan Free.",
     "upgradeSuccess": "¡Bienvenido a Pro!",
     "upgradeProcessing": "Pago recibido. Tu plan se actualizará en unos segundos.",
     "genericError": "Algo salió mal con el pago. Inténtalo de nuevo."
+  },
+  "aiUsage": {
+    "counter": "{{used}} / {{limit}} mensajes de IA en las últimas 24 h",
+    "limitReachedFree": "Usaste tus {{limit}} mensajes de IA gratuitos.",
+    "limitReachedPro": "Alcanzaste el límite de {{limit}} mensajes.",
+    "nextAt": "Próximo mensaje disponible a las {{time}}.",
+    "upgrade": "Mejorar a Pro",
+    "limitReachedToast": "Límite de mensajes de IA alcanzado. Tu mensaje no se envió."
   }
 }

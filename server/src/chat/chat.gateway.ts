@@ -18,6 +18,8 @@ import { PresenceService } from './presence.service';
 import { MessagesService } from './messages.service';
 import { ConversationsService } from './conversations.service';
 import { AiService } from '@/ai/ai.service';
+import { AiUsageService } from '@/ai/ai-usage.service';
+import { AiProviderError } from '@/ai/ai-provider.interface';
 
 interface JwtPayload {
   sub: string;
@@ -35,9 +37,10 @@ interface AuthenticatedSocket extends Socket {
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   private readonly logger = new Logger(ChatGateway.name);
+  private readonly aiRepliesInFlight = new Set<string>();
 
   constructor(
     private readonly jwtService: JwtService,
@@ -47,6 +50,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly presenceService: PresenceService,
     private readonly conversationsService: ConversationsService,
     private readonly aiService: AiService,
+    private readonly aiUsageService: AiUsageService,
   ) {}
 
   async handleConnection(socket: AuthenticatedSocket) {
@@ -160,34 +164,80 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { conversationId: string; content: string },
   ) {
     try {
+      const userId = socket.data.user.id;
       this.logger.log(
         `send-message received from ${socket.data.user.id} for conversation ${data.conversationId}`,
       );
-      const message = await this.messagesService.create(
-        data.conversationId,
-        socket.data.user.id,
-        data.content,
-      );
-
-      // const room = `conversation:${data.conversationId}`;
-      // const socketsInRoom = await this.server.in(room).allSockets();
-      // this.logger.log(
-      //   `emitting new-message to room ${room}, ${socketsInRoom.size} socket(s):[${[...socketsInRoom].join(', ')}]`,
-      // );
-
-      // this.server.to(room).emit('new-message', message);
-      await this.broadcastToParticipants(data.conversationId, message);
 
       const conversationType = await this.conversationsService.getType(
         data.conversationId,
       );
 
       if (conversationType === 'AI') {
+        const usage = await this.aiUsageService.getUsage(userId);
+        if (usage.used >= usage.limit) {
+          socket.emit('ai-limit-reached', {
+            conversationId: data.conversationId,
+            ...usage,
+          });
+          return;
+        }
+      }
+
+      const message = await this.messagesService.create(
+        data.conversationId,
+        userId,
+        data.content,
+      );
+      await this.broadcastToParticipants(data.conversationId, message);
+
+      if (conversationType === 'AI') {
+        const usage = await this.aiUsageService.getUsage(userId);
+        this.server.to(`user:${userId}`).emit('ai-usage', usage);
         void this.handleAiReply(socket.data.user.id, data.conversationId);
       }
     } catch (error) {
       this.logger.error(
         `send-message failed: ${(error as Error).message}`,
+        (error as Error).stack,
+      );
+    }
+  }
+
+  @SubscribeMessage('retry-ai-reply')
+  async handleRetryAiReply(
+    @ConnectedSocket() socket: AuthenticatedSocket,
+    @MessageBody()
+    data: {
+      conversationId: string;
+    },
+  ) {
+    try {
+      const userId = socket.data.user.id;
+      const [conversationType, participantsId, lastMessage] = await Promise.all(
+        [
+          this.conversationsService.getType(data.conversationId),
+          this.conversationsService.getParticipantIds(data.conversationId),
+          this.prisma.message.findFirst({
+            where: { conversationId: data.conversationId },
+            orderBy: { createdAt: 'desc' },
+            select: { senderType: true },
+          }),
+        ],
+      );
+
+      if (
+        conversationType !== 'AI' ||
+        !participantsId.includes(userId) ||
+        lastMessage?.senderType !== 'AI'
+      ) {
+        return;
+      }
+
+      void this.handleAiReply(userId, data.conversationId);
+    } catch (error) {
+      this.logger.error(
+        `retry-ai-reply failed: ${(error as Error).message}`,
         (error as Error).stack,
       );
     }
@@ -208,22 +258,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private async handleAiReply(userId: string, conversationId: string) {
+    if (this.aiRepliesInFlight.has(conversationId)) return;
+    this.aiRepliesInFlight.add(conversationId);
+
     try {
       const { messages } = await this.messagesService.listForConversation(
         conversationId,
         userId,
       );
 
-      const replayContent = await this.aiService.generateReplay(messages);
+      const user = await this.usersService.findById(userId);
+      const replayContent = await this.aiService.generateReplay(
+        messages,
+        user?.locale ?? 'en',
+      );
       const aiMessage = await this.messagesService.createAiMessage(
         conversationId,
         replayContent,
       );
 
       await this.broadcastToParticipants(conversationId, aiMessage);
-      // this.server
-      //   .to(`conversation:${conversationId}`)
-      //   .emit('new-message', aiMessage);
     } catch (error) {
       this.logger.error(
         `AI reply failed for conversation ${conversationId}: ${
@@ -232,8 +286,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
       this.server.to(`user:${userId}`).emit('ai-error', {
         conversationId,
-        message: 'The AI assistant is currently unavailable.',
+        code: error instanceof AiProviderError ? error.code : 'UNAVAILABLE',
       });
+    } finally {
+      this.aiRepliesInFlight.delete(conversationId);
     }
   }
 

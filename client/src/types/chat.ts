@@ -57,3 +57,10 @@ export type AppNotification = {
   readAt: string | null;
   createdAt: string;
 };
+
+export type AiUsage = {
+  plan: 'FREE' | 'PRO';
+  used: number;
+  limit: number;
+  resetsAt: string | null;
+};

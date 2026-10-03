@@ -1,11 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { AIProvider } from './ai-provider.interface';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { AiProviderError, AIProvider } from './ai-provider.interface';
+import {
+  GoogleGenerativeAI,
+  GoogleGenerativeAIFetchError,
+} from '@google/generative-ai';
+
 import { ConfigService } from '@nestjs/config';
 import { Message } from '../../generated/prisma/client';
 
+const RETRYABLE_STATUSES = new Set([429, 500, 503]);
+const RETRY_DELAYS_MS = [1000, 3000];
 const SYSTEM_INSTRUCTION =
   'You are Pulse, the AI assistant built into the Pulse.Jc chat app. Keep replies short, friendly and conversational.';
+const LANGUAGE_NAMES: Record<string, string> = { en: 'English', es: 'Spanish' };
+
+function buildSystemInstruction(locale: string) {
+  const language = LANGUAGE_NAMES[locale] ?? 'English';
+  return `${SYSTEM_INSTRUCTION} The user's app is set to ${language}: reply in ${language}, unless the user clearly writes to you in a different language, in which case reply in theirs.`;
+}
 
 @Injectable()
 export class GeminiProvider implements AIProvider {
@@ -18,10 +30,10 @@ export class GeminiProvider implements AIProvider {
     );
   }
 
-  async generateResponse(messages: Message[]): Promise<string> {
+  async generateResponse(messages: Message[], locale: string): Promise<string> {
     const model = this.client.getGenerativeModel({
       model: 'gemini-flash-latest',
-      systemInstruction: SYSTEM_INSTRUCTION,
+      systemInstruction: buildSystemInstruction(locale),
     });
 
     const history = messages.slice(0, -1).map((message) => ({
@@ -31,18 +43,36 @@ export class GeminiProvider implements AIProvider {
 
     const lastMessage = messages[messages.length - 1];
 
-    try {
-      const chat = model.startChat({ history });
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const chat = model.startChat({ history });
+        const result = await chat.sendMessage(lastMessage.content ?? '');
+        return result.response.text();
+      } catch (error) {
+        const status =
+          error instanceof GoogleGenerativeAIFetchError
+            ? error.status
+            : undefined;
+        const isRetryable = !!status && RETRYABLE_STATUSES.has(status);
+        const delay = RETRY_DELAYS_MS[attempt];
 
-      const result = await chat.sendMessage(lastMessage.content ?? '');
+        if (isRetryable && delay !== undefined) {
+          this.logger.warn(
+            `Gemini returned ${status}, retrying in ${delay}ms (retry ${attempt + 1}/${RETRY_DELAYS_MS.length})`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          continue;
+        }
 
-      return result.response.text();
-    } catch (error) {
-      this.logger.error(
-        `Gemini request failed: ${(error as Error).message}`,
-        (error as Error).stack,
-      );
-      throw error;
+        this.logger.error(
+          `Gemini request failed: ${(error as Error).message}`,
+          (error as Error).stack,
+        );
+        throw new AiProviderError(
+          isRetryable ? 'BUSY' : 'UNAVAILABLE',
+          (error as Error).message,
+        );
+      }
     }
   }
 }

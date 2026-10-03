@@ -17,10 +17,12 @@ import type {
   ConversationSummary,
   Message,
   AppNotification,
+  AiUsage,
 } from '@/types/chat';
 import type { MessagesPage } from '@/queries/useMessagesQuery';
 import { useTranslation } from 'react-i18next';
 import { getDisplayName } from '@/lib/displayName';
+import { AI_USAGE_QUERY_KEY } from '@/queries/useAiUsageQuery';
 
 type SocketContextValue = {
   isConnected: boolean;
@@ -28,6 +30,7 @@ type SocketContextValue = {
   joinConversation: (conversationId: string) => void;
   setTyping: (conversationId: string, isTyping: boolean) => void;
   markAsRead: (conversationId: string) => void;
+  retryAiReply: (conversationId: string) => void;
 };
 
 const SocketContext = createContext<SocketContextValue | null>(null);
@@ -42,6 +45,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const currentUserId = useAuthStore((state) => state.user?.id);
   const setOnline = usePresenceStore((state) => state.setOnline);
   const setTypingState = usePresenceStore((state) => state.setTyping);
+  const setAiError = usePresenceStore((state) => state.setAiError);
   const incrementUnread = usePresenceStore((state) => state.incrementUnread);
   const { conversationId: routeConversationId } = useParams<{
     conversationId: string;
@@ -93,6 +97,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     );
 
     socket.on('new-message', (message: Message) => {
+      if (message.senderType === 'AI') setAiError(message.conversationId, null);
       queryClient.setQueryData<InfiniteData<MessagesPage>>(
         ['messages', message.conversationId],
         (prev) => {
@@ -212,9 +217,45 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       toast(tRef.current(key, { name }));
     });
 
-    socket.on('ai-error', ({ message }: { message: string }) => {
-      toast.error(message);
+    socket.on(
+      'ai-error',
+      ({
+        conversationId,
+        code,
+      }: {
+        conversationId: string;
+        code: 'BUSY' | 'UNAVAILABLE';
+      }) => {
+        setAiError(conversationId, code);
+        toast.error(
+          tRef.current(
+            code === 'BUSY' ? 'ai.errorBusy' : 'ai.errorUnavailable',
+          ),
+        );
+      },
+    );
+
+    socket.on('ai-usage', (usage: AiUsage) => {
+      queryClient.setQueryData(AI_USAGE_QUERY_KEY, usage);
     });
+
+    socket.on(
+      'ai-limit-reached',
+      ({
+        plan,
+        used,
+        limit,
+        resetsAt,
+      }: AiUsage & { conversationId: string }) => {
+        queryClient.setQueryData(AI_USAGE_QUERY_KEY, {
+          plan,
+          used,
+          limit,
+          resetsAt,
+        });
+        toast.error(tRef.current('aiUsage.limitReachedToast'));
+      },
+    );
 
     return () => {
       socket.disconnect();
@@ -230,11 +271,16 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     setTypingState,
     incrementUnread,
     setOnlineSnapshot,
+    setAiError,
   ]);
 
-  const sendMessage = useCallback((conversationId: string, content: string) => {
-    socketRef.current?.emit('send-message', { conversationId, content });
-  }, []);
+  const sendMessage = useCallback(
+    (conversationId: string, content: string) => {
+      setAiError(conversationId, null);
+      socketRef.current?.emit('send-message', { conversationId, content });
+    },
+    [setAiError],
+  );
 
   const joinConversation = useCallback((conversationId: string) => {
     socketRef.current?.emit('join-conversation', { conversationId });
@@ -248,6 +294,14 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socketRef.current?.emit('mark-as-read', { conversationId });
   }, []);
 
+  const retryAiReply = useCallback(
+    (conversationId: string) => {
+      setAiError(conversationId, null);
+      socketRef.current?.emit('retry-ai-reply', { conversationId });
+    },
+    [setAiError],
+  );
+
   return (
     <SocketContext.Provider
       value={{
@@ -256,6 +310,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
         joinConversation,
         setTyping,
         markAsRead,
+        retryAiReply,
       }}
     >
       {children}

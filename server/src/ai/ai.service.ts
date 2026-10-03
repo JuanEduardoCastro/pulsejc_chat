@@ -7,7 +7,7 @@ import { Message } from '../../generated/prisma/client';
 export class AiService {
   constructor(@Inject(AI_PROVIDER) private readonly provider: AIProvider) {}
 
-  generateReplay(messages: Message[]): Promise<string> {
-    return this.provider.generateResponse(messages);
+  generateReplay(messages: Message[], locale: string): Promise<string> {
+    return this.provider.generateResponse(messages, locale);
   }
 }

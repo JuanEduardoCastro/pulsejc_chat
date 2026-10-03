@@ -128,6 +128,7 @@ model Message {
 
   conversation    Conversation    @relation(fields: [conversationId], references: [id])
   sender          User?           @relation(fields: [senderId], references: [id])
+  @@index([senderId, createdAt])
 }
 
 model Notification {

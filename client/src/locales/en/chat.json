@@ -55,7 +55,10 @@
   "ai": {
     "name": "Pulse AI",
     "status": "Always available",
-    "thinking": "Thinking..."
+    "thinking": "Thinking...",
+    "errorBusy": "Pulse AI is overloaded right now and couldn't reply.",
+    "errorUnavailable": "Pulse AI couldn't reply.",
+    "retry": "Try again"
   },
   "messages": {
     "loadEarlier": "Load earlier messages",
@@ -141,12 +144,20 @@
     "renewsOn": "Renews on {{date}}",
     "endsOn": "Pro access ends on {{date}}",
     "pastDue": "Your last payment failed. Update your card to keep Pro.",
-    "proFeatureAi": "Higher daily limit for the AI assistant",
     "proFeatureSupport": "Support the project ❤",
     "testModeHint": "Demo mode, no real charges. Use card 4242 4242 4242 4242, any future date and any CVC.",
     "checkoutCanceled": "Checkout canceled. You're still on the Free plan.",
     "upgradeSuccess": "Welcome to Pro!",
     "upgradeProcessing": "Payment received. Your plan will update in a few seconds.",
-    "genericError": "Something went wrong with billing. Please try again."
+    "genericError": "Something went wrong with billing. Please try again.",
+    "proFeatureAi": "300 AI assistant messages every 24 h (Free: 10)"
+  },
+  "aiUsage": {
+    "counter": "{{used}} / {{limit}} AI messages in the last 24 h",
+    "limitReachedFree": "You've used your {{limit}} free AI messages.",
+    "limitReachedPro": "You've reached the {{limit}}-message limit.",
+    "nextAt": "Next message available at {{time}}.",
+    "upgrade": "Upgrade to Pro",
+    "limitReachedToast": "AI message limit reached. Your message wasn't sent."
   }
 }
