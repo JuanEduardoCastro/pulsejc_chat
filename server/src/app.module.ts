@@ -13,6 +13,7 @@ import { join } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SentryModule } from '@sentry/nestjs/setup';
+import { BillingModule } from './billing/billing.module';
 @Module({
   imports: [
     SentryModule.forRoot(),
@@ -34,6 +35,7 @@ import { SentryModule } from '@sentry/nestjs/setup';
     ContactsModule,
     ChatModule,
     NotificationsModule,
+    BillingModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

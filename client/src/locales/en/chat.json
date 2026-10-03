@@ -4,6 +4,7 @@
     "logout": "Log out",
     "logoutConfirmTitle": "Log out?",
     "logoutConfirmMessage": "You'll need to sign in again to access your chats.",
+    "plan": "Plan",
     "theme": {
       "light": "Light mode",
       "dark": "Dark mode"
@@ -131,5 +132,21 @@
     "confirmLabel": "Type {{email}} to confirm",
     "confirmButton": "Delete my account permanently",
     "genericError": "Something went wrong. Please try again."
+  },
+  "plan": {
+    "title": "Your plan",
+    "current": "Current plan",
+    "upgrade": "Upgrade to Pro",
+    "manage": "Manage subscription",
+    "renewsOn": "Renews on {{date}}",
+    "endsOn": "Pro access ends on {{date}}",
+    "pastDue": "Your last payment failed. Update your card to keep Pro.",
+    "proFeatureAi": "Higher daily limit for the AI assistant",
+    "proFeatureSupport": "Support the project ❤",
+    "testModeHint": "Demo mode, no real charges. Use card 4242 4242 4242 4242, any future date and any CVC.",
+    "checkoutCanceled": "Checkout canceled. You're still on the Free plan.",
+    "upgradeSuccess": "Welcome to Pro!",
+    "upgradeProcessing": "Payment received. Your plan will update in a few seconds.",
+    "genericError": "Something went wrong with billing. Please try again."
   }
 }

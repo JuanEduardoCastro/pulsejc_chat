@@ -4,6 +4,7 @@
     "logout": "Cerrar sesión",
     "logoutConfirmTitle": "¿Cerrar sesión?",
     "logoutConfirmMessage": "Tendrás que iniciar sesión de nuevo para acceder a tus chats.",
+    "plan": "Plan",
     "theme": {
       "light": "Modo claro",
       "dark": "Modo oscuro"
@@ -131,5 +132,21 @@
     "confirmLabel": "Escribe {{email}} para confirmar",
     "confirmButton": "Eliminar mi cuenta permanentemente",
     "genericError": "Algo salió mal. Por favor, inténtalo de nuevo."
+  },
+  "plan": {
+    "title": "Tu plan",
+    "current": "Plan actual",
+    "upgrade": "Mejorar a Pro",
+    "manage": "Gestionar suscripción",
+    "renewsOn": "Se renueva el {{date}}",
+    "endsOn": "El acceso Pro termina el {{date}}",
+    "pastDue": "Tu último pago falló. Actualiza tu tarjeta para mantener Pro.",
+    "proFeatureAi": "Límite diario más alto para el asistente de IA",
+    "proFeatureSupport": "Apoya el proyecto ❤",
+    "testModeHint": "Modo demo, sin cargos reales. Usa la tarjeta 4242 4242 4242 4242, cualquier fecha futura y cualquier CVC.",
+    "checkoutCanceled": "Pago cancelado. Sigues en el plan Free.",
+    "upgradeSuccess": "¡Bienvenido a Pro!",
+    "upgradeProcessing": "Pago recibido. Tu plan se actualizará en unos segundos.",
+    "genericError": "Algo salió mal con el pago. Inténtalo de nuevo."
   }
 }

@@ -10,6 +10,7 @@ import {
   UseGuards,
   BadRequestException,
 } from '@nestjs/common';
+import { BillingService } from '@/billing/billing.service';
 import type { Request, Response } from 'express';
 import { Throttle } from '@nestjs/throttler';
 import { DeleteAccountDto } from './dto/delete-account.dto';
@@ -17,7 +18,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { CurrentUser } from '@/auth/current-user.decorator';
 import type { User } from '../../generated/prisma/browser';
-import { sanitizeUser } from './users.util';
+import { sanitizeSelf } from './users.util';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AvatarUploadUrlDto } from './dto/avatar-upload-url.dto';
@@ -27,17 +28,20 @@ import { AvatarUploadUrlDto } from './dto/avatar-upload-url.dto';
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly billingService: BillingService,
+  ) {}
 
   @Get('me')
   me(@CurrentUser() user: User) {
-    return sanitizeUser(user);
+    return sanitizeSelf(user);
   }
 
   @Patch('me')
   async updateMe(@CurrentUser() user: User, @Body() dto: UpdateUserDto) {
     const updatedUser = await this.usersService.update(user.id, dto);
-    return sanitizeUser(updatedUser);
+    return sanitizeSelf(updatedUser);
   }
 
   @Post('me/avatar-upload-url')
@@ -51,7 +55,7 @@ export class UsersController {
   @Delete('me/avatar')
   async removeAvatar(@CurrentUser() user: User) {
     const updatedUser = await this.usersService.removeAvatar(user);
-    return sanitizeUser(updatedUser);
+    return sanitizeSelf(updatedUser);
   }
 
   @Throttle({ default: { ttl: 3600000, limit: 5 } })
@@ -65,6 +69,8 @@ export class UsersController {
     if (dto.confirmEmail.toLowerCase() !== user.email.toLowerCase()) {
       throw new BadRequestException('Email confirmation does not match');
     }
+
+    await this.billingService.deleteCustomer(user);
     await this.usersService.remove(user.id);
 
     const secure = req.protocol === 'https';

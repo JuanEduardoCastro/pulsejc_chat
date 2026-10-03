@@ -118,6 +118,18 @@ function SidebarHeader() {
               <ButtonMenu
                 type="button"
                 buttonClassName="text-left"
+                onClick={() => {
+                  setMenuOpen(false);
+                  openModal({ type: 'plan' });
+                }}
+              >
+                {t('chat:sidebar.plan')}:{' '}
+                {user?.plan === 'PRO' ? 'Pro' : 'Free'}
+              </ButtonMenu>
+
+              <ButtonMenu
+                type="button"
+                buttonClassName="text-left"
                 onClick={toggleTheme}
               >
                 {theme === 'light'

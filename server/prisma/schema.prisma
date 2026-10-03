@@ -13,6 +13,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Plan {
+  FREE
+  PRO
+}
+
 enum ContactStatus {
   PENDING
   ACCEPTED
@@ -43,27 +48,34 @@ enum NotificationType {
 }
 
 model User {
-  id             String        @id @default(uuid())
-  email          String        @unique
-  passwordHash   String?       // null if the user registered with Google
+  id             String         @id @default(uuid())
+  email          String         @unique
+  passwordHash   String?        // null if the user registered with Google
   firstName      String?
   lastName       String?
   nickname       String?
-  googleId       String?       @unique
+  googleId       String?        @unique
   avatarURL      String?
-  hasSeenWelcome Boolean       @default(false)
-  locale         String       @default("en")
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  hasSeenWelcome Boolean        @default(false)
+  locale         String         @default("en")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
-  contactInitiated  Contact[]     @relation("UserContacts")
-  contactReceived   Contact[]     @relation("ContactOfUser")
-  participations    ConversationParticipant[]
-  messages          Message[]
-  resetTokens       PasswordResetToken[]
-  refreshTokens     RefreshToken[]
+  contactInitiated      Contact[]     @relation("UserContacts")
+  contactReceived       Contact[]     @relation("ContactOfUser")
+  participations        ConversationParticipant[]
+  messages              Message[]
+  resetTokens           PasswordResetToken[]
+  refreshTokens         RefreshToken[]
   notifications         Notification[] @relation("UserNotification")
   notificationsCaused   Notification[] @relation("NotificationActor")
+  
+  plan                 Plan      @default(FREE)
+  stripeCustomerId     String?    @unique
+  stripeSubscriptionId String?    @unique
+  subscriptionStatus   String?    // raw Stripe status: active, past_due,canceled...
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean    @default(false)
 }
 
 model Contact {

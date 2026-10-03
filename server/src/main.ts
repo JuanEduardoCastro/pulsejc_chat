@@ -36,7 +36,7 @@ function swaggerBasicAuth(config: ConfigService) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { rawBody: true });
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
   const clientUrl = configService.getOrThrow<string>('CLIENT_URL');

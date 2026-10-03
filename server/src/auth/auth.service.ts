@@ -12,7 +12,7 @@ import { MailService } from '../mail/mail.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { sanitizeUser } from '@/users/users.util';
+import { sanitizeSelf } from '@/users/users.util';
 import { User } from '../../generated/prisma/browser';
 import { LoginDto } from './dto/login.dto';
 import { GoogleProfile } from './google.strategy';
@@ -189,7 +189,7 @@ export class AuthService {
       email: user.email,
     });
     const refreshToken = await this.issueRefreshToken(user.id);
-    return { accessToken, refreshToken, user: sanitizeUser(user) };
+    return { accessToken, refreshToken, user: sanitizeSelf(user) };
   }
 
   private async issueRefreshToken(userId: string) {

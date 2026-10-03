@@ -11,6 +11,7 @@ import { useUiStore } from '@/stores/uiStore';
 import { SocketProvider, useSocket } from '@/hooks/useSocket';
 import SidebarHeader from '@/components/chat/SidebarHeader';
 import { useTabBadge } from '@/hooks/useTabBadge';
+import { useBillingReturn } from '@/hooks/useBillingReturn';
 
 function ChatLayout() {
   const { t } = useTranslation('chat');
@@ -20,6 +21,7 @@ function ChatLayout() {
   const openModal = useUiStore((state) => state.openModal);
   const hasCheckedProfileReminderRef = useRef(false);
   useTabBadge();
+  useBillingReturn();
 
   useEffect(() => {
     if (hasCheckedProfileReminderRef.current) return;

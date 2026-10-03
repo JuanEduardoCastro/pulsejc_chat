@@ -12,6 +12,7 @@ export type ActiveModal =
     }
   | { type: 'completeProfileReminder' }
   | { type: 'deleteAccount' }
+  | { type: 'plan' }
   | null;
 
 type Theme = 'light' | 'dark';
