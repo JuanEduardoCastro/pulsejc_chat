@@ -13,7 +13,7 @@ function AuthCard({ title, children, footer }: AuthCardProps) {
       style={{ backgroundColor: 'var(--bg)' }}
     >
       <div
-        className="w-full max-w-sm rounded-2xl border-2 p-8"
+        className="w-full max-w-sm rounded-2xl border-2 p-6 sm:p-8"
         style={{
           borderColor: 'var(--border)',
         }}

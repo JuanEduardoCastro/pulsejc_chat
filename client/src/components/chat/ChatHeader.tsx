@@ -6,6 +6,7 @@ import { getDisplayName } from '@/lib/displayName';
 import type { ConversationSummary } from '@/types/chat';
 import AvatarSmall from '../common/AvatarSmall';
 import ButtonMenu from '../common/ButtonMenu';
+import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
 
 type ChatHeaderProps = {
   conversation: ConversationSummary;
@@ -53,34 +54,46 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
       className="flex items-center justify-between border-b px-4 py-3"
       style={{ borderColor: 'var(--border)' }}
     >
-      <ButtonMenu
-        type="button"
-        disabled={isAi || !conversation.otherUser}
-        onClick={() =>
-          openModal({
-            type: 'contactInfo',
-            data: { user: conversation.otherUser! },
-          })
-        }
-        buttonClassName="flex min-w-0 items-center gap-3 text-left"
-        buttonStyle={{ color: 'var(--text)' }}
-      >
-        <AvatarSmall
-          isAi={isAi}
-          username={name}
-          avatarURL={conversation.otherUser?.avatarURL}
-          isOnline={isOnline}
-        />
-        <div className="min-w-0">
-          <p
-            className="truncate font-medium"
-            style={{ color: 'var(--text-h)' }}
-          >
-            {name}
-          </p>
-          <p className="truncate text-xs">{status}</p>
-        </div>
-      </ButtonMenu>
+      <div className="flex min-w-0 items-center gap-1">
+        <button
+          type="button"
+          onClick={() => navigate('/chat')}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md md:hidden"
+          style={{ color: 'var(--text-h)' }}
+          aria-label={t('header.closeTrigger')}
+        >
+          <ArrowLeftIcon className="h-5 w-5" />
+        </button>
+
+        <ButtonMenu
+          type="button"
+          disabled={isAi || !conversation.otherUser}
+          onClick={() =>
+            openModal({
+              type: 'contactInfo',
+              data: { user: conversation.otherUser! },
+            })
+          }
+          buttonClassName="flex min-w-0 items-center gap-3 text-left"
+          buttonStyle={{ color: 'var(--text)' }}
+        >
+          <AvatarSmall
+            isAi={isAi}
+            username={name}
+            avatarURL={conversation.otherUser?.avatarURL}
+            isOnline={isOnline}
+          />
+          <div className="min-w-0">
+            <p
+              className="truncate font-medium"
+              style={{ color: 'var(--text-h)' }}
+            >
+              {name}
+            </p>
+            <p className="truncate text-xs">{status}</p>
+          </div>
+        </ButtonMenu>
+      </div>
 
       <button
         type="button"

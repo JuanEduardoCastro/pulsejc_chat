@@ -72,31 +72,34 @@ function MessageList({ conversationId, conversationType }: MessageListProps) {
   return (
     <div
       ref={containerRef}
-      className="flex flex-1 flex-col justify-end overflow-y-auto py-2"
+      className="flex flex-1 flex-col overflow-y-auto py-2"
     >
-      {hasNextPage && (
-        <div className="flex justify-center py-2">
-          <button
-            type="button"
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="text-sm underline disabled:opacity-60"
-          >
-            {t('messages.loadEarlier')}
-          </button>
-        </div>
-      )}
+      <div className="mt-auto">
+        {hasNextPage && (
+          <div className="flex justify-center py-2">
+            <button
+              type="button"
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="text-sm underline disabled:opacity-60"
+            >
+              {t('messages.loadEarlier')}
+            </button>
+          </div>
+        )}
 
-      {messages.map((message) => (
-        <MessageBubble
-          key={message.id}
-          message={message}
-          isOwn={
-            message.senderType === 'USER' && message.senderId === currentUserId
-          }
-          conversationType={conversationType}
-        />
-      ))}
+        {messages.map((message) => (
+          <MessageBubble
+            key={message.id}
+            message={message}
+            isOwn={
+              message.senderType === 'USER' &&
+              message.senderId === currentUserId
+            }
+            conversationType={conversationType}
+          />
+        ))}
+      </div>
 
       <div ref={bottomRef} />
     </div>

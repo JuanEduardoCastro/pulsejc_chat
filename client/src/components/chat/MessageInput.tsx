@@ -80,7 +80,7 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center gap-2 border-t px-4 py-3"
+      className="flex items-center gap-2 border-t px-3 py-3 md:px-4"
       style={{ borderColor: 'var(--border)' }}
     >
       <div className="relative" ref={pickerRef}>
@@ -124,7 +124,7 @@ function MessageInput({ onSend, onTypingChange, disabled }: MessageInputProps) {
         placeholder={t('messages.inputPlaceholder')}
       />
 
-      <div className="w-24">
+      <div className="w-20 md:w-24">
         <ButtonFull
           type="submit"
           disabled={disabled || !value.trim()}

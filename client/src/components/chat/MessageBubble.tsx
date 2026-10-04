@@ -32,7 +32,10 @@ function MessageBubble({
     <div
       className={`flex px-4 py-1 ${isOwn ? 'justify-end' : 'justify-start'}`}
     >
-      <div className="max-w-[60%] rounded-2xl px-4 py-2" style={bubbleStyle}>
+      <div
+        className="max-w-[85%] rounded-2xl px-4 py-2 md:max-w-[60%]"
+        style={bubbleStyle}
+      >
         <p
           className="text-sm wrap-break-word whitespace-pre-wrap"
           style={{ color: 'var(--text-h)' }}

@@ -76,7 +76,7 @@ function NotificationBell() {
 
       {isMenuOpen && (
         <div
-          className="absolute right-0 md:left-0 md:right-auto z-10 mt-2 max-h-96 w-80 overflow-y-auto rounded-md border shadow-lg thin-scrollbar"
+          className="fixed inset-x-4 top-16 z-10 max-h-96 overflow-y-auto rounded-md border shadow-lg thin-scrollbar md:absolute md:inset-x-auto md:top-auto md:left-0 md:mt-2 md:w-80"
           style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}
         >
           <div

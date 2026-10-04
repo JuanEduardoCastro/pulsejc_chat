@@ -9,7 +9,6 @@ import { useConversationsQuery } from '@/queries/useConversationsQuery';
 import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import { SocketProvider, useSocket } from '@/hooks/useSocket';
-import SidebarHeader from '@/components/chat/SidebarHeader';
 import { useTabBadge } from '@/hooks/useTabBadge';
 import { useBillingReturn } from '@/hooks/useBillingReturn';
 
@@ -32,7 +31,7 @@ function ChatLayout() {
   }, [user, openModal]);
 
   return (
-    <div className="flex h-svh flex-col">
+    <div className="flex h-dvh flex-col">
       {!isConnected && (
         <div
           className="flex items-center justify-center gap-2 border-b py-1.5 text-xs"
@@ -54,12 +53,10 @@ function ChatLayout() {
         >
           <Sidebar />
         </div>
+
         <div
           className={`flex-1 flex-col ${conversationId ? 'flex' : 'hidden md:flex'}`}
         >
-          <div className="md:hidden">
-            <SidebarHeader />
-          </div>
           <ChatPanel conversationId={conversationId ?? null} />
         </div>
       </div>
