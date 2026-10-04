@@ -56,8 +56,10 @@
     "name": "Pulse AI",
     "status": "Always available",
     "thinking": "Thinking...",
+    "retrying": "Busy, retrying ({{retry}}/{{maxRetries}})...",
     "errorBusy": "Pulse AI is overloaded right now and couldn't reply.",
     "errorUnavailable": "Pulse AI couldn't reply.",
+    "errorQuota": "Pulse AI is out of capacity for today. Please try again later.",
     "retry": "Try again"
   },
   "messages": {

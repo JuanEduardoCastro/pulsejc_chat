@@ -9,6 +9,7 @@ import MessageInput from './MessageInput';
 import { useAiUsageQuery } from '@/queries/useAiUsageQuery';
 import AiUsageBar from './AiUsageBar';
 import { useTranslation } from 'react-i18next';
+import { AI_ERROR_KEY } from '@/lib/aiErrors';
 
 type ChatPanelProps = {
   conversationId: string | null;
@@ -79,17 +80,17 @@ function ChatPanel({ conversationId }: ChatPanelProps) {
           className="flex flex-wrap items-center justify-between gap-2 border-t px-4 py-2 text-sm"
           style={{ borderColor: 'var(--border)', color: 'var(--text-h)' }}
         >
-          <span>
-            {t(aiError === 'BUSY' ? 'ai.errorBusy' : 'ai.errorUnavailable')}
-          </span>
-          <button
-            type="button"
-            onClick={() => retryAiReply(conversation.id)}
-            className="rounded-md px-3 py-1 text-sm font-medium hover:opacity-80"
-            style={{ color: 'var(--accent)' }}
-          >
-            {t('ai.retry')}
-          </button>
+          <span>{t(AI_ERROR_KEY[aiError])}</span>
+          {aiError !== 'QUOTA' && (
+            <button
+              type="button"
+              onClick={() => retryAiReply(conversation.id)}
+              className="rounded-md px-3 py-1 text-sm font-medium hover:opacity-80"
+              style={{ color: 'var(--accent)' }}
+            >
+              {t('ai.retry')}
+            </button>
+          )}
         </div>
       )}
       <MessageInput

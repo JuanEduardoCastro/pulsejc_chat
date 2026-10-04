@@ -21,6 +21,9 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
       ? state.onlineUsersIds.has(conversation.otherUser.id)
       : false,
   );
+  const aiRetry = usePresenceStore(
+    (state) => state.aiRetryByConversation[conversation.id],
+  );
   const isTyping = usePresenceStore(
     (state) => state.typingByConversation[conversation.id] ?? false,
   );
@@ -32,7 +35,12 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
       : getDisplayName(conversation.otherUser!);
   const status = isAi
     ? isAiResponding
-      ? t('ai.thinking')
+      ? aiRetry
+        ? t('ai.retrying', {
+            retry: aiRetry.retry,
+            maxRetries: aiRetry.maxRetries,
+          })
+        : t('ai.thinking')
       : t('ai.status')
     : isTyping
       ? t('presence.typing')

@@ -31,9 +31,10 @@ function MessageList({ conversationId, conversationType }: MessageListProps) {
 
     const isInitialLoad = !hasScrolledRef.current;
     const isNewestMessageChanged = newestMessage.id !== lastMessageRef.current;
+    const isStreaming = !!newestMessage.isStreaming;
     lastMessageRef.current = newestMessage.id;
 
-    if (!isInitialLoad && !isNewestMessageChanged) return;
+    if (!isInitialLoad && !isNewestMessageChanged && !isStreaming) return;
 
     const container = containerRef.current;
     const isNearBottom =
@@ -46,7 +47,7 @@ function MessageList({ conversationId, conversationType }: MessageListProps) {
 
     if (isInitialLoad || isNearBottom || isOwnMessage) {
       bottomRef.current?.scrollIntoView({
-        behavior: isInitialLoad ? 'auto' : 'smooth',
+        behavior: isInitialLoad || isStreaming ? 'auto' : 'smooth',
       });
     }
 

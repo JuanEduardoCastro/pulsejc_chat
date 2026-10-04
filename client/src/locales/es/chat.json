@@ -56,8 +56,10 @@
     "name": "Pulse IA",
     "status": "Siempre disponible",
     "thinking": "Pensando...",
+    "retrying": "Saturado, reintentando ({{retry}}/{{maxRetries}})...",
     "errorBusy": "Pulse IA está saturado en este momento y no pudo responder.",
     "errorUnavailable": "Pulse IA no pudo responder.",
+    "errorQuota": "Pulse IA no tiene más capacidad por hoy. Inténtalo más tarde.",
     "retry": "Reintentar"
   },
   "messages": {

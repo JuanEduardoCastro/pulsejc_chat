@@ -7,7 +7,7 @@ export const AI_USAGE_QUERY_KEY = ['ai-usage'] as const;
 export function useAiUsageQuery(enabled: boolean) {
   return useQuery({
     queryKey: AI_USAGE_QUERY_KEY,
-    queryFn: async () => (await api.get<AiUsage>('/ai-usage')).data,
+    queryFn: async () => (await api.get<AiUsage>('/ai/usage')).data,
     enabled,
   });
 }

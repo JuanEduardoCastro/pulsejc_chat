@@ -38,19 +38,23 @@ function MessageBubble({
           style={{ color: 'var(--text-h)' }}
         >
           {message.content}
-          <span className="float-right mt-1 ml-3 flex translate-y-1 items-center gap-1 text-[11px] opacity-70">
-            <span className="whitespace-nowrap">{time}</span>
-            {showReadReceipt && (
-              <span
-                className="tracking-[-6px] font-semibold text-[13px]"
-                style={{
-                  color: message.readAt ? 'var(--check-icon)' : 'inherit',
-                }}
-              >
-                ✓✓
-              </span>
-            )}
-          </span>
+          {message.isStreaming ? (
+            <span className="ml-0.5 inline-block animate-pulse">▍</span>
+          ) : (
+            <span className="float-right mt-1 ml-3 flex translate-y-1 items-center gap-1 text-[11px] opacity-70">
+              <span className="whitespace-nowrap">{time}</span>
+              {showReadReceipt && (
+                <span
+                  className="tracking-[-6px] font-semibold text-[13px]"
+                  style={{
+                    color: message.readAt ? 'var(--check-icon)' : 'inherit',
+                  }}
+                >
+                  ✓✓
+                </span>
+              )}
+            </span>
+          )}
         </p>
         {/* <div
           className={`flex-1 bg-amber-400 mt-1 flex items-end gap-1 text-[11px] opacity-70 ${

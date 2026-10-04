@@ -268,9 +268,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
 
       const user = await this.usersService.findById(userId);
+      const userRoom = `user:${userId}`;
       const replayContent = await this.aiService.generateReplay(
         messages,
         user?.locale ?? 'en',
+        {
+          onProgress: (text) =>
+            this.server
+              .to(userRoom)
+              .emit('ai-stream', { conversationId, text }),
+          onRetry: (retry, maxRetries) =>
+            this.server
+              .to(userRoom)
+              .emit('ai-retrying', { conversationId, retry, maxRetries }),
+        },
       );
       const aiMessage = await this.messagesService.createAiMessage(
         conversationId,

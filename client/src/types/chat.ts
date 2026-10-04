@@ -1,6 +1,7 @@
 export type ConversationType = 'DIRECT' | 'AI';
 export type SenderType = 'USER' | 'AI';
 export type AttachmentType = 'IMAGE' | 'AUDIO' | 'VIDEO' | 'FILE';
+export type AiErrorCode = 'BUSY' | 'UNAVAILABLE' | 'QUOTA';
 
 export type ChatUser = {
   id: string;
@@ -25,6 +26,7 @@ export type Message = {
   attachmentType: AttachmentType | null;
   createdAt: string;
   readAt: string | null;
+  isStreaming?: boolean;
 };
 
 export type ConversationSummary = {

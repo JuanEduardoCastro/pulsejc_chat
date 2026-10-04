@@ -1,5 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { AiProviderError, AIProvider } from './ai-provider.interface';
+import {
+  AiProviderError,
+  AIProvider,
+  type AiReplyCallbacks,
+} from './ai-provider.interface';
 import {
   GoogleGenerativeAI,
   GoogleGenerativeAIFetchError,
@@ -10,9 +14,25 @@ import { Message } from '../../generated/prisma/client';
 
 const RETRYABLE_STATUSES = new Set([429, 500, 503]);
 const RETRY_DELAYS_MS = [1000, 3000];
+const MAX_RETRY_WAIT_MS = 60_000;
 const SYSTEM_INSTRUCTION =
   'You are Pulse, the AI assistant built into the Pulse.Jc chat app. Keep replies short, friendly and conversational.';
 const LANGUAGE_NAMES: Record<string, string> = { en: 'English', es: 'Spanish' };
+
+function getRetryAfterMs(
+  error: GoogleGenerativeAIFetchError,
+): number | undefined {
+  const retryInfo = error.errorDetails?.find((detail) =>
+    detail['@type']?.endsWith('RetryInfo'),
+  );
+  const retryDelay = retryInfo?.retryDelay;
+  const match =
+    typeof retryDelay === 'string'
+      ? /^(\d+(?:\.\d+)?)s$/.exec(retryDelay)
+      : null;
+
+  return match ? Number(match[1]) * 1000 : undefined;
+}
 
 function buildSystemInstruction(locale: string) {
   const language = LANGUAGE_NAMES[locale] ?? 'English';
@@ -23,16 +43,25 @@ function buildSystemInstruction(locale: string) {
 export class GeminiProvider implements AIProvider {
   private readonly logger = new Logger(GeminiProvider.name);
   private readonly client: GoogleGenerativeAI;
+  private readonly modelName: string;
 
   constructor(private readonly configService: ConfigService) {
     this.client = new GoogleGenerativeAI(
       this.configService.getOrThrow<string>('AI_API_KEY'),
     );
+    this.modelName = this.configService.get<string>(
+      'AI_MODEL',
+      'gemini-3.1-flash-lite',
+    );
   }
 
-  async generateResponse(messages: Message[], locale: string): Promise<string> {
+  async generateResponse(
+    messages: Message[],
+    locale: string,
+    callbacks?: AiReplyCallbacks,
+  ): Promise<string> {
     const model = this.client.getGenerativeModel({
-      model: 'gemini-flash-latest',
+      model: this.modelName,
       systemInstruction: buildSystemInstruction(locale),
     });
 
@@ -44,22 +73,42 @@ export class GeminiProvider implements AIProvider {
     const lastMessage = messages[messages.length - 1];
 
     for (let attempt = 0; ; attempt++) {
+      let text = '';
       try {
         const chat = model.startChat({ history });
-        const result = await chat.sendMessage(lastMessage.content ?? '');
-        return result.response.text();
+        const result = await chat.sendMessageStream(lastMessage.content ?? '');
+        for await (const chunk of result.stream) {
+          text += chunk.text();
+          callbacks?.onProgress?.(text);
+        }
+        return text;
       } catch (error) {
-        const status =
-          error instanceof GoogleGenerativeAIFetchError
-            ? error.status
-            : undefined;
-        const isRetryable = !!status && RETRYABLE_STATUSES.has(status);
+        const fetchError =
+          error instanceof GoogleGenerativeAIFetchError ? error : undefined;
+        const status = fetchError?.status;
+        const retryAfterMs = fetchError
+          ? getRetryAfterMs(fetchError)
+          : undefined;
+        const isQuotaExceeded =
+          status === 429 &&
+          retryAfterMs !== undefined &&
+          retryAfterMs > MAX_RETRY_WAIT_MS;
+        const isRetryable =
+          !!status && RETRYABLE_STATUSES.has(status) && !isQuotaExceeded;
         const delay = RETRY_DELAYS_MS[attempt];
+
+        if (isQuotaExceeded) {
+          this.logger.warn(
+            `Gemini quota exceeded, next request allowed in ~${Math.ceil(retryAfterMs / 60_000)} min`,
+          );
+          throw new AiProviderError('QUOTA', (error as Error).message);
+        }
 
         if (isRetryable && delay !== undefined) {
           this.logger.warn(
             `Gemini returned ${status}, retrying in ${delay}ms (retry ${attempt + 1}/${RETRY_DELAYS_MS.length})`,
           );
+          callbacks?.onRetry?.(attempt + 1, RETRY_DELAYS_MS.length);
           await new Promise((resolve) => setTimeout(resolve, delay));
           continue;
         }

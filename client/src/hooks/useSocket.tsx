@@ -18,11 +18,13 @@ import type {
   Message,
   AppNotification,
   AiUsage,
+  AiErrorCode,
 } from '@/types/chat';
 import type { MessagesPage } from '@/queries/useMessagesQuery';
 import { useTranslation } from 'react-i18next';
 import { getDisplayName } from '@/lib/displayName';
 import { AI_USAGE_QUERY_KEY } from '@/queries/useAiUsageQuery';
+import { AI_ERROR_KEY } from '@/lib/aiErrors';
 
 type SocketContextValue = {
   isConnected: boolean;
@@ -37,6 +39,8 @@ const SocketContext = createContext<SocketContextValue | null>(null);
 
 const TYPING_SAFETY_TIMEOUT_MS = 5000;
 
+const aiStreamId = (conversationId: string) => `ai-stream-${conversationId}`;
+
 export function SocketProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation('chat');
   const tRef = useRef(t);
@@ -46,6 +50,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const setOnline = usePresenceStore((state) => state.setOnline);
   const setTypingState = usePresenceStore((state) => state.setTyping);
   const setAiError = usePresenceStore((state) => state.setAiError);
+  const setAiRetry = usePresenceStore((state) => state.setAiRetry);
   const incrementUnread = usePresenceStore((state) => state.incrementUnread);
   const { conversationId: routeConversationId } = useParams<{
     conversationId: string;
@@ -79,6 +84,26 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     });
     socketRef.current = socket;
 
+    function updateNewestPage(
+      conversationId: string,
+      update: (messages: Message[]) => Message[],
+    ) {
+      queryClient.setQueryData<InfiniteData<MessagesPage>>(
+        ['messages', conversationId],
+        (prev) => {
+          if (!prev) return prev;
+          const [firstPage, ...rest] = prev.pages;
+          return {
+            ...prev,
+            pages: [
+              { ...firstPage, messages: update(firstPage.messages) },
+              ...rest,
+            ],
+          };
+        },
+      );
+    }
+
     socket.on('connect', () => setIsConnected(true));
     socket.on('disconnect', () => setIsConnected(false));
 
@@ -97,21 +122,16 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     );
 
     socket.on('new-message', (message: Message) => {
-      if (message.senderType === 'AI') setAiError(message.conversationId, null);
-      queryClient.setQueryData<InfiniteData<MessagesPage>>(
-        ['messages', message.conversationId],
-        (prev) => {
-          if (!prev) return prev;
-          const [firstPage, ...rest] = prev.pages;
-          return {
-            ...prev,
-            pages: [
-              { ...firstPage, messages: [...firstPage.messages, message] },
-              ...rest,
-            ],
-          };
-        },
-      );
+      if (message.senderType === 'AI') {
+        setAiError(message.conversationId, null);
+        setAiRetry(message.conversationId, null);
+      }
+
+      const streamId = aiStreamId(message.conversationId);
+      updateNewestPage(message.conversationId, (messages) => [
+        ...messages.filter((m) => m.id !== streamId),
+        message,
+      ]);
 
       queryClient.setQueryData<ConversationSummary[]>(
         ['conversations'],
@@ -224,14 +244,52 @@ export function SocketProvider({ children }: { children: ReactNode }) {
         code,
       }: {
         conversationId: string;
-        code: 'BUSY' | 'UNAVAILABLE';
+        code: AiErrorCode;
       }) => {
-        setAiError(conversationId, code);
-        toast.error(
-          tRef.current(
-            code === 'BUSY' ? 'ai.errorBusy' : 'ai.errorUnavailable',
-          ),
+        updateNewestPage(conversationId, (messages) =>
+          messages.filter((m) => m.id !== aiStreamId(conversationId)),
         );
+        setAiError(conversationId, code);
+        setAiRetry(conversationId, null);
+        toast.error(tRef.current(AI_ERROR_KEY[code]));
+      },
+    );
+
+    socket.on(
+      'ai-stream',
+      ({ conversationId, text }: { conversationId: string; text: string }) => {
+        const streamId = aiStreamId(conversationId);
+        const streaming: Message = {
+          id: streamId,
+          conversationId,
+          senderType: 'AI',
+          senderId: null,
+          content: text,
+          attachmentUrl: null,
+          attachmentType: null,
+          createdAt: new Date().toISOString(),
+          readAt: null,
+          isStreaming: true,
+        };
+        updateNewestPage(conversationId, (messages) => [
+          ...messages.filter((m) => m.id !== streamId),
+          streaming,
+        ]);
+      },
+    );
+
+    socket.on(
+      'ai-retrying',
+      ({
+        conversationId,
+        retry,
+        maxRetries,
+      }: {
+        conversationId: string;
+        retry: number;
+        maxRetries: number;
+      }) => {
+        setAiRetry(conversationId, { retry, maxRetries });
       },
     );
 
@@ -272,6 +330,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     incrementUnread,
     setOnlineSnapshot,
     setAiError,
+    setAiRetry,
   ]);
 
   const sendMessage = useCallback(
