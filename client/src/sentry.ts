@@ -7,8 +7,12 @@ Sentry.init({
   dataCollection: {
     userInfo: false,
   },
-  // Session Replay
-  integrations: [Sentry.replayIntegration()],
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 1.0,
 });
+
+Sentry.lazyLoadIntegration('replayIntegration')
+  .then((replayIntegration) => Sentry.addIntegration(replayIntegration()))
+  .catch(() => {
+    // Replay is optional: if the CDN is blocked (ad blocker, CSP), errors are still reported
+  });
