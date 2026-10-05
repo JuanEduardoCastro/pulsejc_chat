@@ -1,0 +1,108 @@
+{
+  "nav": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "openApp": "Abrir app",
+    "toggleTheme": "Cambiar tema",
+    "toggleLanguage": "Switch to English"
+  },
+  "hero": {
+    "badge": "Tiempo real · Asistente IA · Código abierto",
+    "titleLine1": "Chatea en tiempo real,",
+    "titleLine2": "con una pequeña ayuda.",
+    "subtitle": "Pulse.Jc es un chat 1 a 1 con presencia en vivo, indicador de escritura y confirmación de lectura — y un asistente de IA que transmite sus respuestas mientras las escribe.",
+    "ctaPrimary": "Empezar — es gratis",
+    "ctaGithub": "Ver en GitHub"
+  },
+  "stats": {
+    "realtime": { "value": "Tiempo real", "label": "Mensajería con Socket.io" },
+    "ai": { "value": "IA", "label": "Respuestas en streaming" },
+    "i18n": { "value": "ES / EN", "label": "Bilingüe, claro y oscuro" },
+    "typescript": { "value": "100%", "label": "TypeScript de punta a punta" }
+  },
+  "mockup": {
+    "aiName": "Pulse IA",
+    "aiStatus": "Siempre disponible",
+    "user1": "¡Hola! ¿Qué puedes hacer?",
+    "ai1": "Puedo responder preguntas, ayudarte a escribir un mensaje o simplemente conversar.",
+    "user2": "Genial. ¿Y respondes en vivo?",
+    "ai2": "Sí — me estás viendo escribir esto, palabra por palabra",
+    "input": "Escribe un mensaje",
+    "send": "Enviar",
+    "typing": "Ana está escribiendo…",
+    "read": "Leído"
+  },
+  "features": {
+    "label": "Qué incluye",
+    "title": "Todo lo que un chat necesita",
+    "subtitle": "Lo esencial de un mensajero moderno, construido desde cero.",
+    "items": {
+      "realtime": {
+        "title": "Mensajería en tiempo real",
+        "desc": "Los mensajes llegan al instante por WebSockets, con presencia en línea, indicador de escritura y confirmaciones de lectura en vivo."
+      },
+      "ai": {
+        "title": "Asistente de IA",
+        "desc": "Chatea con Pulse IA, impulsado por Google Gemini. Las respuestas aparecen mientras se generan, en el idioma de tu app."
+      },
+      "contacts": {
+        "title": "Contactos y notificaciones",
+        "desc": "Agrega personas por email, acepta o rechaza solicitudes y recibe avisos en tiempo real — con una bandeja para lo que te perdiste."
+      },
+      "i18n": {
+        "title": "Bilingüe, claro y oscuro",
+        "desc": "Interfaz completa en español e inglés y un tema que sigue a tu sistema — ambos guardados en tu cuenta."
+      },
+      "pro": {
+        "title": "Planes Free y Pro",
+        "desc": "Una suscripción Pro con Stripe Checkout y el Customer Portal aumenta el límite diario de mensajes a la IA. (Modo de prueba — sin cobros reales.)"
+      },
+      "security": {
+        "title": "Seguro por diseño",
+        "desc": "Cookies httpOnly con refresh tokens rotativos, inicio de sesión con Google, rate limiting y una Content Security Policy estricta."
+      }
+    }
+  },
+  "built": {
+    "label": "Por dentro",
+    "title": "Cómo está construido",
+    "subtitle": "Un proyecto full-stack en TypeScript, desplegado y monitoreado como una app en producción.",
+    "stackLabel": "Construido con",
+    "items": {
+      "architecture": {
+        "title": "React + NestJS",
+        "desc": "React 19 con TanStack Query y Zustand en el cliente; una API modular en NestJS con Prisma y PostgreSQL en el servidor."
+      },
+      "streaming": {
+        "title": "Streaming con Socket.io",
+        "desc": "Las respuestas de la IA se envían fragmento a fragmento a la sala del usuario, con estado de reintento y manejo de cuota."
+      },
+      "cicd": {
+        "title": "CI/CD",
+        "desc": "GitHub Actions ejecuta lint, chequeo de tipos y tests unitarios y e2e en cada PR, y despliega en EC2 con credenciales OIDC de corta duración."
+      },
+      "aws": {
+        "title": "AWS",
+        "desc": "Una instancia EC2 detrás de Nginx con PM2, S3 para avatares y SES para emails transaccionales."
+      },
+      "monitoring": {
+        "title": "Monitoreo",
+        "desc": "Sentry en servidor y cliente, con session replays de los errores, más monitoreo de disponibilidad."
+      },
+      "performance": {
+        "title": "Rendimiento",
+        "desc": "Code splitting por rutas y modales más un chunk vendor de larga duración redujeron el bundle inicial a la mitad."
+      }
+    }
+  },
+  "cta": {
+    "title": "¿Listo para saludar?",
+    "subtitle": "Crea una cuenta en segundos — o inicia sesión con Google.",
+    "button": "Crear tu cuenta"
+  },
+  "footer": {
+    "github": "GitHub",
+    "login": "Log in",
+    "author": "Juan Eduardo Castro"
+  }
+}

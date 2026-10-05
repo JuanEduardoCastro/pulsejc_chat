@@ -1,0 +1,108 @@
+{
+  "nav": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "openApp": "Open app",
+    "toggleTheme": "Toggle theme",
+    "toggleLanguage": "Cambiar a español"
+  },
+  "hero": {
+    "badge": "Real-time · AI assistant · Open source",
+    "titleLine1": "Talk in real time,",
+    "titleLine2": "with a little help.",
+    "subtitle": "Pulse.Jc is a 1-to-1 chat with live presence, typing indicators and read receipts — plus an AI assistant that streams its replies as it writes them.",
+    "ctaPrimary": "Get started — it's free",
+    "ctaGithub": "View on GitHub"
+  },
+  "stats": {
+    "realtime": { "value": "Real-time", "label": "Socket.io messaging" },
+    "ai": { "value": "AI", "label": "Streaming replies" },
+    "i18n": { "value": "ES / EN", "label": "Bilingual, light & dark" },
+    "typescript": { "value": "100%", "label": "TypeScript, end to end" }
+  },
+  "mockup": {
+    "aiName": "Pulse AI",
+    "aiStatus": "Always available",
+    "user1": "Hey! What can you do?",
+    "ai1": "I can answer questions, help you write a message or just chat — in English or Spanish.",
+    "user2": "Nice. And you reply live?",
+    "ai2": "Yes — you're watching me type this, word by word",
+    "input": "Type a message",
+    "send": "Send",
+    "typing": "Ana is typing…",
+    "read": "Read"
+  },
+  "features": {
+    "label": "What's inside",
+    "title": "Everything a chat needs",
+    "subtitle": "The essentials of a modern messenger, built from scratch.",
+    "items": {
+      "realtime": {
+        "title": "Real-time messaging",
+        "desc": "Messages arrive instantly over WebSockets, with online presence, typing indicators and read receipts that update live."
+      },
+      "ai": {
+        "title": "AI assistant",
+        "desc": "Chat with Pulse AI, powered by Google Gemini. Replies stream in as they're generated, in your app's language."
+      },
+      "contacts": {
+        "title": "Contacts & notifications",
+        "desc": "Add people by email, accept or decline requests, and get notified in real time — with an inbox for everything you missed."
+      },
+      "i18n": {
+        "title": "Bilingual, light & dark",
+        "desc": "Full Spanish and English interface and a theme that follows your system — both saved to your account."
+      },
+      "pro": {
+        "title": "Free & Pro plans",
+        "desc": "A Pro subscription with Stripe Checkout and the Customer Portal raises the daily AI message limit. (Test mode — no real charges.)"
+      },
+      "security": {
+        "title": "Secure by design",
+        "desc": "httpOnly cookies with rotating refresh tokens, Google sign-in, rate limiting and a strict Content Security Policy."
+      }
+    }
+  },
+  "built": {
+    "label": "Under the hood",
+    "title": "How it's built",
+    "subtitle": "A full-stack TypeScript project, deployed and monitored like a production app.",
+    "stackLabel": "Built with",
+    "items": {
+      "architecture": {
+        "title": "React + NestJS",
+        "desc": "React 19 with TanStack Query and Zustand on the client; a modular NestJS API with Prisma and PostgreSQL on the server."
+      },
+      "streaming": {
+        "title": "Streaming over Socket.io",
+        "desc": "AI replies are forwarded chunk by chunk to the user's room, with retry status and quota-aware error handling."
+      },
+      "cicd": {
+        "title": "CI/CD",
+        "desc": "GitHub Actions runs lint, type checks, unit and e2e tests on every PR, then deploys to EC2 through short-lived OIDC credentials."
+      },
+      "aws": {
+        "title": "AWS",
+        "desc": "A single EC2 instance behind Nginx with PM2, S3 for avatars and SES for transactional email."
+      },
+      "monitoring": {
+        "title": "Monitoring",
+        "desc": "Sentry on both server and client, with session replays for errors, plus uptime monitoring."
+      },
+      "performance": {
+        "title": "Performance",
+        "desc": "Route and modal code splitting plus a long-lived vendor chunk halved the initial bundle."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to say hi?",
+    "subtitle": "Create an account in seconds — or sign in with Google.",
+    "button": "Create your account"
+  },
+  "footer": {
+    "github": "GitHub",
+    "login": "Log in",
+    "author": "Juan Eduardo Castro"
+  }
+}

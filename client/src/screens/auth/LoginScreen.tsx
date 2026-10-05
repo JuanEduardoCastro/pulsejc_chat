@@ -54,6 +54,8 @@ function LoginScreen() {
 
   return (
     <AuthCard
+      actions="signup"
+      showHomeLink={true}
       title={t('auth:login.title')}
       footer={
         <>

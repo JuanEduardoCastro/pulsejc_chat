@@ -66,7 +66,11 @@ function ResetPasswordScreen() {
 
   if (!token || errors.root) {
     return (
-      <AuthCard title={t('auth:resetPassword.invalidTokenTitle')}>
+      <AuthCard
+        actions="both"
+        showHomeLink={true}
+        title={t('auth:resetPassword.invalidTokenTitle')}
+      >
         <p className="text-center text-sm">
           {t('auth:resetPassword.invalidTokenDescription')}
         </p>
@@ -81,7 +85,11 @@ function ResetPasswordScreen() {
   }
 
   return (
-    <AuthCard title={t('auth:resetPassword.title')}>
+    <AuthCard
+      actions="both"
+      showHomeLink={true}
+      title={t('auth:resetPassword.title')}
+    >
       <form
         onSubmit={handleSubmit((values) =>
           resetPasswordMutation.mutate(values),

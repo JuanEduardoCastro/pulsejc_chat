@@ -40,6 +40,8 @@ function ForgotPasswordScreen() {
 
   return (
     <AuthCard
+      actions="both"
+      showHomeLink={true}
       title={t('auth:forgotPassword.title')}
       footer={
         <Link
