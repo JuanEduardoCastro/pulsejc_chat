@@ -100,6 +100,8 @@ function RegisterScreen() {
 
   return (
     <AuthCard
+      actions="login"
+      showHomeLink={true}
       title={
         step === 1
           ? t('auth:register.step1Title')

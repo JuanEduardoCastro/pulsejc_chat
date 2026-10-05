@@ -1,0 +1,179 @@
+{
+  "badge": "Legal",
+  "title": "Política de Privacidad",
+  "lastUpdated": "Última actualización: 5 de octubre de 2026",
+  "intro": [
+    "Esta Política de Privacidad describe cómo Pulse.Jc recopila, usa y divulga tu información cuando usas el Servicio, y te informa sobre tus derechos de privacidad y cómo te protege la ley.",
+    "Usamos tus Datos Personales para brindar y mejorar el Servicio. Recopilamos, usamos y divulgamos tu información según lo descrito en esta Política de Privacidad y, cuando la ley aplicable lo exige, solo cuando contamos con una base legal válida para hacerlo.",
+    "**Sobre este Servicio.** Pulse.Jc es un proyecto de demostración para portafolio, desarrollado y operado por un desarrollador independiente. No es un servicio comercial. Los pagos funcionan en el modo de prueba de Stripe, por lo que nunca se realizan cobros reales."
+  ],
+  "sections": [
+    {
+      "title": "Definiciones",
+      "blocks": [
+        [
+          "**Cuenta** es la cuenta única creada para que accedas al Servicio.",
+          "**Compañía** (\"nosotros\" o \"nuestro\") se refiere a Pulse.Jc, operado por Juan Eduardo Castro, Argentina.",
+          "**Cookies** son pequeños archivos que un sitio web guarda en tu dispositivo.",
+          "**Datos Personales** es cualquier información relacionada con una persona identificada o identificable.",
+          "**Servicio** se refiere al sitio web Pulse.Jc, accesible desde [https://pulsejc.com](https://pulsejc.com).",
+          "**Proveedor de Servicios** es una empresa externa que procesa datos en nombre de la Compañía para brindar el Servicio. Se detallan en \"Proveedores de Servicios\".",
+          "**Datos de Uso** son los datos que se recopilan automáticamente al usar el Servicio.",
+          "**Tú** eres la persona que accede al Servicio o lo usa."
+        ]
+      ]
+    },
+    {
+      "title": "Datos que recopilamos",
+      "blocks": [
+        { "subtitle": "Datos Personales" },
+        "Al usar el Servicio, te pedimos información que puede usarse para identificarte:",
+        [
+          "Dirección de correo electrónico (obligatoria para crear una Cuenta).",
+          "Contraseña, guardada solo como un hash irreversible: nunca guardamos ni vemos tu contraseña en texto plano. Las cuentas creadas con Google no tienen contraseña.",
+          "Nombre, apellido y apodo (opcionales).",
+          "Foto de perfil (opcional).",
+          "Idioma preferido (español o inglés)."
+        ],
+        { "subtitle": "Contenido que creas" },
+        [
+          "**Mensajes.** Los mensajes que envías se guardan en nuestros servidores para poder entregarlos y mostrarlos en tu historial de conversaciones. Son visibles para el otro participante de la conversación.",
+          "**Contactos.** Las personas que agregas como contactos, las solicitudes de contacto que envías y recibes, y las notificaciones relacionadas.",
+          "**Mensajes al asistente de IA.** Los mensajes que envías a Pulse IA se guardan como cualquier otro mensaje y además se envían a Google para generar una respuesta (ver \"Asistente de IA\")."
+        ],
+        { "subtitle": "Inicio de sesión con Google" },
+        "Si eliges iniciar sesión con Google, recibimos de Google tu correo electrónico, tu nombre, tu foto de perfil y un identificador de tu cuenta de Google. No recibimos tu contraseña de Google ni acceso a ningún otro dato de tu cuenta de Google.",
+        { "subtitle": "Datos de suscripción" },
+        "Si te suscribes al plan Pro, el pago lo gestiona íntegramente Stripe. Nunca recibimos ni guardamos el número de tu tarjeta. Solo guardamos un identificador de cliente de Stripe, un identificador de suscripción, tu plan, el estado de la suscripción y su fecha de renovación o finalización.",
+        { "subtitle": "Datos de Uso" },
+        "Los Datos de Uso se recopilan automáticamente y pueden incluir tu dirección IP, el tipo y la versión de tu navegador, las páginas del Servicio que visitas, la fecha y hora de tu visita y otros datos de diagnóstico. No usamos herramientas de analítica ni de publicidad, y no te rastreamos en otros sitios web.",
+        { "subtitle": "Monitoreo de errores" },
+        "Usamos Sentry para detectar y corregir errores. Cuando ocurre un error, Sentry puede recibir información técnica sobre él, como el tipo de navegador, la página donde ocurrió y los pasos que llevaron a él. En ese caso, Sentry también puede grabar una breve repetición de la sesión previa al error, para que podamos reproducir el problema. Las repeticiones de sesión se graban solo cuando ocurre un error, nunca durante el uso normal."
+      ]
+    },
+    {
+      "title": "Cookies y almacenamiento local",
+      "blocks": [
+        "Usamos únicamente las Cookies y el almacenamiento del navegador estrictamente necesarios para que el Servicio funcione. No usamos Cookies de publicidad, analítica ni seguimiento, ni web beacons. Por eso, el Servicio no muestra un banner de consentimiento de cookies.",
+        { "subtitle": "Cookies de autenticación" },
+        [
+          "**Nombres:** accessToken (vence a los 15 minutos) y refreshToken (vence a los 30 días o al cerrar sesión).",
+          "**Tipo:** persistentes y httpOnly, por lo que los scripts de la página no pueden leerlas.",
+          "**Finalidad:** mantienen tu sesión iniciada y protegen tu Cuenta contra usos no autorizados. Sin ellas no puedes usar el Servicio."
+        ],
+        { "subtitle": "Almacenamiento local" },
+        "El Servicio también guarda en tu navegador tu tema (claro u oscuro), tu idioma y una copia de tu perfil básico para que la interfaz cargue rápido. Esta información permanece en tu dispositivo y se elimina al cerrar sesión o al borrar los datos del navegador.",
+        "Puedes configurar tu navegador para rechazar las Cookies, pero en ese caso no podrás iniciar sesión en el Servicio."
+      ]
+    },
+    {
+      "title": "Cómo usamos tus datos",
+      "blocks": [
+        [
+          "**Para brindar el Servicio:** entregar tus mensajes en tiempo real y mostrar tu historial de conversaciones, tus contactos, tu estado en línea, el indicador de escritura y las confirmaciones de lectura.",
+          "**Para gestionar tu Cuenta:** tu registro como usuario y el acceso a las funciones del Servicio.",
+          "**Para brindar el asistente de IA:** generar respuestas a los mensajes que envías a Pulse IA y contar los mensajes a la IA que usas según el límite diario de tu plan.",
+          "**Para gestionar tu suscripción:** darte acceso a las funciones Pro mientras tu suscripción esté activa.",
+          "**Para contactarte:** enviarte los correos que requiere el Servicio, como los enlaces para restablecer la contraseña. No enviamos correos de marketing ni mensajes de texto.",
+          "**Para mantener el Servicio seguro y en funcionamiento:** prevenir abusos (por ejemplo, limitando la cantidad de solicitudes), detectar y corregir errores y proteger a los Usuarios.",
+          "**Para atender las solicitudes** que nos envíes."
+        ]
+      ]
+    },
+    {
+      "title": "Proveedores de Servicios",
+      "blocks": [
+        "Compartimos Datos Personales solo con los Proveedores de Servicios necesarios para operar el Servicio, y solo los datos que cada uno necesita:",
+        [
+          "**Amazon Web Services (AWS), Estados Unidos:** servidores y base de datos (Amazon EC2), almacenamiento de fotos de perfil (Amazon S3) y envío de correos como el restablecimiento de contraseña (Amazon SES).",
+          "**Google:** inicio de sesión con Google (si lo usas) y la API de Gemini, que genera las respuestas del asistente de IA.",
+          "**Stripe:** pagos de la suscripción y portal de facturación.",
+          "**Sentry:** monitoreo de errores y repeticiones de sesión cuando ocurre un error."
+        ]
+      ]
+    },
+    {
+      "title": "Asistente de IA",
+      "blocks": [
+        "Cuando envías un mensaje a Pulse IA, ese mensaje y los mensajes anteriores de tu conversación con el asistente se envían a la API de Gemini de Google para generar una respuesta. El Servicio usa el nivel gratuito de Gemini. Según los términos de Google para el nivel gratuito, Google puede usar este contenido para mejorar sus productos, y revisores humanos pueden leerlo.",
+        "**No compartas información sensible, confidencial ni personal con el asistente de IA.** Los mensajes que intercambias con otros Usuarios nunca se envían al asistente de IA.",
+        "Para más información, consulta los [Términos de Servicio Adicionales de la API de Gemini](https://ai.google.dev/gemini-api/terms) y la [Política de Privacidad de Google](https://policies.google.com/privacy)."
+      ]
+    },
+    {
+      "title": "Otras divulgaciones",
+      "blocks": [
+        [
+          "**Con otros Usuarios:** tu nombre, apodo, correo electrónico y foto de perfil son visibles para tus contactos y para los Usuarios que te buscan por correo para enviarte una solicitud de contacto. Tu estado en línea es visible para tus contactos.",
+          "**Cuando lo exige la ley:** podemos divulgar Datos Personales si la ley lo exige o ante solicitudes válidas de autoridades públicas.",
+          "**Con tu consentimiento:** para cualquier otro fin, solo con tu consentimiento."
+        ],
+        "No vendemos tus Datos Personales ni los compartimos con nadie con fines de publicidad o marketing."
+      ]
+    },
+    {
+      "title": "Conservación de los datos",
+      "blocks": [
+        [
+          "**Datos de la Cuenta:** mientras tu Cuenta exista. Cuando eliminas tu Cuenta, se elimina de inmediato (ver \"Tus derechos y eliminación de tus datos\").",
+          "**Mensajes:** mientras tu Cuenta exista. Eliminar una conversación de tu lista la oculta para ti, pero el otro participante conserva su copia.",
+          "**Registros del servidor:** durante un período limitado, para monitoreo de seguridad y resolución de problemas, y luego se eliminan.",
+          "**Reportes de errores y repeticiones de sesión:** Sentry los conserva durante un período limitado según su política de retención de datos, y luego se eliminan.",
+          "**Copias de seguridad:** la base de datos se respalda a diario y cada copia se elimina automáticamente a los 7 días, por lo que los datos eliminados pueden permanecer en una copia hasta 7 días."
+        ],
+        "Podemos conservar Datos Personales por más tiempo solo cuando la ley lo exija o cuando sea necesario para establecer, ejercer o defender reclamos legales."
+      ]
+    },
+    {
+      "title": "Transferencias internacionales",
+      "blocks": [
+        "Tu información se almacena en servidores ubicados en Estados Unidos (AWS, región us-east-1) y la procesan los Proveedores de Servicios mencionados, que pueden estar ubicados fuera de tu país. Las leyes de protección de datos de esos países pueden ser distintas de las de tu jurisdicción. Tomamos medidas razonables para que tus datos se traten de forma segura y conforme a esta Política de Privacidad."
+      ]
+    },
+    {
+      "title": "Tus derechos y eliminación de tus datos",
+      "blocks": [
+        "Tienes derecho a acceder, rectificar y eliminar los Datos Personales que tenemos sobre ti.",
+        [
+          "**Editar tu perfil:** cambia tu nombre, apodo y foto de perfil en cualquier momento desde la sección Perfil de la app.",
+          "**Eliminar tu Cuenta:** elimina tu Cuenta de forma permanente en cualquier momento desde Perfil → \"Eliminar cuenta\". Esto elimina de inmediato tu Cuenta, tu foto de perfil, tus contactos, tus notificaciones y todas tus conversaciones, incluidos sus mensajes y tu conversación con el asistente de IA. Como una conversación es compartida entre dos Usuarios, al eliminar tu Cuenta también se elimina para el otro participante. Una suscripción Pro activa se cancela de inmediato.",
+          "**Por correo:** escríbenos a [contact@pulsejc.com](mailto:contact@pulsejc.com) para solicitar el acceso, la rectificación o la eliminación de tus datos."
+        ],
+        { "subtitle": "Usuarios en Argentina" },
+        "Tus Datos Personales están protegidos por la Ley N.° 25.326 de Protección de los Datos Personales. Tienes derecho a acceder a tus Datos Personales en forma gratuita a intervalos no inferiores a seis meses, salvo que acredites un interés legítimo al efecto, y a solicitar su rectificación, actualización y supresión.",
+        "La AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, en su carácter de Órgano de Control de la Ley N.° 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales."
+      ]
+    },
+    {
+      "title": "Seguridad",
+      "blocks": [
+        "Protegemos tus datos con medidas como el cifrado HTTPS de todo el tráfico, contraseñas guardadas como hashes irreversibles, Cookies de sesión httpOnly con refresh tokens rotativos y límites a la cantidad de solicitudes. Sin embargo, ningún método de transmisión por Internet ni de almacenamiento electrónico es 100% seguro, y no podemos garantizar una seguridad absoluta."
+      ]
+    },
+    {
+      "title": "Privacidad de menores",
+      "blocks": [
+        "El Servicio no está dirigido a menores de 16 años y no recopilamos a sabiendas Datos Personales de ellos. Si eres padre, madre o tutor y crees que tu hijo nos proporcionó Datos Personales, contáctanos y los eliminaremos lo antes posible."
+      ]
+    },
+    {
+      "title": "Enlaces a otros sitios web",
+      "blocks": [
+        "El Servicio puede incluir enlaces a sitios que no operamos, como las páginas de pago y facturación de Stripe o nuestro repositorio de GitHub. No tenemos control sobre su contenido ni sus prácticas de privacidad y no asumimos responsabilidad por ellos; te recomendamos revisar sus políticas de privacidad."
+      ]
+    },
+    {
+      "title": "Cambios en esta Política de Privacidad",
+      "blocks": [
+        "Podemos actualizar esta Política de Privacidad periódicamente. Publicaremos la nueva versión en esta página y actualizaremos la fecha de \"Última actualización\". Si los cambios son importantes, también te avisaremos por correo o con un aviso en el Servicio antes de que entren en vigor."
+      ]
+    },
+    {
+      "title": "Contacto",
+      "blocks": [
+        "Si tienes preguntas sobre esta Política de Privacidad o quieres ejercer alguno de tus derechos, escríbenos a [contact@pulsejc.com](mailto:contact@pulsejc.com).",
+        "Esta Política de Privacidad se creó con la ayuda del Free Privacy Policy Generator."
+      ]
+    }
+  ]
+}

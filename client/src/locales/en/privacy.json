@@ -1,0 +1,179 @@
+{
+  "badge": "Legal",
+  "title": "Privacy Policy",
+  "lastUpdated": "Last updated: October 5, 2026",
+  "intro": [
+    "This Privacy Policy describes how Pulse.Jc collects, uses and discloses Your information when You use the Service, and tells You about Your privacy rights and how the law protects You.",
+    "We use Your Personal Data to provide and improve the Service. We collect, use and disclose Your information as described in this Privacy Policy and, where required by applicable law, only where We have a valid legal basis to do so.",
+    "**About this Service.** Pulse.Jc is a portfolio demonstration project built and operated by an individual developer. It is not a commercial service. Payments run in Stripe's test mode, so no real charges are ever made."
+  ],
+  "sections": [
+    {
+      "title": "Definitions",
+      "blocks": [
+        [
+          "**Account** means a unique account created for You to access the Service.",
+          "**Company** (\"We\", \"Us\" or \"Our\") refers to Pulse.Jc, operated by Juan Eduardo Castro, Argentina.",
+          "**Cookies** are small files placed on Your device by a website.",
+          "**Personal Data** is any information that relates to an identified or identifiable individual.",
+          "**Service** refers to the website Pulse.Jc, accessible from [https://pulsejc.com](https://pulsejc.com).",
+          "**Service Provider** means a third-party company that processes data on behalf of the Company to provide the Service. They are listed in \"Service Providers\" below.",
+          "**Usage Data** refers to data collected automatically when using the Service.",
+          "**You** means the individual accessing or using the Service."
+        ]
+      ]
+    },
+    {
+      "title": "Data We Collect",
+      "blocks": [
+        { "subtitle": "Personal Data" },
+        "While using the Service, We ask You to provide information that can be used to identify You:",
+        [
+          "Email address (required to create an Account).",
+          "Password, stored only as a one-way hash — We never store or see Your password in plain text. Accounts created with Google sign-in have no password.",
+          "First name, last name and nickname (optional).",
+          "Profile picture (optional).",
+          "Language preference (Spanish or English)."
+        ],
+        { "subtitle": "Content You Create" },
+        [
+          "**Messages.** The messages You send are stored on Our servers so they can be delivered and shown in Your conversation history. They are visible to the other participant of the conversation.",
+          "**Contacts.** The people You add as contacts, the contact requests You send and receive, and related notifications.",
+          "**Messages to the AI assistant.** Messages You send to Pulse AI are stored like any other message and are also sent to Google to generate a reply (see \"AI Assistant\" below)."
+        ],
+        { "subtitle": "Sign in with Google" },
+        "If You choose to sign in with Google, We receive from Google Your email address, name, profile picture and a Google account identifier. We do not receive Your Google password or access to any other data in Your Google account.",
+        { "subtitle": "Subscription Data" },
+        "If You subscribe to the Pro plan, payment is handled entirely by Stripe. We never receive or store Your card number. We store only a Stripe customer identifier, a subscription identifier, Your plan, the subscription status and its renewal or end date.",
+        { "subtitle": "Usage Data" },
+        "Usage Data is collected automatically and may include Your IP address, browser type and version, the pages of the Service You visit, the time and date of Your visit, and other diagnostic data. We do not use analytics or advertising tools, and We do not track You across other websites.",
+        { "subtitle": "Error Monitoring" },
+        "We use Sentry to detect and fix errors. When an error occurs, Sentry may receive technical information about it, such as browser type, the page where it happened and the steps that led to it. In that case Sentry may also record a short replay of the session leading up to the error, so We can reproduce the problem. Session replays are recorded only when an error happens, never during normal use."
+      ]
+    },
+    {
+      "title": "Cookies and Local Storage",
+      "blocks": [
+        "We use only the Cookies and browser storage that are strictly necessary for the Service to work. We do not use advertising, analytics or tracking Cookies, and We do not use web beacons. Because of this, the Service does not show a cookie consent banner.",
+        { "subtitle": "Authentication Cookies" },
+        [
+          "**Names:** accessToken (expires after 15 minutes) and refreshToken (expires after 30 days, or when You log out).",
+          "**Type:** persistent and httpOnly, so they cannot be read by scripts on the page.",
+          "**Purpose:** they keep You signed in and protect Your Account against unauthorized use. Without them, You cannot use the Service."
+        ],
+        { "subtitle": "Local Storage" },
+        "The Service also stores in Your browser Your theme (light or dark), Your language and a copy of Your basic profile so the interface loads quickly. This information stays on Your device and is removed when You log out or clear Your browser data.",
+        "You can set Your browser to refuse Cookies, but then You will not be able to sign in to the Service."
+      ]
+    },
+    {
+      "title": "How We Use Your Data",
+      "blocks": [
+        [
+          "**To provide the Service:** delivering Your messages in real time and showing Your conversation history, contacts, online status, typing indicators and read receipts.",
+          "**To manage Your Account:** Your registration as a user and access to the Service's features.",
+          "**To provide the AI assistant:** generating replies to the messages You send to Pulse AI, and counting the AI messages You use against Your plan's daily limit.",
+          "**To manage Your subscription:** giving You access to Pro features while Your subscription is active.",
+          "**To contact You:** sending emails required by the Service, such as password reset links. We do not send marketing emails or text messages.",
+          "**To keep the Service secure and working:** preventing abuse (for example, by limiting the number of requests), detecting and fixing errors, and protecting Users.",
+          "**To manage Your requests** sent to Us."
+        ]
+      ]
+    },
+    {
+      "title": "Service Providers",
+      "blocks": [
+        "We share Personal Data only with the Service Providers needed to run the Service, and only the data each one needs:",
+        [
+          "**Amazon Web Services (AWS), United States:** servers and database (Amazon EC2), profile picture storage (Amazon S3) and emails such as password resets (Amazon SES).",
+          "**Google:** sign in with Google (if You use it) and the Gemini API, which generates the AI assistant's replies.",
+          "**Stripe:** subscription payments and the billing portal.",
+          "**Sentry:** error monitoring and session replays when an error occurs."
+        ]
+      ]
+    },
+    {
+      "title": "AI Assistant",
+      "blocks": [
+        "When You send a message to Pulse AI, that message and the previous messages of Your conversation with the AI assistant are sent to Google's Gemini API to generate a reply. The Service uses Gemini's free tier. Under Google's terms for the free tier, Google may use this content to improve its products, and human reviewers may read it.",
+        "**Do not share sensitive, confidential or personal information with the AI assistant.** Messages You exchange with other Users are never sent to the AI assistant.",
+        "For more information, see the [Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms) and [Google's Privacy Policy](https://policies.google.com/privacy)."
+      ]
+    },
+    {
+      "title": "Other Disclosures",
+      "blocks": [
+        [
+          "**With other Users:** Your name, nickname, email address and profile picture are visible to Your contacts and to Users who search for You by email to send a contact request. Your online status is visible to Your contacts.",
+          "**When required by law:** We may disclose Personal Data if required by law or in response to valid requests by public authorities.",
+          "**With Your consent:** for any other purpose, only with Your consent."
+        ],
+        "We do not sell Your Personal Data, and We do not share it with anyone for advertising or marketing purposes."
+      ]
+    },
+    {
+      "title": "Data Retention",
+      "blocks": [
+        [
+          "**Account information:** for as long as Your Account exists. When You delete Your Account, it is deleted immediately (see \"Your Rights and Deleting Your Data\").",
+          "**Messages:** for as long as Your Account exists. Deleting a conversation from Your chat list hides it for You, but the other participant keeps their copy.",
+          "**Server logs:** for a limited period, for security monitoring and troubleshooting, and then deleted.",
+          "**Error reports and session replays:** kept by Sentry for a limited period according to its data retention policy, and then deleted.",
+          "**Backups:** the database is backed up daily and each backup is deleted automatically after 7 days, so deleted data may remain in a backup for up to 7 days."
+        ],
+        "We may keep Personal Data longer only where required by law or needed to establish, exercise or defend legal claims."
+      ]
+    },
+    {
+      "title": "International Transfers",
+      "blocks": [
+        "Your information is stored on servers located in the United States (AWS, region us-east-1) and processed by the Service Providers listed above, which may be located outside of Your country. The data protection laws of those countries may differ from those of Your jurisdiction. We take reasonable steps to ensure Your data is treated securely and in accordance with this Privacy Policy."
+      ]
+    },
+    {
+      "title": "Your Rights and Deleting Your Data",
+      "blocks": [
+        "You have the right to access, correct and delete the Personal Data We hold about You.",
+        [
+          "**Edit Your profile:** change Your name, nickname and profile picture at any time from the Profile section of the app.",
+          "**Delete Your Account:** permanently delete Your Account at any time from Profile → \"Delete account\". This immediately deletes Your Account, profile picture, contacts, notifications and all Your conversations, including their messages and Your conversation with the AI assistant. Because a conversation is shared between two Users, deleting Your Account also removes it for the other participant. An active Pro subscription is cancelled immediately.",
+          "**By email:** contact Us at [contact@pulsejc.com](mailto:contact@pulsejc.com) to request access to, correction of or deletion of Your data."
+        ],
+        { "subtitle": "Users in Argentina" },
+        "Your Personal Data is protected by Law No. 25,326 on the Protection of Personal Data. You have the right to access Your Personal Data free of charge at intervals of no less than six months, unless You prove a legitimate interest to do so sooner, and to request its correction, update and deletion.",
+        "The AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, as the Control Body of Law No. 25,326, has the power to address complaints and claims filed by those whose rights are affected by non-compliance with the rules on the protection of personal data."
+      ]
+    },
+    {
+      "title": "Security",
+      "blocks": [
+        "We protect Your data with measures such as HTTPS encryption for all traffic, passwords stored as one-way hashes, httpOnly session Cookies with rotating refresh tokens, and rate limiting. However, no method of transmission over the Internet or of electronic storage is 100% secure, and We cannot guarantee absolute security."
+      ]
+    },
+    {
+      "title": "Children's Privacy",
+      "blocks": [
+        "The Service is not directed to, and We do not knowingly collect Personal Data from, anyone under the age of 16. If You are a parent or guardian and believe Your child has provided Us with Personal Data, please contact Us and We will delete it as soon as reasonably possible."
+      ]
+    },
+    {
+      "title": "Links to Other Websites",
+      "blocks": [
+        "The Service may link to websites not operated by Us, such as Stripe's checkout and billing pages or Our GitHub repository. We have no control over and assume no responsibility for their content or privacy practices, and We advise You to review their privacy policies."
+      ]
+    },
+    {
+      "title": "Changes to this Privacy Policy",
+      "blocks": [
+        "We may update this Privacy Policy from time to time. We will post the new version on this page and update the \"Last updated\" date. For significant changes, We will also let You know by email or with a notice in the Service before they take effect."
+      ]
+    },
+    {
+      "title": "Contact Us",
+      "blocks": [
+        "If You have any questions about this Privacy Policy or want to exercise any of Your rights, contact Us at [contact@pulsejc.com](mailto:contact@pulsejc.com).",
+        "This Privacy Policy was created with the help of the Free Privacy Policy Generator."
+      ]
+    }
+  ]
+}

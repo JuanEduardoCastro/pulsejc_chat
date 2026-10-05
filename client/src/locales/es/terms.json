@@ -1,0 +1,129 @@
+{
+  "badge": "Legal",
+  "title": "Términos y Condiciones",
+  "lastUpdated": "Última actualización: 5 de octubre de 2026",
+  "intro": [
+    "Estos Términos y Condiciones (\"Términos\") rigen tu uso de Pulse.Jc (el \"Servicio\"), accesible desde [https://pulsejc.com](https://pulsejc.com) y operado por Juan Eduardo Castro, Argentina (\"nosotros\" o \"nuestro\").",
+    "Al crear una Cuenta o usar el Servicio, aceptas estos Términos y nuestra [Política de Privacidad](/privacy-policy). Si no estás de acuerdo, por favor no uses el Servicio."
+  ],
+  "sections": [
+    {
+      "title": "Una demo de portafolio",
+      "blocks": [
+        "Pulse.Jc es un proyecto de demostración para portafolio, creado por un desarrollador independiente para mostrar su trabajo de desarrollo de software. No es un producto comercial. Se ofrece de forma gratuita, y funciones como el plan Pro existen para demostrar cómo funcionan, no para vender un servicio.",
+        "Al ser una demo, el Servicio puede cambiar, reiniciarse, interrumpirse o discontinuarse en cualquier momento, y los datos guardados en él pueden perderse. **No uses el Servicio para comunicaciones importantes o sensibles.**"
+      ]
+    },
+    {
+      "title": "Requisitos",
+      "blocks": [
+        "Debes tener al menos 16 años para usar el Servicio. Al usarlo, confirmas que cumples este requisito."
+      ]
+    },
+    {
+      "title": "Tu Cuenta",
+      "blocks": [
+        [
+          "Proporciona información correcta al crear tu Cuenta y mantenla actualizada.",
+          "Mantén tu contraseña segura. Eres responsable de toda la actividad que ocurra en tu Cuenta.",
+          "La Cuenta es personal: no la compartas ni crees Cuentas en nombre de otras personas sin su permiso.",
+          "Avísanos a [contact@pulsejc.com](mailto:contact@pulsejc.com) si crees que alguien accedió a tu Cuenta sin tu autorización."
+        ]
+      ]
+    },
+    {
+      "title": "Uso aceptable",
+      "blocks": [
+        "Al usar el Servicio, te comprometes a no:",
+        [
+          "Enviar contenido ilegal, amenazante, acosador, de odio, sexualmente explícito o que viole los derechos de otras personas.",
+          "Enviar spam, mensajes no solicitados ni solicitudes de contacto masivas.",
+          "Hacerte pasar por otra persona ni falsear tu identidad.",
+          "Subir malware o cualquier código dañino, ni compartir enlaces a él.",
+          "Intentar acceder a Cuentas o datos de otros Usuarios, eludir la seguridad o los límites del Servicio, o buscar vulnerabilidades sin permiso.",
+          "Sobrecargar el Servicio o acceder a él con bots, scrapers u otros medios automatizados.",
+          "Usar el asistente de IA para generar contenido que infrinja la [Política de Uso Prohibido de la IA Generativa](https://policies.google.com/terms/generative-ai/use-policy) de Google."
+        ],
+        "Podemos eliminar contenido y suspender o eliminar Cuentas que incumplan estas reglas, sin aviso previo."
+      ]
+    },
+    {
+      "title": "Tu contenido",
+      "blocks": [
+        "Conservas la propiedad de los mensajes y demás contenido que envías a través del Servicio. Nos das permiso para almacenar, procesar y transmitir ese contenido solo en la medida necesaria para operar el Servicio; por ejemplo, para entregar tus mensajes a sus destinatarios y para enviar tus mensajes al asistente de IA para generar una respuesta.",
+        "Eres responsable del contenido que envías. No revisamos los mensajes antes de entregarlos."
+      ]
+    },
+    {
+      "title": "Asistente de IA",
+      "blocks": [
+        [
+          "Las respuestas de Pulse IA las generan automáticamente los modelos Gemini de Google. Pueden ser inexactas, incompletas o inapropiadas, y no representan nuestras opiniones.",
+          "Las respuestas de la IA no constituyen asesoramiento profesional (por ejemplo, médico, legal o financiero). No tomes decisiones importantes basándote solo en ellas.",
+          "Los mensajes que envías al asistente de IA los procesa Google según lo descrito en nuestra [Política de Privacidad](/privacy-policy). No compartas información sensible, confidencial ni personal con él.",
+          "La cantidad de mensajes a la IA que puedes enviar por día depende de tu plan, y los límites pueden cambiar."
+        ]
+      ]
+    },
+    {
+      "title": "Planes y pagos",
+      "blocks": [
+        [
+          "El Servicio ofrece un plan gratuito y un plan Pro con un límite diario mayor de mensajes a la IA.",
+          "**Los pagos funcionan en el modo de prueba de Stripe. Nunca se realizan cobros reales.** Usa solo las tarjetas de prueba de Stripe (por ejemplo, 4242 4242 4242 4242). **No ingreses datos de tarjetas reales.**",
+          "Los pagos y el portal de facturación los gestiona Stripe, sujetos a los [términos de Stripe](https://stripe.com/legal).",
+          "Puedes cancelar el plan Pro en cualquier momento desde el portal de facturación. Como no se realizan pagos reales, no corresponden reembolsos.",
+          "Podemos cambiar, agregar o eliminar planes y sus funciones en cualquier momento."
+        ]
+      ]
+    },
+    {
+      "title": "Propiedad intelectual",
+      "blocks": [
+        "El Servicio, incluidos su diseño, el nombre y el logo de Pulse.Jc, pertenece a Juan Eduardo Castro. El código fuente está disponible públicamente en [GitHub](https://github.com/JuanEduardoCastro/pulsejc_chat) para que pueda revisarse como parte de un portafolio. Salvo que un archivo de licencia en ese repositorio indique lo contrario, ver el código no te otorga ninguna licencia para copiarlo, modificarlo ni redistribuirlo."
+      ]
+    },
+    {
+      "title": "Terminación",
+      "blocks": [
+        "Puedes dejar de usar el Servicio y eliminar tu Cuenta en cualquier momento desde Perfil → \"Eliminar cuenta\". Podemos suspender o eliminar tu Cuenta si incumples estos Términos, o dejar de ofrecer el Servicio por completo. Cuando se elimina tu Cuenta, tus datos se eliminan según lo descrito en nuestra [Política de Privacidad](/privacy-policy)."
+      ]
+    },
+    {
+      "title": "Servicios de terceros",
+      "blocks": [
+        "El Servicio usa servicios de terceros, como Google (inicio de sesión y la API de Gemini), Stripe, Amazon Web Services y Sentry. Su uso está sujeto a sus propios términos y políticas, y no somos responsables por ellos."
+      ]
+    },
+    {
+      "title": "Exención de garantías",
+      "blocks": [
+        "El Servicio se ofrece \"tal cual\" y \"según disponibilidad\", sin garantías de ningún tipo, expresas o implícitas. No garantizamos que el Servicio funcione sin interrupciones, de forma segura o sin errores, que los mensajes se entreguen siempre ni que los datos se conserven."
+      ]
+    },
+    {
+      "title": "Limitación de responsabilidad",
+      "blocks": [
+        "En la máxima medida permitida por la ley aplicable, no seremos responsables por daños indirectos, incidentales, especiales o consecuentes, ni por la pérdida de datos, derivados del uso del Servicio o de la imposibilidad de usarlo. Nada en estos Términos limita los derechos irrenunciables que puedas tener según las leyes de defensa del consumidor, incluida la Ley N.° 24.240 de Argentina."
+      ]
+    },
+    {
+      "title": "Ley aplicable",
+      "blocks": [
+        "Estos Términos se rigen por las leyes de la República Argentina. Cualquier controversia se someterá a los tribunales competentes de Argentina, sin perjuicio del derecho que puedas tener a presentar un reclamo ante los tribunales de tu lugar de residencia."
+      ]
+    },
+    {
+      "title": "Cambios en estos Términos",
+      "blocks": [
+        "Podemos actualizar estos Términos periódicamente. Publicaremos la nueva versión en esta página y actualizaremos la fecha de \"Última actualización\". Si los cambios son importantes, también te avisaremos por correo o con un aviso en el Servicio antes de que entren en vigor. Si sigues usando el Servicio después de que los cambios entren en vigor, aceptas los nuevos Términos."
+      ]
+    },
+    {
+      "title": "Contacto",
+      "blocks": [
+        "Si tienes preguntas sobre estos Términos, escríbenos a [contact@pulsejc.com](mailto:contact@pulsejc.com)."
+      ]
+    }
+  ]
+}
