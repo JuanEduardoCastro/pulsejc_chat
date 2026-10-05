@@ -11,7 +11,9 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UseFilters } from '@nestjs/common';
+import * as Sentry from '@sentry/nestjs';
+import { SentryWsExceptionFilter } from '@/common/filters/ws-exception.filter';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PresenceService } from './presence.service';
@@ -35,6 +37,7 @@ interface AuthenticatedSocket extends Socket {
 @WebSocketGateway({
   cors: { origin: process.env.CLIENT_URL, credentials: true },
 })
+@UseFilters(new SentryWsExceptionFilter())
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server!: Server;
@@ -201,6 +204,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         `send-message failed: ${(error as Error).message}`,
         (error as Error).stack,
       );
+      Sentry.captureException(error);
     }
   }
 
@@ -240,6 +244,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         `retry-ai-reply failed: ${(error as Error).message}`,
         (error as Error).stack,
       );
+      Sentry.captureException(error);
     }
   }
 
@@ -295,6 +300,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           (error as Error).message
         }`,
       );
+      if (!(error instanceof AiProviderError)) Sentry.captureException(error);
       this.server.to(`user:${userId}`).emit('ai-error', {
         conversationId,
         code: error instanceof AiProviderError ? error.code : 'UNAVAILABLE',
@@ -329,6 +335,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.logger.warn(
         `mark-as-read failed for user ${socket.data.user.id}: ${(error as Error).message}`,
       );
+      Sentry.captureException(error);
     }
   }
 

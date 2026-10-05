@@ -12,4 +12,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: 'vendor',
+              test: /node_modules\/(react|react-dom|scheduler|react-router|react-router-dom|@tanstack|i18next|react-i18next|i18next-browser-languagedetector|@sentry)\//,
+            },
+          ],
+        },
+      },
+    },
+  },
 });
