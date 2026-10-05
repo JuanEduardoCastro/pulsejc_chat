@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { S3Service } from '../uploads/s3.service';
@@ -15,6 +15,7 @@ export interface CreateUserInput {
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
   constructor(
     private readonly prisma: PrismaService,
     private readonly s3Service: S3Service,
@@ -78,12 +79,16 @@ export class UsersService {
   }
 
   async remove(id: string) {
-    const directConversations =
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: { avatarURL: true },
+    });
+    const ownedConversations =
       await this.prisma.conversationParticipant.findMany({
-        where: { userId: id, conversation: { type: 'DIRECT' } },
+        where: { userId: id, conversation: { type: { in: ['DIRECT', 'AI'] } } },
         select: { conversationId: true },
       });
-    const directConversationIds = directConversations.map(
+    const directConversationIds = ownedConversations.map(
       (c) => c.conversationId,
     );
 
@@ -114,5 +119,16 @@ export class UsersService {
       }),
       this.prisma.user.delete({ where: { id } }),
     ]);
+    if (user?.avatarURL) {
+      try {
+        await this.s3Service.deleteObjectByUrl(user.avatarURL);
+      } catch (error) {
+        this.logger.warn(
+          `Avatar cleanup failed for deleted user ${id}: ${
+            (error as Error).message
+          }`,
+        );
+      }
+    }
   }
 }

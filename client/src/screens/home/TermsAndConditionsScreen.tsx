@@ -2,13 +2,14 @@ import NavBar from '@/components/home/NavBar';
 import Footer from '@/components/home/Footer';
 import { useTranslation } from 'react-i18next';
 import LegalDocument, { type LegalContent } from './LegalDocument';
-import privacyEn from '@/locales/en/privacy.json';
-import privacyEs from '@/locales/es/privacy.json';
 
-function PrivacyPolicyScreen() {
+import termsEn from '@/locales/en/terms.json';
+import termsEs from '@/locales/es/terms.json';
+
+function TermsAndConditionsScreen() {
   const { i18n } = useTranslation();
   const content = (
-    i18n.resolvedLanguage === 'es' ? privacyEs : privacyEn
+    i18n.resolvedLanguage === 'es' ? termsEs : termsEn
   ) as LegalContent;
 
   return (
@@ -25,4 +26,4 @@ function PrivacyPolicyScreen() {
   );
 }
 
-export default PrivacyPolicyScreen;
+export default TermsAndConditionsScreen;

@@ -1,0 +1,129 @@
+{
+  "badge": "Legal",
+  "title": "Terms & Conditions",
+  "lastUpdated": "Last updated: October 5, 2026",
+  "intro": [
+    "These Terms & Conditions (\"Terms\") govern Your use of Pulse.Jc (the \"Service\"), accessible from [https://pulsejc.com](https://pulsejc.com) and operated by Juan Eduardo Castro, Argentina (\"We\", \"Us\" or \"Our\").",
+    "By creating an Account or using the Service, You agree to these Terms and to Our [Privacy Policy](/privacy-policy). If You do not agree, please do not use the Service."
+  ],
+  "sections": [
+    {
+      "title": "A Portfolio Demo",
+      "blocks": [
+        "Pulse.Jc is a portfolio demonstration project built by an individual developer to showcase software development work. It is not a commercial product. It is offered free of charge, and features such as the Pro plan exist to demonstrate how they work, not to sell a service.",
+        "Because it is a demo, the Service may change, be reset, be interrupted or be discontinued at any time, and data stored in it may be lost. **Do not rely on the Service for important or sensitive communications.**"
+      ]
+    },
+    {
+      "title": "Eligibility",
+      "blocks": [
+        "You must be at least 16 years old to use the Service. By using it, You confirm that You meet this requirement."
+      ]
+    },
+    {
+      "title": "Your Account",
+      "blocks": [
+        [
+          "Provide accurate information when You create Your Account and keep it up to date.",
+          "Keep Your password secure. You are responsible for all activity that happens under Your Account.",
+          "An Account is personal: do not share it or create Accounts on behalf of other people without their permission.",
+          "Let Us know at [contact@pulsejc.com](mailto:contact@pulsejc.com) if You believe Your Account has been accessed without Your authorization."
+        ]
+      ]
+    },
+    {
+      "title": "Acceptable Use",
+      "blocks": [
+        "When using the Service, You agree not to:",
+        [
+          "Send content that is illegal, threatening, harassing, hateful, sexually explicit, or that violates the rights of others.",
+          "Send spam, unsolicited messages or contact requests in bulk.",
+          "Impersonate another person or misrepresent who You are.",
+          "Upload malware or any harmful code, or share links to it.",
+          "Try to access other Users' Accounts or data, bypass the Service's security or limits, or probe it for vulnerabilities without permission.",
+          "Overload the Service, or access it with bots, scrapers or other automated means.",
+          "Use the AI assistant to generate content that violates Google's [Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy)."
+        ],
+        "We may remove content and suspend or delete Accounts that break these rules, without prior notice."
+      ]
+    },
+    {
+      "title": "Your Content",
+      "blocks": [
+        "You keep ownership of the messages and other content You send through the Service. You give Us permission to store, process and transmit that content only as needed to operate the Service — for example, to deliver Your messages to their recipients and to send Your messages to the AI assistant to generate a reply.",
+        "You are responsible for the content You send. We do not review messages before they are delivered."
+      ]
+    },
+    {
+      "title": "AI Assistant",
+      "blocks": [
+        [
+          "Replies from Pulse AI are generated automatically by Google's Gemini models. They may be inaccurate, incomplete or inappropriate, and they do not represent Our opinions.",
+          "AI replies are not professional advice (for example, medical, legal or financial). Do not make important decisions based only on them.",
+          "Messages You send to the AI assistant are processed by Google as described in Our [Privacy Policy](/privacy-policy). Do not share sensitive, confidential or personal information with it.",
+          "The number of AI messages You can send per day depends on Your plan, and the limits may change."
+        ]
+      ]
+    },
+    {
+      "title": "Plans and Payments",
+      "blocks": [
+        [
+          "The Service offers a free plan and a Pro plan with a higher daily limit of AI messages.",
+          "**Payments run in Stripe's test mode. No real charges are ever made.** Use only Stripe's test cards (for example, 4242 4242 4242 4242). **Do not enter real card details.**",
+          "Payments and the billing portal are handled by Stripe, subject to [Stripe's terms](https://stripe.com/legal).",
+          "You can cancel the Pro plan at any time from the billing portal. Since no real payments are taken, no refunds apply.",
+          "We may change, add or remove plans and their features at any time."
+        ]
+      ]
+    },
+    {
+      "title": "Intellectual Property",
+      "blocks": [
+        "The Service, including its design, the Pulse.Jc name and logo, belongs to Juan Eduardo Castro. The source code is publicly available on [GitHub](https://github.com/JuanEduardoCastro/pulsejc_chat) so it can be reviewed as part of a portfolio. Unless a license file in that repository states otherwise, viewing the code does not grant You any license to copy, modify or redistribute it."
+      ]
+    },
+    {
+      "title": "Termination",
+      "blocks": [
+        "You can stop using the Service and delete Your Account at any time from Profile → \"Delete account\". We may suspend or delete Your Account if You break these Terms, or stop offering the Service altogether. When Your Account is deleted, Your data is deleted as described in Our [Privacy Policy](/privacy-policy)."
+      ]
+    },
+    {
+      "title": "Third-Party Services",
+      "blocks": [
+        "The Service relies on third-party services, such as Google (sign-in and the Gemini API), Stripe, Amazon Web Services and Sentry. Their use is subject to their own terms and policies, and We are not responsible for them."
+      ]
+    },
+    {
+      "title": "Disclaimer",
+      "blocks": [
+        "The Service is provided \"as is\" and \"as available\", without warranties of any kind, express or implied. We do not guarantee that the Service will be uninterrupted, secure or error-free, that messages will always be delivered, or that data will be preserved."
+      ]
+    },
+    {
+      "title": "Limitation of Liability",
+      "blocks": [
+        "To the maximum extent permitted by applicable law, We will not be liable for any indirect, incidental, special or consequential damages, or for any loss of data, arising from Your use of, or inability to use, the Service. Nothing in these Terms limits any rights You may have under consumer protection laws that cannot be waived, including Argentina's Law No. 24,240."
+      ]
+    },
+    {
+      "title": "Governing Law",
+      "blocks": [
+        "These Terms are governed by the laws of the Argentine Republic. Any dispute will be submitted to the competent courts of Argentina, without prejudice to any right You may have to file a claim in the courts of Your place of residence."
+      ]
+    },
+    {
+      "title": "Changes to these Terms",
+      "blocks": [
+        "We may update these Terms from time to time. We will post the new version on this page and update the \"Last updated\" date. For significant changes, We will also let You know by email or with a notice in the Service before they take effect. If You keep using the Service after the changes take effect, You accept the new Terms."
+      ]
+    },
+    {
+      "title": "Contact Us",
+      "blocks": [
+        "If You have any questions about these Terms, contact Us at [contact@pulsejc.com](mailto:contact@pulsejc.com)."
+      ]
+    }
+  ]
+}

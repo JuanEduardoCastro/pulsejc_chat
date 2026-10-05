@@ -17,7 +17,7 @@ const OAuthCallbackScreen = lazy(
 );
 const ChatScreen = lazy(() => import('./screens/chat/ChatScreen'));
 const TermsAndConditions = lazy(
-  () => import('./screens/home/Terms&Conditions'),
+  () => import('./screens/home/TermsAndConditionsScreen'),
 );
 const PrivacyPolicyScreen = lazy(
   () => import('./screens/home/PrivacyPolicyScreen'),

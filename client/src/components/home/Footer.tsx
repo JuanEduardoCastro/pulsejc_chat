@@ -12,14 +12,11 @@ function Footer() {
       className="border-t px-4 py-8 sm:px-6"
       style={{ borderColor: 'var(--border)' }}
     >
-      <div
-        className="mx-auto flex max-w-6xl flex-col items-center 
-  justify-between gap-4 text-sm sm:flex-row"
-      >
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm sm:flex-row">
         <p className="text-xs">
           © {new Date().getFullYear()} Pulse.Jc — {t('footer.author')}
         </p>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -29,6 +26,13 @@ function Footer() {
             <GithubIcon className="h-4 w-4" />
             {t('footer.github')}
           </a>
+          <Link to="/privacy-policy" className="hover:opacity-80">
+            {t('footer.privacy')}
+          </Link>
+          <Link to="/terms-and-conditions" className="hover:opacity-80">
+            {t('footer.terms')}
+          </Link>
+
           {!user && (
             <Link to="/login" className="hover:opacity-80">
               {t('footer.login')}

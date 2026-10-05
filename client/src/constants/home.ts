@@ -80,3 +80,7 @@ export const gradientText: CSSProperties = {
   backgroundClip: 'text',
   color: 'transparent',
 };
+
+export const INLINE = /\*\*(.+?)\*\*|\[(.+?)\]\((.+?)\)/g;
+export const linkClass = 'underline-offset-4 hover:underline';
+export const linkStyle = { color: 'var(--accent)' };

@@ -103,6 +103,8 @@
   "footer": {
     "github": "GitHub",
     "login": "Log in",
-    "author": "Juan Eduardo Castro"
+    "author": "Juan Eduardo Castro",
+    "privacy": "Privacidad",
+    "terms": "Términos"
   }
 }
