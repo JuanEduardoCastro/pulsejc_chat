@@ -2,7 +2,7 @@
 
 Pulse.Jc is a real-time 1-to-1 chat web app (React.js + NestJS), built as a portfolio demo. Users sign up (email/password or Google), add contacts by email, chat in real time, and can also chat with an integrated AI assistant. Bilingual UI (es/en), light/dark theme.
 
-**Stack**: React + TypeScript + Vite (frontend), NestJS + TypeScript (backend), PostgreSQL + Prisma, Socket.io for real-time, Google Gemini for the AI chat. Hosted on a single AWS EC2 instance (Nginx + PM2) with RDS PostgreSQL and S3. Full details in the docs below.
+**Stack**: React + TypeScript + Vite (frontend), NestJS + TypeScript (backend), PostgreSQL + Prisma, Socket.io for real-time, Google Gemini for the AI chat. Hosted on a single AWS EC2 instance (Nginx + PM2) with "with self-hosted PostgreSQL (same instance) and S3. Full details in the docs below.
 
 ## Documentation map
 
