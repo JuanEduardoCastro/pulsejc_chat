@@ -16,7 +16,9 @@ describe('AiUsageService', () => {
     jest.spyOn(Date, 'now').mockReturnValue(NOW);
     prisma = {
       user: {
-        findUniqueOrThrow: jest.fn().mockResolvedValue({ plan: 'FREE' }),
+        findUniqueOrThrow: jest
+          .fn()
+          .mockResolvedValue({ plan: 'FREE', email: 'jane@example.com' }),
       },
       message: { count: jest.fn(), findFirst: jest.fn() },
     };
@@ -55,7 +57,10 @@ describe('AiUsageService', () => {
   });
 
   it('uses the PRO limit for PRO users', async () => {
-    prisma.user.findUniqueOrThrow.mockResolvedValue({ plan: 'PRO' });
+    prisma.user.findUniqueOrThrow.mockResolvedValue({
+      plan: 'PRO',
+      email: 'jane@example.com',
+    });
     prisma.message.count.mockResolvedValue(50);
 
     const usage = await aiUsageService.getUsage('user-1');

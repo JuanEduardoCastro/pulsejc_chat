@@ -1,4 +1,8 @@
 {
+  "demo": {
+    "banner": "Cuenta demo compartida · no se puede editar el perfil, gestionar contactos ni eliminar la cuenta · se reinicia diariamente.",
+    "dismiss": "Cerrar"
+  },
   "sidebar": {
     "profile": "Perfil",
     "logout": "Cerrar sesión",

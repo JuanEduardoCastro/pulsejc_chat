@@ -14,6 +14,8 @@ import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SentryModule } from '@sentry/nestjs/setup';
 import { BillingModule } from './billing/billing.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { DemoModule } from './demo/demo.module';
 @Module({
   imports: [
     SentryModule.forRoot(),
@@ -29,6 +31,7 @@ import { BillingModule } from './billing/billing.module';
       resolvers: [new QueryResolver(['lang']), AcceptLanguageResolver],
     }),
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60000, limit: 100 }]),
+    ScheduleModule.forRoot(),
     PrismaModule,
     UsersModule,
     AuthModule,
@@ -36,6 +39,7 @@ import { BillingModule } from './billing/billing.module';
     ChatModule,
     NotificationsModule,
     BillingModule,
+    DemoModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

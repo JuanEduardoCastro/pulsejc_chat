@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import type { Plan, Prisma } from '../../generated/prisma/client';
+import { DEMO_AI_MESSAGE_LIMIT, isDemoEmail } from '@/common/demo';
 
 export const AI_MESSAGE_LIMIT: Record<Plan, number> = { FREE: 10, PRO: 300 };
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -27,11 +28,14 @@ export class AiUsageService {
     const [user, used] = await Promise.all([
       this.prisma.user.findUniqueOrThrow({
         where: { id: userId },
-        select: { plan: true },
+        select: { plan: true, email: true },
       }),
       this.prisma.message.count({ where }),
     ]);
-    const limit = AI_MESSAGE_LIMIT[user.plan];
+    const planLimit = AI_MESSAGE_LIMIT[user.plan];
+    const limit = isDemoEmail(user.email)
+      ? Math.max(planLimit, DEMO_AI_MESSAGE_LIMIT)
+      : planLimit;
 
     let resetsAt: Date | null = null;
     if (used >= limit) {

@@ -48,7 +48,7 @@ function HomeScreen() {
         <div className="relative mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-2">
           <div className="text-center md:text-left">
             <span
-              className="mx-8 md:mx-1 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wider uppercase"
+              className="mx-2 md:mx-1 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 md:text-xs font-semibold uppercase text-[11px] tracking-wide sm:text-xs sm:tracking-wider"
               style={{
                 borderColor: 'var(--accent-border)',
                 color: 'var(--accent)',

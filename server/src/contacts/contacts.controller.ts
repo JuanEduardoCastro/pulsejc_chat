@@ -16,6 +16,7 @@ import { AddContactDto } from './dto/add-contact.dto';
 import type { User } from '../../generated/prisma/client';
 import { ListContactsQueryDto } from './dto/list-contacts-query.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { DemoRestrictedGuard } from '@/common/guards/demo-restricted.guard';
 
 @ApiTags('contacts')
 @ApiBearerAuth()
@@ -24,6 +25,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
+  @UseGuards(DemoRestrictedGuard)
   @Post()
   createContact(@CurrentUser() user: User, @Body() dto: AddContactDto) {
     return this.contactsService.createContact(user, dto.email);
@@ -39,11 +41,13 @@ export class ContactsController {
     return this.contactsService.findOne(user.id, contactId);
   }
 
+  @UseGuards(DemoRestrictedGuard)
   @Patch(':id/accept')
   acceptContact(@CurrentUser() user: User, @Param('id') contactId: string) {
     return this.contactsService.acceptContact(user, contactId);
   }
 
+  @UseGuards(DemoRestrictedGuard)
   @Delete(':id')
   removeContact(@CurrentUser() user: User, @Param('id') contactId: string) {
     return this.contactsService.removeContact(user, contactId);

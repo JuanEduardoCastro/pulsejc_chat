@@ -1,4 +1,8 @@
 {
+  "demo": {
+    "banner": "Shared demo account · profile changes, contacts and account deletion are disabled · resets daily.",
+    "dismiss": "Dismiss"
+  },
   "sidebar": {
     "profile": "Profile",
     "logout": "Log out",

@@ -11,6 +11,7 @@ import { useUiStore } from '@/stores/uiStore';
 import { SocketProvider, useSocket } from '@/hooks/useSocket';
 import { useTabBadge } from '@/hooks/useTabBadge';
 import { useBillingReturn } from '@/hooks/useBillingReturn';
+import DemoBanner from '@/components/chat/DemoBanner';
 
 function ChatLayout() {
   const { t } = useTranslation('chat');
@@ -60,6 +61,7 @@ function ChatLayout() {
           <ChatPanel conversationId={conversationId ?? null} />
         </div>
       </div>
+      <DemoBanner />
       <ModalRoot />
     </div>
   );

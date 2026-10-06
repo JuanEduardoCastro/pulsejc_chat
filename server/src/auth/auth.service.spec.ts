@@ -118,8 +118,12 @@ describe('AuthService', () => {
 
     it('hashes the password and returns an access token with a sanitized user', async () => {
       usersService.findByEmail.mockResolvedValue(null);
-      usersService.create.mockImplementation(((data: CreateUserInput) =>
-        Promise.resolve({ ...baseUser, ...data })) as any);
+      usersService.create.mockImplementation(
+        (data: CreateUserInput) =>
+          Promise.resolve({ ...baseUser, ...data }) as unknown as ReturnType<
+            UsersService['create']
+          >,
+      );
 
       const result = await authService.register({
         email: 'new@example.com',
