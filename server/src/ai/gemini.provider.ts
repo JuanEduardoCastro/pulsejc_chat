@@ -16,7 +16,7 @@ const RETRYABLE_STATUSES = new Set([429, 500, 503]);
 const RETRY_DELAYS_MS = [1000, 3000];
 const MAX_RETRY_WAIT_MS = 60_000;
 const SYSTEM_INSTRUCTION =
-  'You are Pulse, the AI assistant built into the Pulse.Jc chat app. Keep replies short, friendly and conversational.';
+  "You are Pulse, the AI assistant built into the Pulse.Jc chat app. Keep replies short, friendly and conversational. Write plain text only: the chat doesn't render Markdown, so never use asterisks, underscores or # for formatting. For lists, start each line with '• '.";
 const LANGUAGE_NAMES: Record<string, string> = { en: 'English', es: 'Spanish' };
 
 function getRetryAfterMs(

@@ -1,4 +1,5 @@
 import { User } from '../../generated/prisma/client';
+import { isDemoEmail } from '@/common/demo';
 
 type PrivateField =
   'passwordHash' | 'stripeCustomerId' | 'stripeSubscriptionId';
@@ -21,12 +22,12 @@ export function sanitizeUser(
   return safeUser;
 }
 
-export function sanitizeSelf(user: User): Omit<User, PrivateField> {
+export function sanitizeSelf(user: User) {
   const {
     passwordHash: _passwordHash,
     stripeCustomerId: _stripeCustomerId,
     stripeSubscriptionId: _stripeSubscriptionId,
     ...self
   } = user;
-  return self;
+  return { ...self, isDemo: isDemoEmail(user.email) };
 }

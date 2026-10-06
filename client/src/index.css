@@ -15,17 +15,15 @@
   --transparent: transparent;
   --danger: #cc1616;
   --check-icon: #3d9ac2;
-  /* --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5); */
 }
 
 :root[data-theme='dark'] {
   --text: #9ca3af;
   --text-d: #9ca3af9a;
   --text-h: #f3f4f6;
-  --text-d-h: #b1adadb9;
+  --text-d-h: #cecbcbe3;
   --bg-card: #16171d;
+  --bg: #081408;
   --border: #2e303a;
   --accent: #34b463;
   --accent-bg: rgba(52, 180, 99, 0.8);
@@ -34,10 +32,6 @@
   --transparent: transparent;
   --danger: #cc1616;
   --check-icon: #38bdf8;
-
-  /* --accent: #c084fc;
-  --accent-bg: rgba(192, 132, 252, 0.15);
-  --accent-border: rgba(192, 132, 252, 0.5); */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,6 +49,7 @@
     --avatar-AI: #c084fc;
     --transparent: transparent;
     --danger: #cc1616;
+    --check-icon: #38bdf8;
   }
 }
 

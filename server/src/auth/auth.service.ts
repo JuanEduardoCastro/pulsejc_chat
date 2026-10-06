@@ -19,6 +19,7 @@ import { GoogleProfile } from './google.strategy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { I18nService } from 'nestjs-i18n';
+import { isDemoEmail } from '@/common/demo';
 
 const SALT_ROUNDS = 12;
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
@@ -124,6 +125,9 @@ export class AuthService {
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {
+    if (isDemoEmail(dto.email))
+      return { message: GENERIC_FORGOT_PASSWORD_MESSAGE };
+
     const user = await this.userService.findByEmail(dto.email);
 
     if (user && !user.passwordHash) {
@@ -188,17 +192,20 @@ export class AuthService {
       sub: user.id,
       email: user.email,
     });
-    const refreshToken = await this.issueRefreshToken(user.id);
+    const refreshToken = await this.issueRefreshToken(user);
     return { accessToken, refreshToken, user: sanitizeSelf(user) };
   }
 
-  private async issueRefreshToken(userId: string) {
+  private async issueRefreshToken(user: Pick<User, 'id' | 'email'>) {
     const activeTokens = await this.prisma.refreshToken.findMany({
-      where: { userId, expiresAt: { gt: new Date() } },
+      where: { userId: user.id, expiresAt: { gt: new Date() } },
       orderBy: { createdAt: 'asc' },
     });
 
-    if (activeTokens.length >= MAX_REFRESH_TOKENS_PER_USER) {
+    if (
+      !isDemoEmail(user.email) &&
+      activeTokens.length >= MAX_REFRESH_TOKENS_PER_USER
+    ) {
       await this.prisma.refreshToken.delete({
         where: { id: activeTokens[0].id },
       });
@@ -207,7 +214,7 @@ export class AuthService {
     const rawToken = crypto.randomBytes(48).toString('hex');
     await this.prisma.refreshToken.create({
       data: {
-        userId,
+        userId: user.id,
         tokenHash: this.hashToken(rawToken),
         expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL_MS),
       },

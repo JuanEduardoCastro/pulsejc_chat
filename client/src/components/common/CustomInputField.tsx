@@ -35,9 +35,7 @@ function CustomInputField({
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         disabled={disabled}
-        className={
-          inputClassName || 'flex-1 h-10 rounded-md border px-3 py-2 text-sm'
-        }
+        className={`outline-none focus:border-(--accent)! ${inputClassName || 'flex-1 h-10 rounded-md border px-3 py-2 text-sm'}`}
         style={{
           borderColor: 'var(--border)',
           backgroundColor: 'var(--bg)',

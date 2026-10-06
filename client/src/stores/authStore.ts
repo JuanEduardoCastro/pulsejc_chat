@@ -9,6 +9,7 @@ export type AuthUser = ChatUser & {
   subscriptionStatus?: string | null;
   currentPeriodEnd?: string | null;
   cancelAtPeriodEnd?: boolean;
+  isDemo?: boolean;
 };
 
 export type AuthResponse = {

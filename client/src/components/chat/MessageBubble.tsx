@@ -25,7 +25,11 @@ function MessageBubble({
   const bubbleStyle: CSSProperties = isOwn
     ? { backgroundColor: 'var(--accent-bg)', color: '#fff' }
     : isAi
-      ? { backgroundColor: 'var(--accent-bg)', color: 'var(--text-h)' }
+      ? {
+          backgroundColor:
+            'color-mix(in srgb, var(--avatar-AI) 25%, var(--bg))',
+          color: 'var(--text-h)',
+        }
       : { backgroundColor: 'var(--border)', color: 'var(--text-h)' };
 
   return (

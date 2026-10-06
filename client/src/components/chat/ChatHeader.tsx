@@ -98,7 +98,7 @@ function ChatHeader({ conversation, isAiResponding }: ChatHeaderProps) {
       <button
         type="button"
         onClick={() => navigate('/chat')}
-        className="px-1 text-2xl leading-none"
+        className="hidden px-1 text-2xl leading-none md:block"
         style={{ color: 'var(--text)' }}
         aria-label={t('header.closeTrigger')}
       >

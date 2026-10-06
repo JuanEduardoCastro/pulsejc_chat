@@ -246,13 +246,23 @@ describe('ContactsService', () => {
         createdAt: new Date(),
       });
       prisma.contact.update.mockResolvedValue({ id: 'c1', status: 'ACCEPTED' });
-      conversationsService.findOrCreateDirect.mockResolvedValue({} as any);
+      conversationsService.findOrCreateDirect.mockResolvedValue({
+        id: 'conv-1',
+        type: 'DIRECT',
+        createdAt: new Date(),
+      });
 
       await contactsService.acceptContact(currentUser, 'c1');
 
       expect(conversationsService.findOrCreateDirect).toHaveBeenCalledWith(
         targetUser.id,
         currentUser.id,
+      );
+      expect(notificationsService.notifyUser).toHaveBeenCalledWith(
+        targetUser.id,
+        'CONTACT_ACCEPTED',
+        currentUser.id,
+        'c1',
       );
       expect(emit).toHaveBeenCalledWith(
         'contact-request-response',

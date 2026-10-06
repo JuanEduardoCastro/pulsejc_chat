@@ -9,6 +9,7 @@ import {
   Res,
   UseGuards,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { BillingService } from '@/billing/billing.service';
 import type { Request, Response } from 'express';
@@ -22,6 +23,8 @@ import { sanitizeSelf } from './users.util';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AvatarUploadUrlDto } from './dto/avatar-upload-url.dto';
+import { DemoRestrictedGuard } from '@/common/guards/demo-restricted.guard';
+import { DEMO_READ_ONLY_MESSAGE, isDemoEmail } from '@/common/demo';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -40,10 +43,20 @@ export class UsersController {
 
   @Patch('me')
   async updateMe(@CurrentUser() user: User, @Body() dto: UpdateUserDto) {
+    const changesProfile =
+      dto.firstName !== undefined ||
+      dto.lastName !== undefined ||
+      dto.nickname !== undefined ||
+      dto.avatarURL !== undefined;
+    if (changesProfile && isDemoEmail(user.email)) {
+      throw new ForbiddenException(DEMO_READ_ONLY_MESSAGE);
+    }
+
     const updatedUser = await this.usersService.update(user.id, dto);
     return sanitizeSelf(updatedUser);
   }
 
+  @UseGuards(DemoRestrictedGuard)
   @Post('me/avatar-upload-url')
   createAvatarUploadUrl(
     @CurrentUser() user: User,
@@ -52,12 +65,14 @@ export class UsersController {
     return this.usersService.createAvatarUploadUrl(user.id, dto.contentType);
   }
 
+  @UseGuards(DemoRestrictedGuard)
   @Delete('me/avatar')
   async removeAvatar(@CurrentUser() user: User) {
     const updatedUser = await this.usersService.removeAvatar(user);
     return sanitizeSelf(updatedUser);
   }
 
+  @UseGuards(DemoRestrictedGuard)
   @Throttle({ default: { ttl: 3600000, limit: 5 } })
   @Delete('me')
   async deleteMe(
